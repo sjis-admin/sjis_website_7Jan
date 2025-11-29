@@ -24,7 +24,9 @@
                         class="absolute inset-0 bg-cover bg-center transform transition-transform duration-700 group-hover:scale-105"
                         style="background-image: url('{{ image.image.url }}')"
                         data-swiper-parallax="-23%"
-                    ></div>
+                        role="img"
+                        aria-label="{{ image.caption }}"
+                    ><span class="sr-only">{{ image.caption }}</span></div>
 
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
 

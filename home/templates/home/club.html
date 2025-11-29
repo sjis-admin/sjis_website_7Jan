@@ -1,113 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Showcase</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.5.1/flowbite.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    .club-carousel {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
 
-    <style>
-        .club-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
+    .club-carousel-content {
+        display: flex;
+        width: calc(100% * 2); /* Adjust for duplicated items */
+        animation: scroll 20s linear infinite;
+    }
+
+    .club-card {
+        flex: 0 0 20%; /* Adjust width for 5 cards in view */
+        margin-right: 1rem;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .club-card:hover {
+        transform: scale(1.05);
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
         }
-
-        .club-carousel-content {
-            display: flex;
-            width: calc(100% * 2); /* Adjust for duplicated items */
-            animation: scroll 20s linear infinite;
+        100% {
+            transform: translateX(-50%); /* Moves left by 50% to scroll one card width */
         }
+    }
+</style>
 
-        .club-card {
-            flex: 0 0 10%; /* Adjust width for 5 cards in view */
-            margin-right: 1rem;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .club-card:hover {
-            transform: scale(1.05);
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%); /* Moves left by 50% to scroll one card width */
-            }
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
-
-    <div class="container mx-auto py-10">
-    <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-12">Clubs at Our School</h1>
+<div class="container mx-auto py-10">
+    <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12">Clubs at Our School</h2>
     
     <div class="club-carousel">
         <div class="club-carousel-content">
             <!-- Library Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-blue-500 text-6xl mb-4">book</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Library Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Library Club</h3>
                 <p class="text-gray-600 text-center">Explore a vast collection of books and participate in reading activities.</p>
             </div>
             
             <!-- Science Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-green-500 text-6xl mb-4">science</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Science Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Science Club</h3>
                 <p class="text-gray-600 text-center">Delve into the wonders of science with experiments and discussions.</p>
             </div>
             
             <!-- Tech Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-gray-700 text-6xl mb-4">computer</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Tech Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Tech Club</h3>
                 <p class="text-gray-600 text-center">Engage with the latest technology and develop your tech skills.</p>
             </div>
             
             <!-- Sports Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-orange-500 text-6xl mb-4">sports_soccer</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Sports Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Sports Club</h3>
                 <p class="text-gray-600 text-center">Participate in various sports and improve your athletic abilities.</p>
             </div>
             
             <!-- Nature Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="fas fa-seedling text-black text-6xl mb-4"></i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Nature Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Nature Club</h3>
                 <p class="text-gray-600 text-center">Explore the outdoors and engage in environmental conservation activities.</p>
             </div>
             
             <!-- Photography Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-gray-800 text-6xl mb-4">camera_alt</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Photography Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Photography Club</h3>
                 <p class="text-gray-600 text-center">Capture the beauty around you and share your photographic skills.</p>
             </div>
             
             <!-- Mathematics Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-yellow-500 text-6xl mb-4">calculate</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Mathematics Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Mathematics Club</h3>
                 <p class="text-gray-600 text-center">Solve complex problems and enhance your mathematical knowledge.</p>
             </div>
             
             <!-- Chess Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="fas fa-chess text-black text-6xl mb-4"></i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Chess Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Chess Club</h3>
                 <p class="text-gray-600 text-center">Improve your strategic thinking and enjoy chess games with others.</p>
             </div>
             
             <!-- Cultural Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="fas fa-theater-masks text-black text-6xl mb-4"></i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Cultural Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Cultural Club</h3>
                 <p class="text-gray-600 text-center">Celebrate diverse cultures and participate in cultural events.</p>
             </div>
 
@@ -115,63 +103,63 @@
             <!-- Library Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-blue-500 text-6xl mb-4">book</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Library Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Library Club</h3>
                 <p class="text-gray-600 text-center">Explore a vast collection of books and participate in reading activities.</p>
             </div>
             
             <!-- Science Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-green-500 text-6xl mb-4">science</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Science Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Science Club</h3>
                 <p class="text-gray-600 text-center">Delve into the wonders of science with experiments and discussions.</p>
             </div>
             
             <!-- Tech Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-gray-700 text-6xl mb-4">computer</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Tech Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Tech Club</h3>
                 <p class="text-gray-600 text-center">Engage with the latest technology and develop your tech skills.</p>
             </div>
             
             <!-- Sports Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-orange-500 text-6xl mb-4">sports_soccer</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Sports Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Sports Club</h3>
                 <p class="text-gray-600 text-center">Participate in various sports and improve your athletic abilities.</p>
             </div>
             
             <!-- Nature Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="fas fa-seedling text-black text-6xl mb-4"></i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Nature Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Nature Club</h3>
                 <p class="text-gray-600 text-center">Explore the outdoors and engage in environmental conservation activities.</p>
             </div>
             
             <!-- Photography Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-gray-800 text-6xl mb-4">camera_alt</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Photography Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Photography Club</h3>
                 <p class="text-gray-600 text-center">Capture the beauty around you and share your photographic skills.</p>
             </div>
             
             <!-- Mathematics Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-yellow-500 text-6xl mb-4">calculate</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Mathematics Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Mathematics Club</h3>
                 <p class="text-gray-600 text-center">Solve complex problems and enhance your mathematical knowledge.</p>
             </div>
             
             <!-- Chess Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="material-icons text-black text-6xl mb-4">sports_esports</i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Chess Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Chess Club</h3>
                 <p class="text-gray-600 text-center">Improve your strategic thinking and enjoy chess games with others.</p>
             </div>
             
             <!-- Cultural Club -->
             <div class="club-card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
                 <i class="fas fa-theater-masks text-black text-6xl mb-4"></i>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">Cultural Club</h2>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Cultural Club</h3>
                 <p class="text-gray-600 text-center">Celebrate diverse cultures and participate in cultural events.</p>
             </div>
         </div>
@@ -203,8 +191,4 @@
 
 </div>
 </div>
-
-</body>
-</html>
-
 

@@ -1,22 +1,67 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}St. Joseph International School{% endblock %}</title>
+    <meta name="description"
+        content="{% block meta_description %}St. Joseph International School is a leading educational institution in Dhaka, Bangladesh, offering a world-class education from kindergarten to high school.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}St. Joseph International School, SJIS, school in Dhaka, international school, education in Bangladesh{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sjis.edu.bd/">
+    <meta property="og:title" content="{% block og_title %}St. Joseph International School{% endblock %}">
+    <meta property="og:description"
+        content="{% block og_description %}A leading educational institution in Dhaka, Bangladesh.{% endblock %}">
+    <meta property="og:image" content="{% static 'images/sjp-logo-2.png' %}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.sjis.edu.bd/">
+    <meta property="twitter:title" content="{% block twitter_title %}St. Joseph International School{% endblock %}">
+    <meta property="twitter:description"
+        content="{% block twitter_description %}A leading educational institution in Dhaka, Bangladesh.{% endblock %}">
+    <meta property="twitter:image" content="{% static 'images/sjp-logo-2.png' %}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "School",
+      "name": "St. Joseph International School",
+      "url": "https://www.sjis.edu.bd/",
+      "logo": "{% static 'images/sjp-logo-2.png' %}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Mohammadpur",
+        "addressLocality": "Dhaka",
+        "addressCountry": "BD"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+880-2-9123456",
+        "contactType": "customer service"
+      }
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Include your slider CSS -->
-     
-     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- Add favicon link here -->
     <!-- <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" /> -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <!-- Flowbite CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -26,36 +71,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.5.2/css/glide.theme.min.css">
 
     <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
 
-        body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-      }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-      .wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
+        main {
+            flex-grow: 1;
+        }
 
-      main {
-        flex-grow: 1;
-      }
+        footer {
+            width: 100%;
+            background-color: #fff;
+        }
 
-      footer {
-        width: 100%;
-        background-color: #fff;
-      }
-     
         .header {
             position: sticky;
             top: 0;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1000; /* Ensure it stays above other content */
+            z-index: 1000;
+            /* Ensure it stays above other content */
             transition: opacity 0.5s ease-in-out;
-          }
+        }
 
 
         .header ul {
@@ -64,7 +110,7 @@
             background-color: #fff;
             padding-top: 10px;
         }
-        
+
 
         .header li a {
             display: block;
@@ -89,10 +135,13 @@
             padding: 10px 20px;
             text-decoration: none;
         }
+
         .header .logo img {
             display: block;
-            max-height: 92px; /* Set the desired height */
-            width: auto; /* Maintain aspect ratio */
+            max-height: 92px;
+            /* Set the desired height */
+            width: auto;
+            /* Maintain aspect ratio */
         }
 
         /* menu */
@@ -145,24 +194,24 @@
             display: none;
         }
 
-        .header .menu-btn:checked ~ .menu {
+        .header .menu-btn:checked~.menu {
             max-height: none;
         }
 
-        .header .menu-btn:checked ~ .menu-icon .navicon {
+        .header .menu-btn:checked~.menu-icon .navicon {
             background: transparent;
         }
 
-        .header .menu-btn:checked ~ .menu-icon .navicon:before {
+        .header .menu-btn:checked~.menu-icon .navicon:before {
             transform: rotate(-45deg);
         }
 
-        .header .menu-btn:checked ~ .menu-icon .navicon:after {
+        .header .menu-btn:checked~.menu-icon .navicon:after {
             transform: rotate(45deg);
         }
 
-        .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
-        .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+        .header .menu-btn:checked~.menu-icon:not(.steps) .navicon:before,
+        .header .menu-btn:checked~.menu-icon:not(.steps) .navicon:after {
             top: 0;
         }
 
@@ -186,6 +235,7 @@
                 display: none;
             }
         }
+
         /* Navbar 1 styles */
         .nav1 {
             background-color: #fff;
@@ -195,281 +245,303 @@
 
         /* Navbar 2 styles */
         .nav2 {
-            background-color: #ffffff; /* or any other style you prefer */
+            background-color: #ffffff;
+            /* or any other style you prefer */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
 
         .school-name {
-        font-size: 20px; /* Adjust the size as needed */
-        font-weight: bold;
-        margin-top: 20px;
-        margin-left: 20px; /* Adjust spacing */
-        color: #333; /* Choose a color that matches your design */
-        display: inline-block; /* Ensures it aligns nicely with other elements */
-    }
-    .container {
-    align-items: center;
-    justify-content: space-between; 
-}
-.header.nav2 nav {
-    height: 70px; 
-}
-/* Notice Board Styles */
-  .container {
-    margin: 0 auto;
-  }
+            font-size: 20px;
+            /* Adjust the size as needed */
+            font-weight: bold;
+            margin-top: 20px;
+            margin-left: 20px;
+            /* Adjust spacing */
+            color: #333;
+            /* Choose a color that matches your design */
+            display: inline-block;
+            /* Ensures it aligns nicely with other elements */
+        }
 
-  /* Header */
-  .notice-header {
-    text-align: center; /* Center the text */
-    margin-bottom: 30px;
-  }
+        .container {
+            align-items: center;
+            justify-content: space-between;
+        }
 
-  .notice-header h1 {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
-  }
+        .header.nav2 nav {
+            height: 70px;
+        }
 
-  .post-notice-button {
-    background-color: #1abc9c;
-    color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
+        /* Notice Board Styles */
+        .container {
+            margin: 0 auto;
+        }
 
-  .post-notice-button:hover {
-    background-color: #16a085;
-    transform: translateY(-2px);
-  }
+        /* Header */
+        .notice-header {
+            text-align: center;
+            /* Center the text */
+            margin-bottom: 30px;
+        }
 
-  /* Notice Grid */
-  .notice-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
+        .notice-header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
 
-  @media (min-width: 768px) {
-    .notice-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
+        .post-notice-button {
+            background-color: #1abc9c;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
 
-  @media (min-width: 1024px) {
-    .notice-grid {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
+        .post-notice-button:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+        }
 
-  /* Notice Card */
-  .notice-card {
-    background-color: #e6f0f8; /* Light sky blue background */
-    padding: 20px;
-    border-radius: 12px;
-    border: 3px solid #04a3b8; /* Slightly darker border for contrast */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+        /* Notice Grid */
+        .notice-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
 
-  .notice-card:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  }
+        @media (min-width: 768px) {
+            .notice-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
 
-  /* Latest Label */
-  .latest-label {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 5px 15px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 50px;
-    z-index: 1; /* Ensure it stays above other elements */
-  }
+        @media (min-width: 1024px) {
+            .notice-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
 
-  /* Notice Title */
-  .notice-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #000000;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    position: relative;
-    z-index: 0; /* Ensure title remains below latest label */
-  }
+        /* Notice Card */
+        .notice-card {
+            background-color: #e6f0f8;
+            /* Light sky blue background */
+            padding: 20px;
+            border-radius: 12px;
+            border: 3px solid #04a3b8;
+            /* Slightly darker border for contrast */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-  /* Date */
-  .notice-date {
-    font-size: 14px;
-    color: #000000;
-    display: flex;
-    justify-content: flex-end; /* Align date to the right */
-    align-items: center; /* Center the icon and text vertically */
-  }
+        .notice-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
 
-  .notice-date i {
-    margin-right: 8px;
-  }
+        /* Latest Label */
+        .latest-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 5px 15px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 50px;
+            z-index: 1;
+            /* Ensure it stays above other elements */
+        }
 
-  /* Notice Content */
-  .notice-content {
-    font-size: 16px;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    line-height: 1.7;
-  }
+        /* Notice Title */
+        .notice-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            position: relative;
+            z-index: 0;
+            /* Ensure title remains below latest label */
+        }
 
-  /* Read More Link */
-  .read-more {
-    color: #aa3c06;
-    font-weight: bold;
-    text-decoration: none;
-    margin-right: 10px; /* Space between read more and attachment */
-    position: relative;
-    transition: color 0.3s ease;
-    display: inline-block; /* Ensure it behaves like a button */
-  }
+        /* Date */
+        .notice-date {
+            font-size: 14px;
+            color: #000000;
+            display: flex;
+            justify-content: flex-end;
+            /* Align date to the right */
+            align-items: center;
+            /* Center the icon and text vertically */
+        }
 
-  .read-more:hover {
-    color: #000000;
-    text-decoration: underline;
-  }
+        .notice-date i {
+            margin-right: 8px;
+        }
 
-  /* Attachment Icon */
-  .attachment-icon {
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-  }
+        /* Notice Content */
+        .notice-content {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
 
-  .attachment-icon:hover {
-    background-color: #ecf0f1;
-  }
+        /* Read More Link */
+        .read-more {
+            color: #aa3c06;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right: 10px;
+            /* Space between read more and attachment */
+            position: relative;
+            transition: color 0.3s ease;
+            display: inline-block;
+            /* Ensure it behaves like a button */
+        }
 
-  /* Pagination */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-  }
+        .read-more:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
 
-  .pagination-button {
-    background-color: #f1f1f1;
-    padding: 10px 15px;
-    margin: 0 5px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #34495e;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex;
-    align-items: center;
-  }
+        /* Attachment Icon */
+        .attachment-icon {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
 
-  .pagination-button:hover {
-    background-color: #ecf0f1;
-    transform: translateY(-2px);
-  }
+        .attachment-icon:hover {
+            background-color: #ecf0f1;
+        }
 
-  .pagination-button:active {
-    transform: translateY(0px);
-  }
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
 
-  .pagination-button.active {
-    background-color: #3498db;
-    color: white;
-  }
+        .pagination-button {
+            background-color: #f1f1f1;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
 
-  /* Icons for pagination */
-  .pagination-button i {
-    font-size: 14px;
-    margin-right: 5px;
-  }
+        .pagination-button:hover {
+            background-color: #ecf0f1;
+            transform: translateY(-2px);
+        }
 
-  /* Adjusting icon and text alignment */
-  .pagination-button i.left-arrow {
-    margin-right: 8px;
-  }
+        .pagination-button:active {
+            transform: translateY(0px);
+        }
 
-  .pagination-button i.right-arrow {
-    margin-left: 8px;
-  }
+        .pagination-button.active {
+            background-color: #3498db;
+            color: white;
+        }
 
-  /* Pagination - Responsive adjustments */
-  @media (max-width: 767px) {
-    .pagination-button {
-      padding: 8px 12px;
-      font-size: 14px;
-    }
-  }
+        /* Icons for pagination */
+        .pagination-button i {
+            font-size: 14px;
+            margin-right: 5px;
+        }
 
-  /* For screens smaller than 768px */
-  @media (max-width: 767px) {
-    .notice-card {
-      padding: 15px;
-      margin: 10px 0; /* Adds margin between cards */
-    }
+        /* Adjusting icon and text alignment */
+        .pagination-button i.left-arrow {
+            margin-right: 8px;
+        }
 
-    .notice-header h1 {
-      font-size: 28px; /* Adjusts the header size for smaller screens */
-    }
+        .pagination-button i.right-arrow {
+            margin-left: 8px;
+        }
 
-    .post-notice-button {
-      padding: 10px 20px;
-      font-size: 14px; /* Reduces the size of the button */
-    }
+        /* Pagination - Responsive adjustments */
+        @media (max-width: 767px) {
+            .pagination-button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
 
-    .notice-grid {
-      gap: 20px; /* Reduces the gap between cards */
-    }
-  }
+        /* For screens smaller than 768px */
+        @media (max-width: 767px) {
+            .notice-card {
+                padding: 15px;
+                margin: 10px 0;
+                /* Adds margin between cards */
+            }
 
-  /* For screens between 768px and 1024px */
-  @media (max-width: 768px) {
-    .notice-card {
-      padding: 25px;
-      margin: 20px;
-    }
-  }
+            .notice-header h1 {
+                font-size: 28px;
+                /* Adjusts the header size for smaller screens */
+            }
 
-  .notice-header h1 {
-    font-size: 28px;
-  }
+            .post-notice-button {
+                padding: 10px 20px;
+                font-size: 14px;
+                /* Reduces the size of the button */
+            }
 
-  @media (max-width: 480px) {
-    .notice-card {
-      padding: 20px;
-      margin: 25px;
-    }
-  }
+            .notice-grid {
+                gap: 20px;
+                /* Reduces the gap between cards */
+            }
+        }
+
+        /* For screens between 768px and 1024px */
+        @media (max-width: 768px) {
+            .notice-card {
+                padding: 25px;
+                margin: 20px;
+            }
+        }
+
+        .notice-header h1 {
+            font-size: 28px;
+        }
+
+        @media (max-width: 480px) {
+            .notice-card {
+                padding: 20px;
+                margin: 25px;
+            }
+        }
+
         /* Mobile menu animations */
         #mobile-menu {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
         }
-        
+
         #mobile-menu.show {
             transform: translateX(0);
         }
-        
+
         .nav-overlay {
             background-color: rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
-        
+
         .nav-overlay.show {
             opacity: 1;
             visibility: visible;
@@ -511,6 +583,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -521,387 +594,548 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+
         /* Active link styles */
-    .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.15);
-        color: #fbbf24; /* Amber color for active link */
-        font-weight: 600;
-    }
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fbbf24;
+            /* Amber color for active link */
+            font-weight: 600;
+        }
 
-    /* Mobile active link styles */
-    .mobile-link.active {
-        background-color: rgba(255, 255, 255, 0.15);
-        color: #fbbf24;
-        font-weight: 600;
-        border-left: 4px solid #fbbf24;
-    }
+        /* Mobile active link styles */
+        .mobile-link.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fbbf24;
+            font-weight: 600;
+            border-left: 4px solid #fbbf24;
+        }
 
-    /* Active dropdown item styles */
-    .dropdown-item.active {
-        background-color: #f3f4f6;
-        color: #2563eb;
-        font-weight: 600;
-    }
-    /* new styles */
-    #mega-menu {
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    max-width: 400px; /* Maximum width */
-    width: 90%; /* Will take 90% on mobile but max out at 400px */
-}
+        /* Active dropdown item styles */
+        .dropdown-item.active {
+            background-color: #f3f4f6;
+            color: #2563eb;
+            font-weight: 600;
+        }
 
-/* Hover effects for mega menu items */
-.mega-menu-item {
-    transition: transform 0.2s ease;
-}
+        /* new styles */
+        #mega-menu {
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            /* Maximum width */
+            width: 90%;
+            /* Will take 90% on mobile but max out at 400px */
+        }
 
-.mega-menu-item:hover {
-    transform: translateX(5px);
-}
+        /* Hover effects for mega menu items */
+        .mega-menu-item {
+            transition: transform 0.2s ease;
+        }
 
-/* Smooth scrollbar for mega menu */
-#mega-menu {
-    scrollbar-width: thin;
-    scrollbar-color: #189AB4 #f1f1f1;
-}
+        .mega-menu-item:hover {
+            transform: translateX(5px);
+        }
 
-#mega-menu::-webkit-scrollbar {
-    width: 6px;
-}
+        /* Smooth scrollbar for mega menu */
+        #mega-menu {
+            scrollbar-width: thin;
+            scrollbar-color: #189AB4 #f1f1f1;
+        }
 
-#mega-menu::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+        #mega-menu::-webkit-scrollbar {
+            width: 6px;
+        }
 
-#mega-menu::-webkit-scrollbar-thumb {
-    background: #189AB4;
-    border-radius: 3px;
-}
+        #mega-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-    #mega-menu {
-        width: 100%; /* Full width on very small screens */
-    }
-}
+        #mega-menu::-webkit-scrollbar-thumb {
+            background: #189AB4;
+            border-radius: 3px;
+        }
 
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            #mega-menu {
+                width: 100%;
+                /* Full width on very small screens */
+            }
+        }
+
+        /* Modern Mobile Menu Styles */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-dropdown-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mobile-dropdown-content.show {
+            max-height: 500px;
+            /* Large enough to fit content */
+            opacity: 1;
+        }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
+
 <body class="bg-gray-100">
 
-    <header class="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md h-28 flex items-center fixed top-0 left-0 w-full z-50">
-    <div class="w-full px-4">
-        <div class="flex items-center h-full">
-            <!-- Logo -->
-            <a href="#" class="flex items-center" style="margin: 1rem;">
-                <img src="{% static 'images/sjp-logo-2.png' %}" alt="Logo" class="h-24 w-auto object-contain mr-4">
-            </a>
-                    <!-- Desktop Navigation -->
-                     <div class="hidden lg:flex items-center space-x-4">
-                        <div class="hidden lg:flex items-center space-x-4">
-                        <a href="{% url 'home:home' %}" class="nav-link px-8 py-2 rounded hover:bg-purple-700 transition-colors {% if request.path == home_url %}active{% endif %}">
+    <header
+        class="bg-gradient-to-r from-blue-600/95 to-purple-700/95 backdrop-blur-md text-white shadow-lg h-24 flex items-center fixed top-0 left-0 w-full z-50 transition-all duration-300">
+        <div class="w-full px-4 max-w-7xl mx-auto">
+            <div class="flex items-center justify-between h-full">
+                <!-- Logo -->
+                <a href="{% url 'home:home' %}" class="flex items-center group">
+                    <img src="{% static 'images/sjp-logo-2.png' %}" alt="St. Joseph International School Logo"
+                        class="h-20 w-auto object-contain mr-4 transform group-hover:scale-105 transition-transform duration-300">
+
+                </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-1">
+                    <div class="hidden lg:flex items-center space-x-1">
+                        <a href="{% url 'home:home' %}"
+                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium {% if request.path == home_url %}bg-white/20 shadow-inner{% endif %}">
                             Home
                         </a>
 
                         <!-- About Us Dropdown -->
-                        <div class="desktop-dropdown relative">
-                            <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-purple-700">
+                        <div class="desktop-dropdown relative group">
+                            <button
+                                class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium group-hover:bg-white/20">
                                 <span>About Us</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-64 rounded-md shadow-lg bg-white" style="z-index: 999;">
+                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-64 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200"
+                                style="z-index: 999;">
                                 <div class="py-1">
-                                    <a href="{% url 'home:about_us_view' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our History</a>
-                                    <!-- <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our Province</a> -->
-                                    <a href="{% url 'home:principal_message' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Message from Our Principal</a>
-                                    <a href="{% url 'home:vice_principal_message' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Message from Vice-Principal</a>
-                                    <!-- <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Former Provincials</a> -->
+                                    <a href="{% url 'home:about_us_view' %}"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Our
+                                        History</a>
+                                    <!-- <a href="#" class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Our Province</a> -->
+                                    <a href="{% url 'home:principal_message' %}"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Message
+                                        from Our Principal</a>
+                                    <a href="{% url 'home:vice_principal_message' %}"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Message
+                                        from Vice-Principal</a>
+                                    <!-- <a href="#" class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Former Provincials</a> -->
                                 </div>
                             </div>
                         </div>
 
-                        <a href="{% url 'home:faculty_list' %}" class="nav-link px-3 py-2 rounded hover:bg-purple-700 transition-colors">Faculty</a>
+                        <a href="{% url 'home:faculty_list' %}"
+                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Faculty</a>
 
                         <!-- Resources Dropdown -->
-                        <div class="desktop-dropdown relative">
-                            <button class="nav-link flex items-center space-x-1 px-3 py-2 rounded hover:bg-purple-700">
+                        <div class="desktop-dropdown relative group">
+                            <button
+                                class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium group-hover:bg-white/20">
                                 <span>Resources</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                            <div
+                                class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200">
                                 <div class="py-1">
-                                    <a href="{% url 'syllabus:syllabus_list' %}" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Syllabus</a>
-                                    <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Rules</a>
-                                    <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Year Book</a>
+                                    <a href="{% url 'syllabus:syllabus_list' %}"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Syllabus</a>
+                                    <a href="#"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Rules</a>
+                                    <a href="#"
+                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Year
+                                        Book</a>
                                 </div>
                             </div>
                         </div>
-                        
-                        <a href="{% url 'notice_board2:notice_board' %}" class="nav-link px-3 py-2 rounded hover:bg-purple-700 transition-colors">Notice Board</a>
-                        <a href="{% url 'contact:contact' %}" class="nav-link px-3 py-2 rounded hover:bg-purple-700 transition-colors">Contact Us</a>
-                        <a href="https://portal.sjs.edu.bd/auth/login" target="_blank" class="nav-link px-3 py-2 rounded hover:bg-purple-700 transition-colors">Login</a>
-                        
+
+                        <a href="{% url 'notice_board2:notice_board' %}"
+                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Notice
+                            Board</a>
+                        <a href="{% url 'contact:contact' %}"
+                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Contact
+                            Us</a>
+                        <a href="https://portal.sjs.edu.bd/auth/login" target="_blank"
+                            class="nav-link px-6 py-2 rounded-full bg-white text-blue-600 hover:bg-blue-50 hover:shadow-lg transition-all duration-300 font-bold ml-2">Login</a>
+
                     </div>
                     <!-- Add this at the end of your desktop navigation -->
-                <button id="mega-menu-trigger" class="nav-link px-3 py-2 rounded hover:bg-purple-700 transition-colors flex items-center">
-                    <span class="material-icons">widgets</span>
-                </button>
-                     </div>
-                    
-                    
-
-                    <!-- Mobile menu button -->
-                    <button id="mobile-menu-button" class="lg:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-[#189AB4] focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                    <button id="mega-menu-trigger"
+                        class="nav-link p-2 rounded-lg hover:bg-white/10 transition-all duration-300 flex items-center ml-2">
+                        <span class="material-icons">widgets</span>
                     </button>
                 </div>
+
+
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button"
+                    class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg hover:bg-white/10 focus:outline-none transition-colors">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
+        </div>
 
-            <!-- Mobile Navigation Menu -->
-            <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-[#189AB4] z-40 lg:hidden transform">
-                <div class="h-full flex flex-col">
-                    <div class="flex items-center justify-between p-4 border-b border-blue-500">
-                        <span class="text-xl font-semibold">Menu</span>
-                        <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-[#23A6C5] focus:outline-none">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
 
-                    <div class="flex-1 overflow-y-auto">
-                        <a href="#" class="mobile-link block px-4 py-3 hover:bg-purple-700">Home</a>
-
-                        <!-- Mobile About Us Dropdown -->
-                        <div class="mobile-dropdown">
-                            <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-[#23A6C5]">
-                                <span>About Us</span>
-                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="mobile-dropdown-content bg-[#157A91]">
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Message from the Principal</a>
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Message from the Vice-Principal</a>
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Province Administration</a>
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">General Administration</a>
-                            </div>
-                        </div>
-                        <a href="#" class="mobile-link block px-4 py-3 hover:bg-[#23A6C5]">Faculty</a>
-                        
-
-                        <!-- Mobile Resources Dropdown -->
-                        <div class="mobile-dropdown">
-                            <button class="mobile-link w-full flex items-center justify-between px-4 py-3 hover:bg-[#23A6C5]">
-                                <span>Resources</span>
-                                <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="mobile-dropdown-content bg-[#157A91]">
-                                <a href="{% url 'syllabus:syllabus_list' %}" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Syllabus</a>
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Rules</a>
-                                <a href="{% url 'academic_calendar:academic_calendar' %}" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Academic Calendar</a>
-                                <a href="#" class="mobile-link block px-8 py-2 hover:bg-[#1BA2C5]">Year Book</a>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'notice_board2:notice_board' %}" class="mobile-link block px-4 py-3 hover:bg-[#23A6C5]">Notice Board</a>
-                        <a href="#" class="mobile-link block px-4 py-3 hover:bg-[#23A6C5]">Contact Us</a>
-                        <a href="https://portal.sjs.edu.bd/auth/login" class="mobile-link block px-4 py-3 hover:bg-[#23A6C5]">
-                            <div class="flex items-center">
-                                <span class="material-icons mr-2">login</span>
-                                <span>Login</span>
-                            </div>
-                        </a>
-                        
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile menu overlay -->
-            <div id="mobile-menu-overlay" class="nav-overlay fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
 
     </header>
-    
 
 
-    <main >
+
+    <main>
         {% if messages %}
         <div class="fixed top-0 right-0 m-4 z-50">
             {% for message in messages %}
-                <div class="{% if message.tags == 'success' %}bg-green-100 border-l-4 border-green-500 text-green-700{% elif message.tags == 'error' %}bg-red-100 border-l-4 border-red-500 text-red-700{% else %}bg-blue-100 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 mb-4 rounded-lg shadow-md animate-fadeIn" role="alert">
-                    {{ message }}
-                </div>
+            <div class="{% if message.tags == 'success' %}bg-green-100 border-l-4 border-green-500 text-green-700{% elif message.tags == 'error' %}bg-red-100 border-l-4 border-red-500 text-red-700{% else %}bg-blue-100 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 mb-4 rounded-lg shadow-md animate-fadeIn"
+                role="alert">
+                {{ message }}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
         {% block content %}{% endblock %}
     </main>
 
-    
+
     <!-- Mega Menu Container -->
-<div id="mega-menu" class="fixed top-0 right-0 h-full w-[400px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[60] overflow-hidden">
-    <!-- Decorative background elements -->
-    <div class="absolute inset-0 bg-[#189AB4] opacity-5">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full -translate-y-32 translate-x-32 blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-200 rounded-full translate-y-32 -translate-x-32 blur-3xl"></div>
+    <div id="mega-menu"
+        class="fixed top-0 right-0 h-full w-[400px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[60] overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute inset-0 bg-[#189AB4] opacity-5">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full -translate-y-32 translate-x-32 blur-3xl">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-200 rounded-full translate-y-32 -translate-x-32 blur-3xl">
+            </div>
+        </div>
+
+        <div class="h-full flex flex-col overflow-y-auto relative">
+            <!-- Mega Menu Header -->
+            <div
+                class="flex items-center justify-between p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg">
+                <div class="flex items-center space-x-3">
+                    <span class="material-icons text-3xl">explore</span>
+                    <h2 class="text-2xl font-bold">Quick Access</h2>
+                </div>
+                <button id="mega-menu-close" class="p-2 rounded-full hover:bg-white/20 transition-colors duration-200">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+
+
+
+            <!-- Mega Menu Content -->
+            <div class="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+                <!-- Academic Section -->
+                <div class="group">
+                    <div
+                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
+                        <span
+                            class="material-icons p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">school</span>
+                        <h3 class="text-lg font-semibold">Academic</h3>
+                    </div>
+                    <ul class="space-y-3 pl-12">
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="{% url 'syllabus:syllabus_list' %}"
+                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Syllabus</span>
+                            </a>
+                        </li>
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Academic Regulation</span>
+                            </a>
+                        </li>
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="{% url 'academic_calendar:academic_calendar' %}"
+                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Academic Calendar</span>
+                            </a>
+                        </li>
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Our Curriculam</span>
+                            </a>
+                        </li>
+                        <!-- Repeat for other academic items -->
+                    </ul>
+                </div>
+
+                <!-- Admission Section -->
+                <div class="group">
+                    <div
+                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
+                        <span
+                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">how_to_reg</span>
+                        <h3 class="text-lg font-semibold">Admission</h3>
+                    </div>
+                    <ul class="space-y-3 pl-12">
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Admission Process</span>
+                            </a>
+                        </li>
+                        <!-- Repeat for other admission items -->
+                    </ul>
+                </div>
+
+                <!-- Club Section -->
+                <div class="group">
+                    <div
+                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
+                        <span
+                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">groups</span>
+                        <h3 class="text-lg font-semibold">Club</h3>
+                    </div>
+                    <ul class="space-y-3 pl-12">
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="{% url 'club_new:club_list' %}"
+                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Club Activities</span>
+                            </a>
+                        </li>
+                        <!-- Repeat for other admission items -->
+                    </ul>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="group">
+                    <div
+                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
+                        <span
+                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">folder</span>
+                        <h3 class="text-lg font-semibold">Resources</h3>
+                    </div>
+                    <ul class="space-y-3 pl-12">
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Annual Magazine</span>
+                            </a>
+                        </li>
+                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
+                                <span class="material-icons text-sm">arrow_right</span>
+                                <span>Photo Gallery</span>
+                            </a>
+                        </li>
+                        <!-- Repeat for other admission items -->
+                    </ul>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="mt-6 bg-gradient-to-r from-[#189AB4]/10 to-transparent p-4 rounded-lg">
+                    <h4 class="text-[#189AB4] font-semibold mb-3">Quick Links</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="#"
+                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
+                            <span class="material-icons text-sm">calendar_today</span>
+                            <span>Calendar</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
+                            <span class="material-icons text-sm">event</span>
+                            <span>Events</span>
+                        </a>
+                        <a href="{% url 'notice_board2:notice_board' %}"
+                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
+                            <span class="material-icons text-sm">notifications</span>
+                            <span>Notices</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
+                            <span class="material-icons text-sm">contact_support</span>
+                            <span>Support</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="p-4 bg-gray-50 border-t">
+                <a href="#"
+                    class="flex items-center justify-center space-x-2 text-[#189AB4] hover:bg-[#189AB4]/10 p-2 rounded-lg transition-colors duration-200">
+                    <span class="material-icons">support_agent</span>
+                    <span>Need Help?</span>
+                </a>
+            </div>
+        </div>
     </div>
 
-    <div class="h-full flex flex-col overflow-y-auto relative">
-        <!-- Mega Menu Header -->
-        <div class="flex items-center justify-between p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg">
-            <div class="flex items-center space-x-3">
-                <span class="material-icons text-3xl">explore</span>
-                <h2 class="text-2xl font-bold">Quick Access</h2>
-            </div>
-            <button id="mega-menu-close" class="p-2 rounded-full hover:bg-white/20 transition-colors duration-200">
-                <span class="material-icons">close</span>
-            </button>
-        </div>
-
-        
-
-        <!-- Mega Menu Content -->
-        <div class="flex-1 overflow-y-auto px-6 py-4 space-y-6">
-            <!-- Academic Section -->
-            <div class="group">
-                <div class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                    <span class="material-icons p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">school</span>
-                    <h3 class="text-lg font-semibold">Academic</h3>
+    <!-- Mobile Navigation Menu (Moved to body for better z-index handling) -->
+    <div id="mobile-menu"
+        class="fixed inset-y-0 left-0 w-80 bg-gradient-to-b from-slate-900/95 to-blue-900/95 backdrop-blur-xl z-[2000] lg:hidden transform -translate-x-full shadow-2xl border-r border-white/10">
+        <div class="h-full flex flex-col">
+            <!-- Header with Logo -->
+            <div class="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
+                <div class="flex items-center space-x-3">
+                    <img src="{% static 'images/sjp-logo-2.png' %}" alt="Logo" class="h-10 w-auto object-contain">
+                    <span class="text-lg font-bold text-white tracking-wide">Menu</span>
                 </div>
-                <ul class="space-y-3 pl-12">
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="{% url 'syllabus:syllabus_list' %}" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Syllabus</span>
-                        </a>
-                    </li>
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Academic Regulation</span>
-                        </a>
-                    </li>
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="{% url 'academic_calendar:academic_calendar' %}" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Academic Calendar</span>
-                        </a>
-                    </li>
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Our Curriculam</span>
-                        </a>
-                    </li>
-                    <!-- Repeat for other academic items -->
-                </ul>
+                <button id="mobile-menu-close"
+                    class="p-2 rounded-full hover:bg-white/10 focus:outline-none text-white transition-colors group">
+                    <svg class="h-6 w-6 transform group-hover:rotate-90 transition-transform duration-300" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            <!-- Admission Section -->
-            <div class="group">
-                <div class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                    <span class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">how_to_reg</span>
-                    <h3 class="text-lg font-semibold">Admission</h3>
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+                <!-- Home -->
+                <a href="{% url 'home:home' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200 group">
+                    <span class="material-icons text-blue-300 group-hover:text-white transition-colors">home</span>
+                    <span class="font-medium">Home</span>
+                </a>
+
+                <!-- About Dropdown -->
+                <div class="mobile-dropdown group">
+                    <button
+                        class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200">
+                        <div class="flex items-center space-x-3">
+                            <span
+                                class="material-icons text-purple-300 group-hover:text-white transition-colors">info</span>
+                            <span class="font-medium">About Us</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="mobile-dropdown-content">
+                        <div class="pl-12 pr-4 py-2 space-y-1">
+                            <a href="{% url 'home:about_us_view' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Our
+                                History</a>
+                            <a href="{% url 'home:principal_message' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Principal's
+                                Message</a>
+                            <a href="{% url 'home:vice_principal_message' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Vice-Principal's
+                                Message</a>
+                        </div>
+                    </div>
                 </div>
-                <ul class="space-y-3 pl-12">
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Admission Process</span>
-                        </a>
-                    </li>
-                    <!-- Repeat for other admission items -->
-                </ul>
-            </div>
-            
-            <!-- Club Section -->
-            <div class="group">
-                <div class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                    <span class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">groups</span>
-                    <h3 class="text-lg font-semibold">Club</h3>
+
+                <!-- Faculty -->
+                <a href="{% url 'home:faculty_list' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200 group">
+                    <span class="material-icons text-green-300 group-hover:text-white transition-colors">people</span>
+                    <span class="font-medium">Faculty</span>
+                </a>
+
+                <!-- Resources Dropdown -->
+                <div class="mobile-dropdown group">
+                    <button
+                        class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200">
+                        <div class="flex items-center space-x-3">
+                            <span
+                                class="material-icons text-yellow-300 group-hover:text-white transition-colors">library_books</span>
+                            <span class="font-medium">Resources</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="mobile-dropdown-content">
+                        <div class="pl-12 pr-4 py-2 space-y-1">
+                            <a href="{% url 'syllabus:syllabus_list' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Syllabus</a>
+                            <a href="#"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Rules</a>
+                            <a href="{% url 'academic_calendar:academic_calendar' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Academic
+                                Calendar</a>
+                            <a href="#"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Year
+                                Book</a>
+                        </div>
+                    </div>
                 </div>
-                <ul class="space-y-3 pl-12">
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="{% url 'club_new:club_list' %}" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Club Activities</span>
-                        </a>
-                    </li>
-                    <!-- Repeat for other admission items -->
-                </ul>
+
+                <!-- Notice Board -->
+                <a href="{% url 'notice_board2:notice_board' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200 group">
+                    <span class="material-icons text-red-300 group-hover:text-white transition-colors">campaign</span>
+                    <span class="font-medium">Notice Board</span>
+                </a>
+
+                <!-- Contact -->
+                <a href="{% url 'contact:contact' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-200 group">
+                    <span
+                        class="material-icons text-pink-300 group-hover:text-white transition-colors">contact_support</span>
+                    <span class="font-medium">Contact Us</span>
+                </a>
             </div>
 
-            <!-- Resources Section -->
-            <div class="group">
-                <div class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                    <span class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">folder</span>
-                    <h3 class="text-lg font-semibold">Resources</h3>
-                </div>
-                <ul class="space-y-3 pl-12">
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Annual Magazine</span>
-                        </a>
-                    </li>
-                    <li class="transform hover:translate-x-2 transition-transform duration-200">
-                        <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                            <span class="material-icons text-sm">arrow_right</span>
-                            <span>Photo Gallery</span>
-                        </a>
-                    </li>
-                    <!-- Repeat for other admission items -->
-                </ul>
+            <!-- Footer / Login -->
+            <div class="p-4 border-t border-white/10 bg-white/5">
+                <a href="https://portal.sjs.edu.bd/auth/login"
+                    class="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                    <span class="material-icons">login</span>
+                    <span>Portal Login</span>
+                </a>
             </div>
-
-            <!-- Quick Links Section -->
-            <div class="mt-6 bg-gradient-to-r from-[#189AB4]/10 to-transparent p-4 rounded-lg">
-                <h4 class="text-[#189AB4] font-semibold mb-3">Quick Links</h4>
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                        <span class="material-icons text-sm">calendar_today</span>
-                        <span>Calendar</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                        <span class="material-icons text-sm">event</span>
-                        <span>Events</span>
-                    </a>
-                    <a href="{% url 'notice_board2:notice_board' %}" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                        <span class="material-icons text-sm">notifications</span>
-                        <span>Notices</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                        <span class="material-icons text-sm">contact_support</span>
-                        <span>Support</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Section -->
-        <div class="p-4 bg-gray-50 border-t">
-            <a href="#" class="flex items-center justify-center space-x-2 text-[#189AB4] hover:bg-[#189AB4]/10 p-2 rounded-lg transition-colors duration-200">
-                <span class="material-icons">support_agent</span>
-                <span>Need Help?</span>
-            </a>
         </div>
     </div>
-</div>
 
-<!-- Add this overlay for the mega menu -->
-<div id="mega-menu-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 invisible transition-all duration-300 z-[59]"></div>
+    <!-- Mobile menu overlay -->
+    <div id="mobile-menu-overlay" class="nav-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[1999] lg:hidden">
+    </div>
+
+    <!-- Add this overlay for the mega menu -->
+    <div id="mega-menu-overlay"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 invisible transition-all duration-300 z-[59]"></div>
     <!-- Footer -->
-    <footer class="bg-blue-500 text-white shadow-md py-4">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm md:text-base">&copy; 2024 All rights reserved. St. Joseph International School, Mohammadpur, Dhaka, Bangladesh.</p>
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <p class="text-sm">&copy; {% now "Y" %} St. Joseph International School. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="{% url 'home:privacy_policy' %}"
+                        class="text-sm hover:text-gray-300 transition-colors duration-300">Privacy Policy</a>
+                    <a href="{% url 'home:terms_of_service' %}"
+                        class="text-sm hover:text-gray-300 transition-colors duration-300">Terms of Service</a>
+                    <a href="{% url 'home:sitemap' %}"
+                        class="text-sm hover:text-gray-300 transition-colors duration-300">Sitemap</a>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -950,63 +1184,64 @@
     </script>
     <!-- For the date picker functionality -->
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr(".datepicker", {
-            dateFormat: "Y-m-d", // Customize as per your desired format
-            maxDate: "today" // Restrict selection to past dates
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr(".datepicker", {
+                dateFormat: "Y-m-d", // Customize as per your desired format
+                maxDate: "today" // Restrict selection to past dates
+            });
         });
-    });
-</script>
-<script>
-    // Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', () => {
-    const megaMenu = document.getElementById('mega-menu');
-    const megaMenuOverlay = document.getElementById('mega-menu-overlay');
-    const megaMenuTrigger = document.getElementById('mega-menu-trigger');
-    const megaMenuClose = document.getElementById('mega-menu-close');
+    </script>
+    <script>
+        // Add this to your existing JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            const megaMenu = document.getElementById('mega-menu');
+            const megaMenuOverlay = document.getElementById('mega-menu-overlay');
+            const megaMenuTrigger = document.getElementById('mega-menu-trigger');
+            const megaMenuClose = document.getElementById('mega-menu-close');
 
-    function openMegaMenu() {
-        megaMenu.classList.remove('translate-x-full');
-        megaMenuOverlay.classList.remove('invisible');
-        megaMenuOverlay.classList.remove('opacity-0');
-        document.body.classList.add('overflow-hidden');
-    }
+            function openMegaMenu() {
+                megaMenu.classList.remove('translate-x-full');
+                megaMenuOverlay.classList.remove('invisible');
+                megaMenuOverlay.classList.remove('opacity-0');
+                document.body.classList.add('overflow-hidden');
+            }
 
-    function closeMegaMenu() {
-        megaMenu.classList.add('translate-x-full');
-        megaMenuOverlay.classList.add('invisible');
-        megaMenuOverlay.classList.add('opacity-0');
-        document.body.classList.remove('overflow-hidden');
-    }
+            function closeMegaMenu() {
+                megaMenu.classList.add('translate-x-full');
+                megaMenuOverlay.classList.add('invisible');
+                megaMenuOverlay.classList.add('opacity-0');
+                document.body.classList.remove('overflow-hidden');
+            }
 
-    megaMenuTrigger.addEventListener('click', openMegaMenu);
-    megaMenuClose.addEventListener('click', closeMegaMenu);
-    megaMenuOverlay.addEventListener('click', closeMegaMenu);
+            megaMenuTrigger.addEventListener('click', openMegaMenu);
+            megaMenuClose.addEventListener('click', closeMegaMenu);
+            megaMenuOverlay.addEventListener('click', closeMegaMenu);
 
-    // Close mega menu on escape key press
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeMegaMenu();
-        }
-    });
+            // Close mega menu on escape key press
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeMegaMenu();
+                }
+            });
 
-    // Add smooth hover effect for menu items
-    const menuItems = document.querySelectorAll('#mega-menu a');
-    menuItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            item.classList.add('scale-105');
+            // Add smooth hover effect for menu items
+            const menuItems = document.querySelectorAll('#mega-menu a');
+            menuItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.classList.add('scale-105');
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.classList.remove('scale-105');
+                });
+            });
         });
-        item.addEventListener('mouseleave', () => {
-            item.classList.remove('scale-105');
-        });
-    });
-});
-</script>
+    </script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-{% block extra_js %}{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    {% block extra_js %}{% endblock %}
 
 
 </body>
+
 </html>

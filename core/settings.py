@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'home',
     # 'notice_board',
     # 'notice_board2',
@@ -75,6 +77,7 @@ INSTALLED_APPS = [
     'rules',
 ]
 
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -187,3 +190,6 @@ TINYMCE_DEFAULT_CONFIG = {
                "alignright alignjustify | bullist numlist outdent indent | removeformat | help",
     "menubar": "file edit view insert format tools table help",
 }
+
+ROBOTS_USE_SITEMAP = True
+ROBOTS_SITEMAP_URLS = ['https://sjis.edu.bd/sitemap.xml']

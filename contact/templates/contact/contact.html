@@ -124,7 +124,7 @@
     /* Google Map Styling */
     .google-map {
         width: 100%;
-        height: 300px;
+        height: 400px; /* Increased height for better visibility */
         border-radius: 8px;
         overflow: hidden;
         margin-top: 20px;
@@ -153,13 +153,15 @@
     <div class="contact-info">
         <h3>Contact Information</h3>
         <p><i class="fas fa-map-marker-alt"></i> Address: 97, Asad Avenue, Mohammadpur, Dhaka</p>
-        <p><i class="fas fa-envelope"></i> Email: <a href="mailto:info@sjs.edu.bd">info@sjs.edu.bd</a></p>
+        <p><i class="fas fa-envelope"></i> Email: <a href="mailto:info@sjis.edu.bd">info@sjis.edu.bd</a></p>
         <p><i class="fas fa-phone"></i> Mobile: <a href="tel:+880188920020">0188920020</a></p>
         <p><i class="fas fa-clock"></i> School hours: 9:00 AM to 5:20 PM</p>
         <p><i class="fas fa-calendar"></i> Weekends: Friday & Saturday</p>
 
-        <!-- Google Map Div -->
-        <div id="map" class="google-map">Loading Map...</div>
+        <!-- Google Map Embed -->
+        <div id="map" class="google-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.6543619965005!2d90.36774997483273!3d23.759701888420167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf542648ba63%3A0xdb1b53586c75ba96!2sSt.%20Joseph%20Higher%20Secondary%20School!5e0!3m2!1sen!2sbd!4v1764348278327!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
     </div>
 
     <!-- Contact Form Section -->
@@ -185,69 +187,5 @@
 {% block extra_js %}
 <!-- Fontawesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-<!-- Google Maps Script with Error Handling -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if Google Maps API is available
-    if (typeof google === 'undefined') {
-        const mapElement = document.getElementById('map');
-        mapElement.innerHTML = 'Error: Google Maps API could not be loaded. Please check your internet connection and API key.';
-        mapElement.style.color = 'red';
-        return;
-    }
-
-    function initMap() {
-        // The location of St. Joseph International School
-        const schoolLocation = { lat: 23.759848829498402, lng: 90.3702806671281 };
-
-        // Create the map centered at the school's location
-        const map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 17,
-            center: schoolLocation,
-            mapTypeControl: false,
-            streetViewControl: false,
-        });
-
-        // Add a marker at the school's location
-        const marker = new google.maps.Marker({
-            position: schoolLocation,
-            map: map,
-            title: 'St. Joseph International School',
-            animation: google.maps.Animation.DROP
-        });
-
-        // Add an info window
-        const infoWindow = new google.maps.InfoWindow({
-            content: '<strong>St. Joseph International School</strong><br>97, Asad Avenue, Mohammadpur, Dhaka'
-        });
-
-        // Open info window on marker click
-        marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-        });
-    }
-
-    // Load Google Maps script dynamically
-    function loadGoogleMapsScript() {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_ACTUAL_GOOGLE_MAPS_API_KEY&callback=initMap`;
-        script.async = true;
-        script.defer = true;
-        script.onerror = function() {
-            const mapElement = document.getElementById('map');
-            mapElement.innerHTML = 'Error: Could not load Google Maps. Please check your API key and internet connection.';
-            mapElement.style.color = 'red';
-        };
-        document.head.appendChild(script);
-    }
-
-    // Attach initMap to window to be called by the dynamically loaded script
-    window.initMap = initMap;
-
-    // Load the script
-    loadGoogleMapsScript();
-});
-</script>
 {% endblock %}
 

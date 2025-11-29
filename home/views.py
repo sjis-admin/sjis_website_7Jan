@@ -47,7 +47,10 @@ def news_ticker_details(request, pk):
 
 
 def faculty_list(request):
-    # Fetch all faculty members in each category
+    # Determine the active tab, default to 'Administration'
+    active_tab = request.GET.get('tab', 'Administration')
+
+    # Define the categories and their corresponding filters
     categories = {
         "Administration": FacultyMember.objects.filter(category="Administration"),
         "Teachers": FacultyMember.objects.filter(category="Teacher"),
@@ -58,14 +61,21 @@ def faculty_list(request):
     paginated_categories = {}
 
     for category, members in categories.items():
-        paginator = Paginator(members, items_per_page)  # Paginate the faculty members
-        page_number = request.GET.get('page')  # Get the current page number from the query string
-        page_obj = paginator.get_page(page_number)  # Get the current page of members
-
-        paginated_categories[category] = page_obj  # Store the paginated result for each category
+        paginator = Paginator(members, items_per_page)
+        
+        # Paginate only the active tab
+        if category == active_tab:
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+        else:
+            # For all other tabs, just show the first page
+            page_obj = paginator.get_page(1)
+            
+        paginated_categories[category] = page_obj
 
     context = {
         "categories": paginated_categories,
+        "active_tab": active_tab,
         "items_per_page": items_per_page,
     }
 
@@ -95,4 +105,13 @@ def principal_message_view(request):
 def vice_principal_message_view(request):
     message = PrincipalMessage.objects.filter(is_active=True, type='VicePrincipal').first()
     return render(request, 'home/message.html', {'message': message, 'role': 'Vice-Principal'})
+
+def privacy_policy(request):
+    return render(request, 'home/privacy_policy.html')
+
+def terms_of_service(request):
+    return render(request, 'home/terms_of_service.html')
+
+def sitemap(request):
+    return render(request, 'home/sitemap.html')
 

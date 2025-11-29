@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic.base import RedirectView
 
 admin.site.site_header = "St. Joseph International School"
 admin.site.site_title = "SJIS Admin Portal"
@@ -10,6 +11,7 @@ admin.site.index_title = "Welcome to SJIS Portal"
 
 urlpatterns =[
     path('admin/', admin.site.urls),
+    path('robots.txt', RedirectView.as_view(url="/static/robots.txt", permanent=True)),
     path('', include('home.urls', namespace='home')),
     path('notice-board2/', include('notice_board2.urls', namespace='notice_board2')),
     # path('notice-board2/', include('notice_board2.urls', namespace='notice_board2')),

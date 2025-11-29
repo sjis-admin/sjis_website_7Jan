@@ -11,9 +11,6 @@ class CarouselImage(models.Model):
         return self.alt_text or f"Image {self.id}"
 
 
-from django.db import models
-from tinymce.models import HTMLField
-
 class AboutUs(models.Model):
     title = models.CharField(max_length=255, default="About Us")
     short_description = HTMLField(help_text="This will be shown on the home page.")

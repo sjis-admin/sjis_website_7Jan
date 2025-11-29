@@ -49,6 +49,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-transform: uppercase;
         letter-spacing: 1px;
+        text-decoration: none;
     }
 
     .faculty-tab::before {
@@ -115,6 +116,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         min-width: 120px;
         text-align: center;
+        text-decoration: none;
     }
 
     .pagination-btn:hover {
@@ -245,15 +247,16 @@
 
 <!-- Tab Navigation -->
 <div class="faculty-tab-navigation">
-    <button class="faculty-tab active" data-category="administration">Administration</button>
-    <button class="faculty-tab" data-category="teachers">Teachers</button>
-    <button class="faculty-tab" data-category="office-staff">Office Staff</button>
+    <a href="?tab=Administration" class="faculty-tab {% if active_tab == 'Administration' %}active{% endif %}">Administration</a>
+    <a href="?tab=Teachers" class="faculty-tab {% if active_tab == 'Teachers' %}active{% endif %}">Teachers</a>
+    <a href="?tab=Office Staff" class="faculty-tab {% if active_tab == 'Office Staff' %}active{% endif %}">Office Staff</a>
 </div>
 
 <section class="faculty-container">
     {% for category, page in categories.items %}
         <div id="{{ category|lower|slugify }}-category" 
-             class="faculty-category-content {% if forloop.first %}active{% endif %}">
+             class="faculty-category-content {% if category == active_tab %}active{% endif %}">
+            
             {% if page %}
                 <div class="category-title">{{ category }}</div>
 
@@ -273,8 +276,8 @@
                 {% if page.paginator.num_pages > 1 %}
                     <div class="pagination">
                         {% if page.has_previous %}
-                            <a class="pagination-btn" href="?{{ category|lower }}_page=1">First</a>
-                            <a class="pagination-btn" href="?{{ category|lower }}_page={{ page.previous_page_number }}">Previous</a>
+                            <a class="pagination-btn" href="?tab={{ active_tab }}&page=1">First</a>
+                            <a class="pagination-btn" href="?tab={{ active_tab }}&page={{ page.previous_page_number }}">Previous</a>
                         {% else %}
                             <span class="pagination-btn disabled">First</span>
                             <span class="pagination-btn disabled">Previous</span>
@@ -283,8 +286,8 @@
                         <span class="page-indicator">Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
 
                         {% if page.has_next %}
-                            <a class="pagination-btn" href="?{{ category|lower }}_page={{ page.next_page_number }}">Next</a>
-                            <a class="pagination-btn" href="?{{ category|lower }}_page={{ page.paginator.num_pages }}">Last</a>
+                            <a class="pagination-btn" href="?tab={{ active_tab }}&page={{ page.next_page_number }}">Next</a>
+                            <a class="pagination-btn" href="?tab={{ active_tab }}&page={{ page.paginator.num_pages }}">Last</a>
                         {% else %}
                             <span class="pagination-btn disabled">Next</span>
                             <span class="pagination-btn disabled">Last</span>
@@ -296,27 +299,4 @@
         </div>
     {% endfor %}
 </section>
-
-
-
-
-<script>
-    // Tab Switching Logic
-document.querySelectorAll('.faculty-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-        // Remove active from all tabs and tab contents
-        document.querySelectorAll('.faculty-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.faculty-category-content').forEach(c => c.classList.remove('active'));
-
-        // Add active to clicked tab
-        this.classList.add('active');
-
-        // Show corresponding category content
-        const category = this.getAttribute('data-category');
-        const categoryElement = document.getElementById(`${category}-category`);
-        categoryElement.classList.add('active');
-    });
-});
-
-</script>
 {% endblock %}
