@@ -1,0 +1,116 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}Support Resources - Student Support{% endblock %}
+
+{% block extra_css %}
+<style>
+    .resources-hero {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .filter-pill {
+        padding: 0.5rem 1.5rem;
+        border-radius: 9999px;
+        background: white;
+        color: #4b5563;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: 1px solid #e5e7eb;
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+        background: #10b981;
+        color: white;
+        border-color: #10b981;
+        box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    }
+
+    .resource-item {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .resource-item:hover {
+        border-color: #10b981;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <div class="resources-hero">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-4xl font-bold mb-2">Support Resources</h1>
+            <p class="text-lg opacity-90">Downloadable guides, links, and materials for your success</p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        <!-- Filters -->
+        <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <a href="{% url 'student_support:resource_list' %}"
+                class="filter-pill {% if not selected_category %}active{% endif %}">
+                All Resources
+            </a>
+            {% for code, name in categories %}
+            <a href="?category={{ code }}" class="filter-pill {% if selected_category == code %}active{% endif %}">
+                {{ name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        {% if resources %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for resource in resources %}
+            <div class="resource-item">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="p-3 bg-green-50 rounded-lg text-green-600">
+                        <i class="fas fa-{{ resource.icon }} text-xl"></i>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-gray-100 text-gray-600 rounded-full uppercase">
+                        {{ resource.get_category_display }}
+                    </span>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800 mb-2">{{ resource.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ resource.description }}</p>
+
+                <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Added {{ resource.uploaded_at|date:"M d, Y" }}</span>
+
+                    {% if resource.file %}
+                    <a href="{{ resource.file.url }}" download
+                        class="text-green-600 font-semibold text-sm hover:underline flex items-center">
+                        Download <i class="fas fa-download ml-2"></i>
+                    </a>
+                    {% elif resource.external_link %}
+                    <a href="{{ resource.external_link }}" target="_blank"
+                        class="text-green-600 font-semibold text-sm hover:underline flex items-center">
+                        Visit Link <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
+                <i class="fas fa-folder-open text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-600">No resources found</h3>
+            <p class="text-gray-500 mt-2">Try selecting a different category or check back later.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

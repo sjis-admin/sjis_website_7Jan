@@ -19,9 +19,14 @@ urlpatterns =[
     path('club_new/', include('club_new.urls', namespace='club_new')),
     path('syllabus/', include('syllabus.urls', namespace='syllabus')),
     path('rules/', include('rules.urls', namespace='rules')),
+    path('yearbook/', include('yearbook.urls', namespace='yearbook')),
+    path('admission/', include('admission.urls', namespace='admission')),
+    path('gallery/', include('gallery.urls', namespace='gallery')),
+    path('chatbot/', include('chatbot.urls')),
     path('tinymce/', include('tinymce.urls')),
     path('academic_calendar/', include('academic_calendar.urls', namespace='academic_calendar')),
     path('student_support/', include('student_support.urls', namespace='student_support')),
+    path('debug/', include('debug.urls', namespace='debug')),
     
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -29,3 +34,4 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
     
+

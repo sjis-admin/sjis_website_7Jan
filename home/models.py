@@ -5,10 +5,20 @@ from tinymce.models import HTMLField
 class CarouselImage(models.Model):
     image = models.ImageField(upload_to='carousel_images/')
     alt_text = models.CharField(max_length=255, blank=True)
-    caption = models.CharField(max_length=255, blank=True) 
+    caption = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True, help_text="Optional description shown on the slide")
+    action_url = models.URLField(blank=True, help_text="Optional URL for 'Learn More' button")
+    order = models.PositiveIntegerField(default=0, help_text="Order of appearance (lower numbers appear first)")
+    is_active = models.BooleanField(default=True, help_text="Uncheck to hide this slide")
+    
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Slider Image'
+        verbose_name_plural = 'Slider Images'
 
     def __str__(self):
-        return self.alt_text or f"Image {self.id}"
+        return self.caption or self.alt_text or f"Slide {self.id}"
+
 
 
 class AboutUs(models.Model):
@@ -103,6 +113,37 @@ class PrincipalMessage(models.Model):
 
     def __str__(self):
         return f"{self.get_type_display()}: {self.title}"
+
+class SiteConfiguration(models.Model):
+    site_name = models.CharField(max_length=255, default="St. Joseph International School")
+    logo = models.ImageField(upload_to='site_config/', help_text="Upload the school logo here")
+    favicon = models.ImageField(upload_to='site_config/', blank=True, null=True, help_text="Upload the favicon here")
+    
+    # Contact Info
+    address = models.TextField(blank=True)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    
+    # Social Media
+    facebook_url = models.URLField(blank=True)
+    twitter_url = models.URLField(blank=True)
+    instagram_url = models.URLField(blank=True)
+    youtube_url = models.URLField(blank=True)
+    
+    class Meta:
+        verbose_name = "Site Configuration"
+        verbose_name_plural = "Site Configuration"
+
+    def __str__(self):
+        return self.site_name
+
+    def save(self, *args, **kwargs):
+        if not self.pk and SiteConfiguration.objects.exists():
+            # If you want to ensure only one instance exists, you can raise an error
+            # or just update the existing one. For simplicity in admin, we might just let it be
+            # but usually singleton is better.
+            return super(SiteConfiguration, self).save(*args, **kwargs)
+        return super(SiteConfiguration, self).save(*args, **kwargs)
 
 
 

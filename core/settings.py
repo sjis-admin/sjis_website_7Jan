@@ -75,6 +75,11 @@ INSTALLED_APPS = [
     'hitcount',
     'student_support',
     'rules',
+    'yearbook',
+    'admission',
+    'gallery',
+    'chatbot',  # New chatbot app
+    'debug',
 ]
 
 SITE_ID = 1
@@ -103,6 +108,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'home.context_processors.site_configuration',
             ],
         },
     },

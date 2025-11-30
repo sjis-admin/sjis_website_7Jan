@@ -1,0 +1,370 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}Yearbooks - St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .yearbook-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .yearbook-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="white" opacity="0.1"/></svg>');
+        opacity: 0.3;
+    }
+
+    .timeline {
+        position: relative;
+        padding: 2rem 0;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+        border-radius: 2px;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 4rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .timeline-item:nth-child(odd) {
+        flex-direction: row;
+    }
+
+    .timeline-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .timeline-content {
+        width: calc(50% - 3rem);
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .timeline-content:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25);
+        border-color: #667eea;
+    }
+
+    .timeline-content:hover::before {
+        opacity: 1;
+    }
+
+    .timeline-marker {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea 0%, #4facfe 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        z-index: 10;
+        position: relative;
+        transition: all 0.3s ease;
+        border: 4px solid white;
+    }
+
+    .timeline-marker:hover {
+        transform: scale(1.15) rotate(5deg);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
+    }
+
+    .yearbook-cover {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        transition: transform 0.4s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-content:hover .yearbook-cover {
+        transform: scale(1.05);
+    }
+
+    .yearbook-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+    }
+
+    .yearbook-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25);
+        border-color: #667eea;
+    }
+
+    .year-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #4facfe 100%);
+        color: white;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .yearbook-card:hover .year-badge,
+    .timeline-content:hover .year-badge {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .view-button {
+        background: linear-gradient(135deg, #667eea 0%, #4facfe 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .view-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+
+    .decorative-circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .circle-1 {
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(135deg, #667eea, #4facfe);
+        top: -200px;
+        right: -100px;
+        filter: blur(80px);
+    }
+
+    .circle-2 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        bottom: -150px;
+        left: -50px;
+        filter: blur(60px);
+    }
+
+    @media (max-width: 768px) {
+        .timeline::before {
+            left: 30px;
+        }
+
+        .timeline-item {
+            flex-direction: row !important;
+            padding-left: 80px;
+        }
+
+        .timeline-content {
+            width: 100%;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 0;
+        }
+    }
+
+    /* Add subtle animations */
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .timeline-marker {
+        animation: float 3s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <!-- Hero Section -->
+    <div class="yearbook-hero">
+        <div class="decorative-circle circle-1"></div>
+        <div class="decorative-circle circle-2"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white">
+                <div class="inline-block mb-4">
+                    <span class="material-icons" style="font-size: 64px; opacity: 0.9;">menu_book</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">School Yearbooks</h1>
+                <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">Preserving memories, celebrating
+                    achievements, and honoring excellence</p>
+                <div class="mt-8 flex justify-center gap-4">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 border border-white/30">
+                        <span class="font-semibold">📚 Digital Archives</span>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 border border-white/30">
+                        <span class="font-semibold">🎓 Student Memories</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        {% if yearbooks %}
+        <!-- Timeline View for Desktop -->
+        <div class="hidden md:block timeline">
+            {% for yearbook in yearbooks %}
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    {% if yearbook.cover_image %}
+                    <img src="{{ yearbook.cover_image.url }}" alt="{{ yearbook.title }}" class="yearbook-cover">
+                    {% else %}
+                    <div
+                        class="yearbook-cover bg-gradient-to-br from-blue-400 via-indigo-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20">
+                            <div class="absolute inset-0"
+                                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px);">
+                            </div>
+                        </div>
+                        <span class="material-icons text-white relative z-10" style="font-size: 80px;">menu_book</span>
+                    </div>
+                    {% endif %}
+
+                    <span class="year-badge">{{ yearbook.academic_year }}</span>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ yearbook.title }}</h2>
+
+                    {% if yearbook.description %}
+                    <p class="text-gray-600 mb-4 leading-relaxed">{{ yearbook.description|truncatewords:30 }}</p>
+                    {% endif %}
+
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-500 flex items-center gap-2">
+                            <span class="material-icons text-sm align-middle text-blue-500">event</span>
+                            <span>Published: {{ yearbook.published_date|date:"M d, Y" }}</span>
+                        </div>
+                        <a href="{% url 'yearbook:yearbook_detail' yearbook.year %}" class="view-button">
+                            View Yearbook
+                            <span class="material-icons text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="timeline-marker">
+                    {{ yearbook.year }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Grid View for Mobile -->
+        <div class="md:hidden grid grid-cols-1 gap-6">
+            {% for yearbook in yearbooks %}
+            <div class="yearbook-card">
+                {% if yearbook.cover_image %}
+                <img src="{{ yearbook.cover_image.url }}" alt="{{ yearbook.title }}" class="w-full h-64 object-cover">
+                {% else %}
+                <div
+                    class="w-full h-64 bg-gradient-to-br from-blue-400 via-indigo-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20">
+                        <div class="absolute inset-0"
+                            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px);">
+                        </div>
+                    </div>
+                    <span class="material-icons text-white relative z-10" style="font-size: 80px;">menu_book</span>
+                </div>
+                {% endif %}
+
+                <div class="p-6">
+                    <span class="year-badge">{{ yearbook.academic_year }}</span>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ yearbook.title }}</h2>
+
+                    {% if yearbook.description %}
+                    <p class="text-gray-600 mb-4 leading-relaxed">{{ yearbook.description|truncatewords:20 }}</p>
+                    {% endif %}
+
+                    <div class="mb-4 text-sm text-gray-500 flex items-center gap-2">
+                        <span class="material-icons text-sm align-middle text-blue-500">event</span>
+                        <span>Published: {{ yearbook.published_date|date:"M d, Y" }}</span>
+                    </div>
+
+                    <a href="{% url 'yearbook:yearbook_detail' yearbook.year %}"
+                        class="view-button w-full justify-center">
+                        View Yearbook
+                        <span class="material-icons text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+            <div class="inline-block p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full mb-6">
+                <span class="material-icons text-blue-400" style="font-size: 120px;">menu_book</span>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-700 mt-6">No Yearbooks Available Yet</h2>
+            <p class="text-gray-500 mt-3 text-lg">Check back soon for our published yearbooks!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

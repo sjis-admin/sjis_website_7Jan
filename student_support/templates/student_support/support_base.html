@@ -1,99 +1,239 @@
+{% extends 'mainbase.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}St. Joseph International School{% endblock %}</title>
-    
-    {# Tailwind CSS #}
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    {# Custom Tailwind Configuration #}
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#4162a9',
-                        'secondary': '#D1345B',
-                        'background': '#1F2E55',
-                        'text-light': '#ffffff'
-                    },
-                    fontFamily: {
-                        'sans': ['Arial', 'sans-serif'],
-                        'display': ['Georgio', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
 
-    {# Additional Head Content #}
-    {% block extra_head %}{% endblock %}
-</head>
-<body class="bg-background text-text-light antialiased">
-    {# Navigation #}
-    <nav class="bg-primary py-4 sticky top-0 z-50">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="{% url 'student_support:home' %}" class="flex items-center space-x-3">
-                <img src="{% static 'images/sjis_logo.png' %}" 
-                     alt="SJIS Logo" 
-                     class="h-16 w-16 object-contain">
-                <span class="text-2xl font-bold text-text-light">
-                    ST. JOSEPH INTERNATIONAL SCHOOL
-                </span>
-            </a>
-            
-            <div>
-                <a href="{% url 'student_support:contact' %}" 
-                   class="bg-secondary text-text-light px-4 py-2 rounded-lg 
-                          hover:bg-opacity-90 transition-colors duration-300">
-                    Contact Us
-                </a>
+{% block title %}Student Support - St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .support-hero {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .service-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-top: 4px solid transparent;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        border-top-color: #4facfe;
+    }
+
+    .counselor-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .counselor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .resource-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .resource-card:hover {
+        border-color: #4facfe;
+        background: #f0f9ff;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 1.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f9fafb;
+    }
+
+    .faq-answer {
+        padding: 0 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 1.5rem;
+        max-height: 500px;
+    }
+
+    .faq-item.active .faq-question {
+        background: #e0f2fe;
+        color: #0284c7;
+    }
+
+    .faq-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <!-- Hero Section -->
+    <div class="support-hero">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 text-white mb-8 md:mb-0">
+                    <h1 class="text-5xl font-bold mb-4">We're Here to Help</h1>
+                    <p class="text-xl opacity-90 mb-8">Comprehensive support services for your academic success and
+                        personal well-being.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="{% url 'student_support:appointment_request' %}"
+                            class="px-6 py-3 bg-white text-blue-500 rounded-full font-bold hover:shadow-lg transition-all transform hover:scale-105">
+                            Book Appointment
+                        </a>
+                        <a href="{% url 'student_support:resource_list' %}"
+                            class="px-6 py-3 bg-blue-600 border border-white text-white rounded-full font-bold hover:bg-blue-700 transition-all">
+                            Browse Resources
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <span class="material-icons text-white opacity-20" style="font-size: 200px;">support_agent</span>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
 
-    {# Main Content #}
-    <main>
-        {% block content %}
-            <div class="container">
-                {% include 'student_support/_welcome_section.html' %}
-                {% include 'student_support/_services_section.html' %}
-                {% include 'student_support/_faq_section.html' %}
-                {% include 'student_support/_counselors_section.html' %}
+    <div class="container mx-auto px-4 pb-12">
+        <!-- Services Section -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">Our Support Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {% for service in services %}
+                <div class="service-card">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600">
+                        <i class="fas {{ service.icon }} text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">{{ service.title }}</h3>
+                    <p class="text-gray-600">{{ service.description }}</p>
+                </div>
+                {% endfor %}
             </div>
-        {% endblock %}
-    </main>
+        </div>
 
-    {# Footer #}
-    {% include 'components/_footer.html' %}
+        <!-- Recent Resources -->
+        {% if recent_resources %}
+        <div class="mb-16">
+            <div class="flex justify-between items-end mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Latest Resources</h2>
+                <a href="{% url 'student_support:resource_list' %}"
+                    class="text-blue-600 font-semibold hover:underline">View All</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for resource in recent_resources %}
+                <div class="resource-card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-gray-100 rounded-lg text-gray-600">
+                            <i class="fas fa-{{ resource.icon }} text-xl"></i>
+                        </div>
+                        <span class="text-xs font-semibold px-2 py-1 bg-blue-50 text-blue-600 rounded-full uppercase">
+                            {{ resource.get_category_display }}
+                        </span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ resource.title }}</h3>
+                    <p class="text-sm text-gray-600 mb-4">{{ resource.description|truncatewords:15 }}</p>
 
-    {# JavaScript #}
-    <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('.animate-section');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
+                    {% if resource.file %}
+                    <a href="{{ resource.file.url }}" download
+                        class="text-blue-600 font-semibold text-sm hover:underline flex items-center">
+                        Download File <i class="fas fa-arrow-down ml-2"></i>
+                    </a>
+                    {% elif resource.external_link %}
+                    <a href="{{ resource.external_link }}" target="_blank"
+                        class="text-blue-600 font-semibold text-sm hover:underline flex items-center">
+                        Visit Link <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
 
-            const observerCallback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.remove('opacity-0', 'translate-y-10');
-                        entry.target.classList.add('opacity-100', 'translate-y-0');
-                    }
-                });
-            };
+        <!-- Counselors Section -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">Meet Our Counselors</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for counselor in counselors %}
+                <div class="counselor-card">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        {% if counselor.image %}
+                        <img src="{{ counselor.image.url }}" alt="{{ counselor.name }}"
+                            class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center bg-gray-300">
+                            <i class="fas fa-user text-4xl text-gray-500"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800">{{ counselor.name }}</h3>
+                        <p class="text-blue-600 font-medium mb-4">{{ counselor.role }}</p>
+                        <p class="text-gray-600 text-sm mb-4">{{ counselor.additional_info|truncatewords:20 }}</p>
+                        <a href="mailto:{{ counselor.email }}"
+                            class="inline-flex items-center text-gray-600 hover:text-blue-600">
+                            <i class="fas fa-envelope mr-2"></i> {{ counselor.email }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-            const observer = new IntersectionObserver(observerCallback, observerOptions);
-            sections.forEach(section => observer.observe(section));
-        });
-    </script>
+        <!-- FAQ Section -->
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">Frequently Asked Questions</h2>
+            {% for faq in faqs %}
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    {{ faq.question }}
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-gray-600">{{ faq.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-    {% block extra_scripts %}{% endblock %}
-</body>
-</html>
+<script>
+    function toggleFaq(element) {
+        element.classList.toggle('active');
+    }
+</script>
+{% endblock %}

@@ -55,9 +55,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Include your slider CSS -->
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0f172a', // Slate 900
+                            light: '#1e293b', // Slate 800
+                        },
+                        accent: {
+                            DEFAULT: '#f59e0b', // Amber 500
+                            hover: '#d97706', // Amber 600
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <!-- Add favicon link here -->
     <!-- <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" /> -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -76,16 +103,30 @@
             margin: 0;
             padding: 0;
             height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Outfit', sans-serif;
         }
 
         .wrapper {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         main {
             flex-grow: 1;
+            overflow-x: hidden;
         }
 
         footer {
@@ -691,106 +732,121 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 overflow-x-hidden max-w-full">
 
     <header
-        class="bg-gradient-to-r from-blue-600/95 to-purple-700/95 backdrop-blur-md text-white shadow-lg h-24 flex items-center fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div class="w-full px-4 max-w-7xl mx-auto">
+        class="bg-slate-900/95 backdrop-blur-xl text-white shadow-2xl h-20 md:h-24 flex items-center fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-white/10">
+        <div class="w-full px-3 md:px-4 max-w-7xl mx-auto">
             <div class="flex items-center justify-between h-full">
                 <!-- Logo -->
-                <a href="{% url 'home:home' %}" class="flex items-center group">
+                <a href="{% url 'home:home' %}" class="flex items-center group flex-shrink-0">
+                    {% if site_config.logo %}
+                    <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}"
+                        class="h-12 md:h-16 w-auto object-contain mr-2 md:mr-4 transform group-hover:scale-105 transition-transform duration-300 drop-shadow-lg">
+                    {% else %}
                     <img src="{% static 'images/sjp-logo-2.png' %}" alt="St. Joseph International School Logo"
-                        class="h-20 w-auto object-contain mr-4 transform group-hover:scale-105 transition-transform duration-300">
-
+                        class="h-12 md:h-16 w-auto object-contain mr-2 md:mr-4 transform group-hover:scale-105 transition-transform duration-300 drop-shadow-lg">
+                    {% endif %}
+                    <div class="hidden sm:block">
+                        <h1 class="text-base md:text-xl font-bold tracking-tight leading-none font-heading">
+                            {% if site_config.site_name %}{{ site_config.site_name }}{% else %}St. Joseph{% endif %}
+                        </h1>
+                        <p class="text-xs md:text-sm font-light text-gray-300 tracking-wider">International School</p>
+                    </div>
                 </a>
+
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-1">
-                    <div class="hidden lg:flex items-center space-x-1">
-                        <a href="{% url 'home:home' %}"
-                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium {% if request.path == home_url %}bg-white/20 shadow-inner{% endif %}">
-                            Home
+                    <a href="{% url 'home:home' %}"
+                        class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide {% if request.path == home_url %}bg-white/10 text-amber-400{% endif %}">
+                        Home
+                    </a>
+
+                    <!-- About Us Dropdown -->
+                    <div class="desktop-dropdown relative group">
+                        <button
+                            class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide group-hover:bg-white/5">
+                            <span>About Us</span>
+                            <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300 text-gray-400"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div
+                            class="desktop-dropdown-content absolute z-50 mt-4 w-64 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200 border border-gray-100">
+                            <div class="py-2">
+                                <a href="{% url 'home:about_us_view' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Our
+                                    History</a>
+                                <a href="{% url 'home:principal_message' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Message
+                                    from Principal</a>
+                                <a href="{% url 'home:vice_principal_message' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Message
+                                    from Vice-Principal</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'home:faculty_list' %}"
+                        class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide">Faculty</a>
+
+                    <!-- Resources Dropdown -->
+                    <div class="desktop-dropdown relative group">
+                        <button
+                            class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide group-hover:bg-white/5">
+                            <span>Resources</span>
+                            <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300 text-gray-400"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div
+                            class="desktop-dropdown-content absolute z-50 mt-4 w-56 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200 border border-gray-100">
+                            <div class="py-2">
+                                <a href="{% url 'syllabus:syllabus_list' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Syllabus</a>
+                                <a href="{% url 'rules:public_rules_list' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Rules</a>
+                                <a href="{% url 'yearbook:yearbook_list' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Year
+                                    Book</a>
+                                <a href="{% url 'student_support:home' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Student
+                                    Support</a>
+                                <a href="{% url 'gallery:gallery_list' %}"
+                                    class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-slate-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0 font-medium">Photo
+                                    Gallery</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'notice_board2:notice_board' %}"
+                        class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide">Notice
+                        Board</a>
+                    <a href="{% url 'contact:contact' %}"
+                        class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium text-sm tracking-wide">Contact</a>
+
+                    <div class="pl-4 border-l border-white/10 ml-4 flex items-center space-x-3">
+                        <a href="https://portal.sjs.edu.bd/auth/login" target="_blank"
+                            class="nav-link px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-400 hover:to-amber-500 hover:shadow-lg hover:shadow-amber-500/20 transition-all duration-300 font-bold text-sm tracking-wide flex items-center">
+                            <span class="material-icons text-sm mr-2">login</span> Portal
                         </a>
 
-                        <!-- About Us Dropdown -->
-                        <div class="desktop-dropdown relative group">
-                            <button
-                                class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium group-hover:bg-white/20">
-                                <span>About Us</span>
-                                <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="desktop-dropdown-content absolute z-50 mt-2 w-64 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200"
-                                style="z-index: 999;">
-                                <div class="py-1">
-                                    <a href="{% url 'home:about_us_view' %}"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Our
-                                        History</a>
-                                    <!-- <a href="#" class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Our Province</a> -->
-                                    <a href="{% url 'home:principal_message' %}"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Message
-                                        from Our Principal</a>
-                                    <a href="{% url 'home:vice_principal_message' %}"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Message
-                                        from Vice-Principal</a>
-                                    <!-- <a href="#" class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Former Provincials</a> -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'home:faculty_list' %}"
-                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Faculty</a>
-
-                        <!-- Resources Dropdown -->
-                        <div class="desktop-dropdown relative group">
-                            <button
-                                class="nav-link flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium group-hover:bg-white/20">
-                                <span>Resources</span>
-                                <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div
-                                class="desktop-dropdown-content absolute z-50 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden transform origin-top-right transition-all duration-200">
-                                <div class="py-1">
-                                    <a href="{% url 'syllabus:syllabus_list' %}"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Syllabus</a>
-                                    <a href="#"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Rules</a>
-                                    <a href="#"
-                                        class="dropdown-item block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-100 last:border-0">Year
-                                        Book</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'notice_board2:notice_board' %}"
-                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Notice
-                            Board</a>
-                        <a href="{% url 'contact:contact' %}"
-                            class="nav-link px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium">Contact
-                            Us</a>
-                        <a href="https://portal.sjs.edu.bd/auth/login" target="_blank"
-                            class="nav-link px-6 py-2 rounded-full bg-white text-blue-600 hover:bg-blue-50 hover:shadow-lg transition-all duration-300 font-bold ml-2">Login</a>
-
+                        <button id="mega-menu-trigger"
+                            class="p-2 rounded-lg hover:bg-white/10 transition-all duration-300 text-gray-300 hover:text-white">
+                            <span class="material-icons">grid_view</span>
+                        </button>
                     </div>
-                    <!-- Add this at the end of your desktop navigation -->
-                    <button id="mega-menu-trigger"
-                        class="nav-link p-2 rounded-lg hover:bg-white/10 transition-all duration-300 flex items-center ml-2">
-                        <span class="material-icons">widgets</span>
-                    </button>
+
                 </div>
-
-
 
                 <!-- Mobile menu button -->
                 <button id="mobile-menu-button"
-                    class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg hover:bg-white/10 focus:outline-none transition-colors">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg hover:bg-white/10 focus:outline-none transition-colors text-white flex-shrink-0">
+                    <svg class="h-7 w-7 md:h-8 md:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -821,170 +877,212 @@
 
     <!-- Mega Menu Container -->
     <div id="mega-menu"
-        class="fixed top-0 right-0 h-full w-[400px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[60] overflow-hidden">
+        class="fixed top-0 right-0 h-full w-[420px] bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 shadow-2xl transform translate-x-full transition-transform duration-400 ease-out z-[60] overflow-hidden backdrop-blur-sm">
         <!-- Decorative background elements -->
-        <div class="absolute inset-0 bg-[#189AB4] opacity-5">
+        <div class="absolute inset-0 opacity-40 pointer-events-none">
             <div
-                class="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full -translate-y-32 translate-x-32 blur-3xl">
+                class="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full -translate-y-40 translate-x-40 blur-3xl animate-pulse">
             </div>
             <div
-                class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-200 rounded-full translate-y-32 -translate-x-32 blur-3xl">
+                class="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-cyan-400/20 to-blue-500/20 rounded-full translate-y-36 -translate-x-36 blur-3xl">
+            </div>
+            <div
+                class="absolute top-1/2 right-1/4 w-60 h-60 bg-gradient-to-br from-indigo-300/15 to-purple-400/15 rounded-full blur-2xl">
             </div>
         </div>
 
-        <div class="h-full flex flex-col overflow-y-auto relative">
+        <div class="h-full flex flex-col overflow-y-auto relative z-10">
             <!-- Mega Menu Header -->
             <div
-                class="flex items-center justify-between p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg">
-                <div class="flex items-center space-x-3">
-                    <span class="material-icons text-3xl">explore</span>
-                    <h2 class="text-2xl font-bold">Quick Access</h2>
+                class="relative p-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white shadow-xl overflow-hidden">
+                <!-- Animated background pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute inset-0"
+                        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px);">
+                    </div>
                 </div>
-                <button id="mega-menu-close" class="p-2 rounded-full hover:bg-white/20 transition-colors duration-200">
-                    <span class="material-icons">close</span>
-                </button>
+
+                <div class="flex items-center justify-between relative z-10">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 bg-white/20 backdrop-blur-sm rounded-xl">
+                            <span class="material-icons text-3xl">dashboard</span>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold tracking-tight">Quick Access</h2>
+                            <p class="text-xs text-blue-100 mt-0.5">Navigate faster</p>
+                        </div>
+                    </div>
+                    <button id="mega-menu-close"
+                        class="p-2.5 rounded-xl hover:bg-white/20 transition-all duration-200 hover:rotate-90 transform">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
             </div>
 
-
-
             <!-- Mega Menu Content -->
-            <div class="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+            <div class="flex-1 overflow-y-auto px-5 py-6 space-y-4">
                 <!-- Academic Section -->
-                <div class="group">
-                    <div
-                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                        <span
-                            class="material-icons p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">school</span>
-                        <h3 class="text-lg font-semibold">Academic</h3>
+                <div
+                    class="group bg-white/70 backdrop-blur-sm rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100/50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div
+                            class="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-icons text-white text-xl">school</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">Academic</h3>
                     </div>
-                    <ul class="space-y-3 pl-12">
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                    <ul class="space-y-2 ml-1">
+                        <li>
                             <a href="{% url 'syllabus:syllabus_list' %}"
-                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Syllabus</span>
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Syllabus</span>
                             </a>
                         </li>
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
-                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Academic Regulation</span>
+                        <li>
+                            <a href="#"
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Academic Regulation</span>
                             </a>
                         </li>
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                        <li>
                             <a href="{% url 'academic_calendar:academic_calendar' %}"
-                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Academic Calendar</span>
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Academic Calendar</span>
                             </a>
                         </li>
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
-                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Our Curriculam</span>
+                        <li>
+                            <a href="#"
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Our Curriculum</span>
                             </a>
                         </li>
-                        <!-- Repeat for other academic items -->
                     </ul>
                 </div>
 
                 <!-- Admission Section -->
-                <div class="group">
-                    <div
-                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                        <span
-                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">how_to_reg</span>
-                        <h3 class="text-lg font-semibold">Admission</h3>
+                <div
+                    class="group bg-white/70 backdrop-blur-sm rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-emerald-100/50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div
+                            class="p-2.5 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-icons text-white text-xl">how_to_reg</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">Admission</h3>
                     </div>
-                    <ul class="space-y-3 pl-12">
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
-                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Admission Process</span>
+                    <ul class="space-y-2 ml-1">
+                        <li>
+                            <a href="{% url 'admission:admission_home' %}"
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-emerald-600 p-2 rounded-lg hover:bg-emerald-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Admission Process</span>
                             </a>
                         </li>
-                        <!-- Repeat for other admission items -->
                     </ul>
                 </div>
 
                 <!-- Club Section -->
-                <div class="group">
-                    <div
-                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                        <span
-                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">groups</span>
-                        <h3 class="text-lg font-semibold">Club</h3>
+                <div
+                    class="group bg-white/70 backdrop-blur-sm rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100/50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div
+                            class="p-2.5 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-icons text-white text-xl">groups</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">Clubs</h3>
                     </div>
-                    <ul class="space-y-3 pl-12">
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
+                    <ul class="space-y-2 ml-1">
+                        <li>
                             <a href="{% url 'club_new:club_list' %}"
-                                class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Club Activities</span>
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-purple-600 p-2 rounded-lg hover:bg-purple-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Club Activities</span>
                             </a>
                         </li>
-                        <!-- Repeat for other admission items -->
                     </ul>
                 </div>
 
                 <!-- Resources Section -->
-                <div class="group">
-                    <div
-                        class="flex items-center space-x-3 mb-4 text-[#189AB4] group-hover:translate-x-2 transition-transform duration-200">
-                        <span
-                            class="material-icons p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors duration-200">folder</span>
-                        <h3 class="text-lg font-semibold">Resources</h3>
+                <div
+                    class="group bg-white/70 backdrop-blur-sm rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-amber-100/50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div
+                            class="p-2.5 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-icons text-white text-xl">folder_open</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">Resources</h3>
                     </div>
-                    <ul class="space-y-3 pl-12">
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
-                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Annual Magazine</span>
+                    <ul class="space-y-2 ml-1">
+                        <li>
+                            <a href="#"
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-amber-600 p-2 rounded-lg hover:bg-amber-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Annual Magazine</span>
                             </a>
                         </li>
-                        <li class="transform hover:translate-x-2 transition-transform duration-200">
-                            <a href="#" class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4]">
-                                <span class="material-icons text-sm">arrow_right</span>
-                                <span>Photo Gallery</span>
+                        <li>
+                            <a href="{% url 'gallery:gallery_list' %}"
+                                class="flex items-center space-x-2.5 text-gray-600 hover:text-amber-600 p-2 rounded-lg hover:bg-amber-50/80 transition-all duration-200 group/item">
+                                <span
+                                    class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="font-medium">Photo Gallery</span>
                             </a>
                         </li>
-                        <!-- Repeat for other admission items -->
                     </ul>
                 </div>
 
                 <!-- Quick Links Section -->
-                <div class="mt-6 bg-gradient-to-r from-[#189AB4]/10 to-transparent p-4 rounded-lg">
-                    <h4 class="text-[#189AB4] font-semibold mb-3">Quick Links</h4>
-                    <div class="grid grid-cols-2 gap-3">
+                <div
+                    class="bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 backdrop-blur-sm p-5 rounded-2xl border border-blue-200/50 shadow-sm">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="material-icons text-blue-600">bolt</span>
+                        <h4 class="text-blue-700 font-bold text-sm uppercase tracking-wide">Quick Links</h4>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
                         <a href="#"
-                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                            <span class="material-icons text-sm">calendar_today</span>
-                            <span>Calendar</span>
+                            class="flex flex-col items-center justify-center space-y-1.5 p-3 bg-white/70 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 group border border-transparent hover:border-blue-200">
+                            <span
+                                class="material-icons text-blue-500 group-hover:scale-110 transition-transform">calendar_today</span>
+                            <span class="text-xs font-semibold text-gray-700">Calendar</span>
                         </a>
                         <a href="#"
-                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                            <span class="material-icons text-sm">event</span>
-                            <span>Events</span>
+                            class="flex flex-col items-center justify-center space-y-1.5 p-3 bg-white/70 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 group border border-transparent hover:border-indigo-200">
+                            <span
+                                class="material-icons text-indigo-500 group-hover:scale-110 transition-transform">event</span>
+                            <span class="text-xs font-semibold text-gray-700">Events</span>
                         </a>
                         <a href="{% url 'notice_board2:notice_board' %}"
-                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                            <span class="material-icons text-sm">notifications</span>
-                            <span>Notices</span>
+                            class="flex flex-col items-center justify-center space-y-1.5 p-3 bg-white/70 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 group border border-transparent hover:border-purple-200">
+                            <span
+                                class="material-icons text-purple-500 group-hover:scale-110 transition-transform">notifications</span>
+                            <span class="text-xs font-semibold text-gray-700">Notices</span>
                         </a>
                         <a href="#"
-                            class="flex items-center space-x-2 text-gray-600 hover:text-[#189AB4] transition-colors duration-200">
-                            <span class="material-icons text-sm">contact_support</span>
-                            <span>Support</span>
+                            class="flex flex-col items-center justify-center space-y-1.5 p-3 bg-white/70 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 group border border-transparent hover:border-rose-200">
+                            <span
+                                class="material-icons text-rose-500 group-hover:scale-110 transition-transform">contact_support</span>
+                            <span class="text-xs font-semibold text-gray-700">Support</span>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Footer Section -->
-            <div class="p-4 bg-gray-50 border-t">
+            <div
+                class="p-4 bg-gradient-to-r from-blue-100/50 to-indigo-100/50 border-t border-blue-200/50 backdrop-blur-sm">
                 <a href="#"
-                    class="flex items-center justify-center space-x-2 text-[#189AB4] hover:bg-[#189AB4]/10 p-2 rounded-lg transition-colors duration-200">
-                    <span class="material-icons">support_agent</span>
+                    class="flex items-center justify-center space-x-2.5 bg-white/80 hover:bg-white text-blue-600 hover:text-blue-700 p-3.5 rounded-xl transition-all duration-200 font-semibold shadow-sm hover:shadow-md group">
+                    <span class="material-icons group-hover:scale-110 transition-transform">support_agent</span>
                     <span>Need Help?</span>
                 </a>
             </div>
@@ -998,7 +1096,12 @@
             <!-- Header with Logo -->
             <div class="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
                 <div class="flex items-center space-x-3">
+                    {% if site_config.logo %}
+                    <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}"
+                        class="h-10 w-auto object-contain">
+                    {% else %}
                     <img src="{% static 'images/sjp-logo-2.png' %}" alt="Logo" class="h-10 w-auto object-contain">
+                    {% endif %}
                     <span class="text-lg font-bold text-white tracking-wide">Menu</span>
                 </div>
                 <button id="mobile-menu-close"
@@ -1074,14 +1177,20 @@
                         <div class="pl-12 pr-4 py-2 space-y-1">
                             <a href="{% url 'syllabus:syllabus_list' %}"
                                 class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Syllabus</a>
-                            <a href="#"
+                            <a href="{% url 'rules:public_rules_list' %}"
                                 class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Rules</a>
                             <a href="{% url 'academic_calendar:academic_calendar' %}"
                                 class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Academic
                                 Calendar</a>
-                            <a href="#"
+                            <a href="{% url 'yearbook:yearbook_list' %}"
                                 class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Year
                                 Book</a>
+                            <a href="{% url 'student_support:home' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Student
+                                Support</a>
+                            <a href="{% url 'gallery:gallery_list' %}"
+                                class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Photo
+                                Gallery</a>
                         </div>
                     </div>
                 </div>
@@ -1102,8 +1211,16 @@
                 </a>
             </div>
 
-            <!-- Footer / Login -->
-            <div class="p-4 border-t border-white/10 bg-white/5">
+            <!-- Footer / Login & Quick Access -->
+            <div class="p-4 border-t border-white/10 bg-white/5 space-y-3">
+                <!-- Quick Access Button -->
+                <button id="mega-menu-trigger-mobile"
+                    class="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                    <span class="material-icons">dashboard</span>
+                    <span>Quick Access</span>
+                </button>
+
+                <!-- Portal Login Button -->
                 <a href="https://portal.sjs.edu.bd/auth/login"
                     class="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
                     <span class="material-icons">login</span>
@@ -1121,19 +1238,112 @@
     <div id="mega-menu-overlay"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 invisible transition-all duration-300 z-[59]"></div>
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-slate-900 text-white pt-20 pb-10 border-t border-slate-800">
         <div class="container mx-auto px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-center md:text-left mb-4 md:mb-0">
-                    <p class="text-sm">&copy; {% now "Y" %} St. Joseph International School. All rights reserved.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand Section -->
+                <div class="space-y-6">
+                    <a href="{% url 'home:home' %}" class="flex items-center space-x-3">
+                        {% if site_config.logo %}
+                        <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}"
+                            class="h-16 w-auto object-contain">
+                        {% else %}
+                        <img src="{% static 'images/sjp-logo-2.png' %}" alt="SJIS Logo"
+                            class="h-16 w-auto object-contain">
+                        {% endif %}
+                        <div>
+                            <h3 class="text-xl font-bold font-heading tracking-tight">
+                                {% if site_config.site_name %}{{ site_config.site_name }}{% else %}St. Joseph{% endif %}
+                            </h3>
+                            <p class="text-xs text-slate-400 uppercase tracking-widest">International School</p>
+                        </div>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Empowering minds, shaping futures. A legacy of excellence in education since 1954.
+                    </p>
+                    <div class="flex items-start space-x-3 text-slate-400 text-sm">
+                        <span class="material-icons text-amber-500 mt-1">location_on</span>
+                        <span>Mohammadpur, Dhaka-1207,<br>Bangladesh</span>
+                    </div>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="{% url 'home:privacy_policy' %}"
-                        class="text-sm hover:text-gray-300 transition-colors duration-300">Privacy Policy</a>
-                    <a href="{% url 'home:terms_of_service' %}"
-                        class="text-sm hover:text-gray-300 transition-colors duration-300">Terms of Service</a>
-                    <a href="{% url 'home:sitemap' %}"
-                        class="text-sm hover:text-gray-300 transition-colors duration-300">Sitemap</a>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4
+                        class="text-lg font-bold font-heading mb-6 text-white border-b border-slate-800 pb-2 inline-block">
+                        Quick Links</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="{% url 'admission:admission_home' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Admission</a></li>
+                        <li><a href="{% url 'academic_calendar:academic_calendar' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Academic Calendar</a></li>
+                        <li><a href="{% url 'notice_board2:notice_board' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Notice Board</a></li>
+                        <li><a href="{% url 'contact:contact' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4
+                        class="text-lg font-bold font-heading mb-6 text-white border-b border-slate-800 pb-2 inline-block">
+                        Resources</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="{% url 'gallery:gallery_list' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Photo Gallery</a></li>
+                        <li><a href="{% url 'yearbook:yearbook_list' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Yearbook</a></li>
+                        <li><a href="{% url 'student_support:home' %}"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Student Support</a></li>
+                        <li><a href="https://portal.sjs.edu.bd" target="_blank"
+                                class="text-slate-400 hover:text-amber-400 transition-colors flex items-center"><span
+                                    class="material-icons text-xs mr-2">chevron_right</span>Student Portal</a></li>
+                    </ul>
+                </div>
+
+                <!-- Connect -->
+                <div>
+                    <h4
+                        class="text-lg font-bold font-heading mb-6 text-white border-b border-slate-800 pb-2 inline-block">
+                        Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <p>&copy; {% now "Y" %} St. Joseph International School. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="{% url 'home:privacy_policy' %}" class="hover:text-white transition-colors">Privacy
+                        Policy</a>
+                    <a href="{% url 'home:terms_of_service' %}" class="hover:text-white transition-colors">Terms of
+                        Service</a>
+                    <a href="{% url 'home:sitemap' %}" class="hover:text-white transition-colors">Sitemap</a>
                 </div>
             </div>
         </div>
@@ -1197,6 +1407,7 @@
             const megaMenu = document.getElementById('mega-menu');
             const megaMenuOverlay = document.getElementById('mega-menu-overlay');
             const megaMenuTrigger = document.getElementById('mega-menu-trigger');
+            const megaMenuTriggerMobile = document.getElementById('mega-menu-trigger-mobile');
             const megaMenuClose = document.getElementById('mega-menu-close');
 
             function openMegaMenu() {
@@ -1213,7 +1424,16 @@
                 document.body.classList.remove('overflow-hidden');
             }
 
-            megaMenuTrigger.addEventListener('click', openMegaMenu);
+            // Desktop trigger
+            if (megaMenuTrigger) {
+                megaMenuTrigger.addEventListener('click', openMegaMenu);
+            }
+
+            // Mobile trigger
+            if (megaMenuTriggerMobile) {
+                megaMenuTriggerMobile.addEventListener('click', openMegaMenu);
+            }
+
             megaMenuClose.addEventListener('click', closeMegaMenu);
             megaMenuOverlay.addEventListener('click', closeMegaMenu);
 
@@ -1241,6 +1461,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     {% block extra_js %}{% endblock %}
 
+    <!-- AI Chatbot Widget -->
+    {% include 'chatbot/widget.html' %}
 
 </body>
 

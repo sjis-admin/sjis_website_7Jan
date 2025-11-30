@@ -1,0 +1,275 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}School Rules & Regulations - St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rules-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .rule-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .rule-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .rule-card.severity-low {
+        border-left-color: #10b981;
+    }
+
+    .rule-card.severity-medium {
+        border-left-color: #f59e0b;
+    }
+
+    .rule-card.severity-high {
+        border-left-color: #ef4444;
+    }
+
+    .rule-card.severity-critical {
+        border-left-color: #7c3aed;
+    }
+
+    .severity-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .severity-badge.low {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .severity-badge.medium {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+
+    .severity-badge.high {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .severity-badge.critical {
+        background-color: #ede9fe;
+        color: #5b21b6;
+    }
+
+    .category-pill {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+    .category-pill:hover {
+        border-color: #667eea;
+        background: #f3f4f6;
+        transform: translateY(-2px);
+    }
+
+    .category-pill.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    .search-box {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    }
+
+    .filter-sidebar {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        position: sticky;
+        top: 120px;
+    }
+
+    .applicable-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        background: #f3f4f6;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #4b5563;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <!-- Hero Section -->
+    <div class="rules-hero">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-white">
+                <h1 class="text-5xl font-bold mb-4">School Rules & Regulations</h1>
+                <p class="text-xl opacity-90">Guidelines for a safe and respectful learning environment</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar Filters -->
+            <div class="lg:col-span-1">
+                <div class="filter-sidebar">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <span class="material-icons mr-2 text-purple-600">filter_list</span>
+                        Filters
+                    </h3>
+
+                    <!-- Search -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Search Rules</label>
+                        <form method="get" action="">
+                            <input type="text" name="query" value="{{ query }}" placeholder="Search by keyword..."
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <button type="submit"
+                                class="w-full mt-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 rounded-lg hover:shadow-lg transition-all duration-300">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Categories</label>
+                        <div class="space-y-2">
+                            <a href="{% url 'rules:public_rules_list' %}"
+                                class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                                All Rules
+                            </a>
+                            {% for category in categories %}
+                            <a href="?category={{ category.id }}"
+                                class="block px-4 py-2 rounded-lg {% if selected_category == category.id|stringformat:'s' %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                                <div class="flex items-center">
+                                    {% if category.icon %}
+                                    <i class="fas {{ category.icon }} mr-2"></i>
+                                    {% endif %}
+                                    {{ category.name }}
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Severity Filter -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Severity Level</label>
+                        <div class="space-y-2">
+                            <a href="{% url 'rules:public_rules_list' %}"
+                                class="block px-4 py-2 rounded-lg {% if not selected_severity %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                                All Levels
+                            </a>
+                            {% for value, label in severity_choices %}
+                            <a href="?severity={{ value }}"
+                                class="block px-4 py-2 rounded-lg {% if selected_severity == value %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                                {{ label }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules List -->
+            <div class="lg:col-span-3">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">
+                        {% if selected_category %}
+                        Category: {{ categories|first }}
+                        {% elif query %}
+                        Search Results for "{{ query }}"
+                        {% else %}
+                        All Rules & Regulations
+                        {% endif %}
+                    </h2>
+                    <p class="text-gray-600 mt-1">{{ rules.count }} rule{{ rules.count|pluralize }} found</p>
+                </div>
+
+                {% if rules %}
+                {% for rule in rules %}
+                <div class="rule-card severity-{{ rule.severity }}">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="severity-badge {{ rule.severity }}">
+                                    {{ rule.get_severity_display }}
+                                </span>
+                                <span class="applicable-tag">
+                                    <span class="material-icons text-sm mr-1">group</span>
+                                    {{ rule.applicable_to }}
+                                </span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ rule.title }}</h3>
+                            <p class="text-gray-600 mb-3">{{ rule.description|truncatewords:30 }}</p>
+
+                            <div class="flex items-center text-sm text-gray-500 gap-4">
+                                <span class="flex items-center">
+                                    <span class="material-icons text-sm mr-1">category</span>
+                                    {{ rule.category.name }}
+                                </span>
+                                {% if rule.effective_date %}
+                                <span class="flex items-center">
+                                    <span class="material-icons text-sm mr-1">event</span>
+                                    Effective: {{ rule.effective_date|date:"M d, Y" }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <a href="{% url 'rules:public_rule_detail' rule.id %}"
+                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                            Read Full Rule
+                            <span class="material-icons ml-2 text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="text-center py-12">
+                    <span class="material-icons text-gray-300" style="font-size: 80px;">search_off</span>
+                    <h3 class="text-2xl font-bold text-gray-600 mt-4">No Rules Found</h3>
+                    <p class="text-gray-500 mt-2">Try adjusting your filters or search terms</p>
+                    <a href="{% url 'rules:public_rules_list' %}"
+                        class="inline-block mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                        Clear All Filters
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

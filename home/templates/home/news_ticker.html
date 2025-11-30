@@ -11,13 +11,20 @@
         color: white;
         height: 40px;
         position: fixed;
-        top: 6rem;
-        /* Aligned with h-24 header (6rem) */
+        top: 5rem;
+        /* 80px = h-20 mobile header */
         left: 0;
         right: 0;
         overflow: hidden;
         z-index: 40;
         /* Just below header (z-50) */
+    }
+
+    @media (min-width: 768px) {
+        .ticker-container {
+            top: 6rem;
+            /* 96px = h-24 desktop header */
+        }
     }
 
     .ticker-label {
@@ -80,8 +87,15 @@
 
     /* Main content adjustment */
     main {
-        margin-top: calc(6rem + 40px);
-        /* Header height + ticker height */
+        margin-top: calc(5rem + 40px);
+        /* Mobile: Header height (80px) + ticker height (40px) = 120px */
+    }
+
+    @media (min-width: 768px) {
+        main {
+            margin-top: calc(6rem + 40px);
+            /* Desktop: Header height (96px) + ticker height (40px) = 136px */
+        }
     }
 </style>
 

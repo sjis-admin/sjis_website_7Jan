@@ -6,9 +6,10 @@ from .models import AboutUs
 from django.core.paginator import Paginator
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Q
 
 def home(request):
-    images = CarouselImage.objects.all()
+    images = CarouselImage.objects.filter(is_active=True)
     about_us = AboutUs.objects.first()
     news_articles = NewsArticle.objects.all().order_by('-published_date')[:4]
     news_items = NewsTicker.objects.all()
@@ -23,6 +24,9 @@ def home(request):
         'notices': notices,
     }
     return render(request, 'home/home.html', context)
+
+
+
 
 
 
@@ -49,15 +53,27 @@ def news_ticker_details(request, pk):
 def faculty_list(request):
     # Determine the active tab, default to 'Administration'
     active_tab = request.GET.get('tab', 'Administration')
+    search_query = request.GET.get('q', '')
+
+    # Base queryset
+    queryset = FacultyMember.objects.all()
+
+    # Apply search filter if query exists
+    if search_query:
+        queryset = queryset.filter(
+            Q(name__icontains=search_query) | 
+            Q(designation__icontains=search_query)
+        )
 
     # Define the categories and their corresponding filters
+    # We filter the already searched queryset by category
     categories = {
-        "Administration": FacultyMember.objects.filter(category="Administration"),
-        "Teachers": FacultyMember.objects.filter(category="Teacher"),
-        "Office Staff": FacultyMember.objects.filter(category="Office Staff"),
+        "Administration": queryset.filter(category="Administration"),
+        "Teachers": queryset.filter(category="Teacher"),
+        "Office Staff": queryset.filter(category="Office Staff"),
     }
 
-    items_per_page = 20
+    items_per_page = 12  # Reduced for better grid layout
     paginated_categories = {}
 
     for category, members in categories.items():
@@ -77,6 +93,7 @@ def faculty_list(request):
         "categories": paginated_categories,
         "active_tab": active_tab,
         "items_per_page": items_per_page,
+        "search_query": search_query,
     }
 
     return render(request, "home/faculty_list.html", context)

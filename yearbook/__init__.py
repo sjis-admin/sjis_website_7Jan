@@ -1,0 +1,1 @@
+# Yearbook app initialization

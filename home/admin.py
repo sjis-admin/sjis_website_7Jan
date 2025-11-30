@@ -1,12 +1,26 @@
 # home/admin.py
 from django.contrib import admin
-from .models import CarouselImage, AboutUs, NewsArticle, NewsTicker, FacultyMember, PrincipalMessage, AboutUsSection
+from .models import CarouselImage, AboutUs, NewsArticle, NewsTicker, FacultyMember, PrincipalMessage, AboutUsSection, SiteConfiguration
 from tinymce.widgets import TinyMCE
 from django.db import models
 
 @admin.register(CarouselImage)
 class CarouselImageAdmin(admin.ModelAdmin):
-    list_display = ['alt_text', 'image']
+    list_display = ['image_preview', 'caption', 'order', 'is_active']
+    list_display_links = ['image_preview', 'caption']
+    list_editable = ['order', 'is_active']
+    list_filter = ['is_active']
+    search_fields = ['caption', 'alt_text', 'description']
+    fields = ['order', 'image', 'caption', 'alt_text', 'description', 'action_url', 'is_active']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" style="max-height: 50px; max-width: 100px; object-fit: cover;" />'
+        return "No image"
+    image_preview.short_description = 'Preview'
+    image_preview.allow_tags = True
+
+
 
 
 class AboutUsSectionInline(admin.TabularInline):
@@ -70,3 +84,24 @@ class PrincipalMessageAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(PrincipalMessage, PrincipalMessageAdmin)
+
+@admin.register(SiteConfiguration)
+class SiteConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('site_name', 'email', 'phone')
+    fieldsets = (
+        ('General', {
+            'fields': ('site_name', 'logo', 'favicon')
+        }),
+        ('Contact Information', {
+            'fields': ('address', 'email', 'phone')
+        }),
+        ('Social Media', {
+            'fields': ('facebook_url', 'twitter_url', 'instagram_url', 'youtube_url')
+        }),
+    )
+
+    def has_add_permission(self, request):
+        # Only allow adding if no instance exists
+        if self.model.objects.exists():
+            return False
+        return super().has_add_permission(request)

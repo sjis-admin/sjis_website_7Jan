@@ -1,0 +1,316 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}{{ rule.title }} - School Rules - St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rule-detail-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .breadcrumb {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        margin-bottom: 2rem;
+    }
+
+    .breadcrumb a {
+        color: white;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+
+    .breadcrumb a:hover {
+        opacity: 1;
+    }
+
+    .rule-content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .severity-banner {
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .severity-banner.low {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+    }
+
+    .severity-banner.medium {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+    }
+
+    .severity-banner.high {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+    }
+
+    .severity-banner.critical {
+        background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+        color: #5b21b6;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .info-item {
+        background: #f9fafb;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+    }
+
+    .info-item-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-item-value {
+        font-size: 1.125rem;
+        color: #111827;
+        font-weight: 600;
+    }
+
+    .document-card {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .document-card:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.1);
+    }
+
+    .related-rule-card {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .related-rule-card:hover {
+        border-color: #667eea;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+    }
+
+    .rule-full-text {
+        line-height: 1.8;
+        color: #374151;
+        font-size: 1.0625rem;
+    }
+
+    .rule-full-text h1,
+    .rule-full-text h2,
+    .rule-full-text h3 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #111827;
+    }
+
+    .rule-full-text ul,
+    .rule-full-text ol {
+        margin: 1rem 0;
+        padding-left: 2rem;
+    }
+
+    .rule-full-text li {
+        margin: 0.5rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <!-- Hero Section -->
+    <div class="rule-detail-hero">
+        <div class="container mx-auto px-4">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb">
+                <a href="{% url 'home:home' %}">Home</a>
+                <span class="material-icons text-sm">chevron_right</span>
+                <a href="{% url 'rules:public_rules_list' %}">Rules</a>
+                <span class="material-icons text-sm">chevron_right</span>
+                <span>{{ rule.title|truncatewords:5 }}</span>
+            </div>
+
+            <div class="text-white">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                        {{ rule.category.name }}
+                    </span>
+                    <span class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                        {{ rule.applicable_to }}
+                    </span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ rule.title }}</h1>
+                <p class="text-xl opacity-90">{{ rule.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <div class="rule-content-card">
+                    <!-- Severity Banner -->
+                    <div class="severity-banner {{ rule.severity }}">
+                        <span class="material-icons text-4xl">warning</span>
+                        <div>
+                            <div class="font-bold text-lg">{{ rule.get_severity_display }} Rule</div>
+                            <div class="text-sm opacity-80">This rule is classified as {{
+                                rule.get_severity_display|lower }} importance</div>
+                        </div>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">Category</div>
+                            <div class="info-item-value">{{ rule.category.name }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">Applicable To</div>
+                            <div class="info-item-value">{{ rule.applicable_to }}</div>
+                        </div>
+                        {% if rule.effective_date %}
+                        <div class="info-item">
+                            <div class="info-item-label">Effective Date</div>
+                            <div class="info-item-value">{{ rule.effective_date|date:"M d, Y" }}</div>
+                        </div>
+                        {% endif %}
+                        <div class="info-item">
+                            <div class="info-item-label">Last Updated</div>
+                            <div class="info-item-value">{{ rule.updated_at|date:"M d, Y" }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Full Rule Text -->
+                    <div class="mt-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="material-icons mr-2 text-purple-600">description</span>
+                            Full Rule Details
+                        </h2>
+                        <div class="rule-full-text">
+                            {% if rule.full_text %}
+                            {{ rule.full_text|linebreaks }}
+                            {% else %}
+                            {{ rule.description|linebreaks }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Documents Section -->
+                    {% if documents %}
+                    <div class="mt-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="material-icons mr-2 text-purple-600">attach_file</span>
+                            Related Documents
+                        </h2>
+                        {% for document in documents %}
+                        <div class="document-card">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-purple-100 p-3 rounded-lg">
+                                        <span class="material-icons text-purple-600">insert_drive_file</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800">{{ document.name }}</h3>
+                                        <p class="text-sm text-gray-500">Uploaded {{ document.uploaded_at|date:"M d, Y"
+                                            }}</p>
+                                    </div>
+                                </div>
+                                <a href="{{ document.file.url }}" download
+                                    class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                    <span class="material-icons mr-2">download</span>
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Related Rules -->
+                {% if related_rules %}
+                <div class="bg-white rounded-20px p-6 shadow-lg mb-6" style="border-radius: 20px;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="material-icons mr-2 text-purple-600">rule</span>
+                        Related Rules
+                    </h3>
+                    {% for related in related_rules %}
+                    <a href="{% url 'rules:public_rule_detail' related.id %}" class="block">
+                        <div class="related-rule-card">
+                            <div class="flex items-start gap-2 mb-2">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full
+                                    {% if related.severity == 'low' %}bg-green-100 text-green-700
+                                    {% elif related.severity == 'medium' %}bg-yellow-100 text-yellow-700
+                                    {% elif related.severity == 'high' %}bg-red-100 text-red-700
+                                    {% else %}bg-purple-100 text-purple-700{% endif %}">
+                                    {{ related.get_severity_display }}
+                                </span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-1">{{ related.title }}</h4>
+                            <p class="text-sm text-gray-600">{{ related.description|truncatewords:15 }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Back to All Rules -->
+                <div class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-20px p-6 text-white"
+                    style="border-radius: 20px;">
+                    <h3 class="text-xl font-bold mb-3">Browse All Rules</h3>
+                    <p class="mb-4 opacity-90">Explore all school rules and regulations</p>
+                    <a href="{% url 'rules:public_rules_list' %}"
+                        class="inline-flex items-center px-6 py-3 bg-white text-purple-600 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <span class="material-icons mr-2">list</span>
+                        View All Rules
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

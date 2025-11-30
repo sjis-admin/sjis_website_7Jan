@@ -195,3 +195,80 @@ def violation_tracking(request):
     }
 
     return render(request, 'rules/violation_tracking.html', context)
+
+# Public-facing views (no login required)
+def public_rules_list(request):
+    """
+    Public view for browsing school rules and regulations
+    """
+    # Get all active rules
+    rules = Rule.objects.filter(status='active').select_related('category')
+    
+    # Get all categories for filtering
+    categories = RuleCategory.objects.all()
+    
+    # Optional filtering
+    category_id = request.GET.get('category')
+    severity = request.GET.get('severity')
+    query = request.GET.get('query', '')
+    
+    if category_id:
+        rules = rules.filter(category__id=category_id)
+    
+    if severity:
+        rules = rules.filter(severity=severity)
+    
+    if query:
+        rules = rules.filter(
+            Q(title__icontains=query) | 
+            Q(description__icontains=query)
+        )
+    
+    context = {
+        'rules': rules,
+        'categories': categories,
+        'selected_category': category_id,
+        'selected_severity': severity,
+        'query': query,
+        'severity_choices': Rule.SEVERITY_CHOICES
+    }
+    
+    return render(request, 'rules/rules_public.html', context)
+
+def public_category_view(request, category_id):
+    """
+    Public view for viewing rules in a specific category
+    """
+    category = get_object_or_404(RuleCategory, id=category_id)
+    rules = Rule.objects.filter(category=category, status='active')
+    
+    context = {
+        'category': category,
+        'rules': rules,
+        'all_categories': RuleCategory.objects.all()
+    }
+    
+    return render(request, 'rules/category_public.html', context)
+
+def public_rule_detail(request, rule_id):
+    """
+    Public view for viewing detailed information about a specific rule
+    """
+    rule = get_object_or_404(Rule, id=rule_id, status='active')
+    
+    # Get related documents
+    documents = rule.documents.all()
+    
+    # Get related rules in the same category
+    related_rules = Rule.objects.filter(
+        category=rule.category, 
+        status='active'
+    ).exclude(id=rule.id)[:3]
+    
+    context = {
+        'rule': rule,
+        'documents': documents,
+        'related_rules': related_rules
+    }
+    
+    return render(request, 'rules/rule_public_detail.html', context)

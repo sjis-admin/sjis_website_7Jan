@@ -1,135 +1,444 @@
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+<style>
+    /* Premium Slider Styles */
+    .premium-slider {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Ken Burns Effect - Slow Zoom Animation */
+    .slide-image {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        animation: kenBurns 20s ease-out infinite alternate;
+        transform-origin: center;
+        will-change: transform;
+    }
+
+    @keyframes kenBurns {
+        0% {
+            transform: scale(1);
         }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 antialiased">
-    <div class="relative w-screen h-screen overflow-hidden">
-        <div class="swiper-container w-full h-full">
-            <div class="swiper-wrapper">
-                {% for image in images %}
-                <div class="swiper-slide relative group">
-                    <div 
-                        class="absolute inset-0 bg-cover bg-center transform transition-transform duration-700 group-hover:scale-105"
-                        style="background-image: url('{{ image.image.url }}')"
-                        data-swiper-parallax="-23%"
-                        role="img"
-                        aria-label="{{ image.caption }}"
-                    ><span class="sr-only">{{ image.caption }}</span></div>
 
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        100% {
+            transform: scale(1.15);
+        }
+    }
 
-                    <div class="container px-4 mx-auto relative z-10 h-full flex items-center justify-center">
-                        <div class="text-center max-w-4xl px-4 transform transition-all duration-700 
-                            translate-y-10 opacity-0 
-                            group-hover:translate-y-0 group-hover:opacity-100">
-                            
-                            <h2 class="text-white text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 
-                                tracking-tight leading-tight 
-                                animate-text bg-gradient-to-r from-white via-gray-200 to-gray-400 
-                                bg-clip-text text-transparent">
-                                {{ image.caption }}
-                            </h2>
+    /* Dynamic Gradient Overlay */
+    .gradient-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg,
+                rgba(102, 126, 234, 0.7) 0%,
+                rgba(118, 75, 162, 0.6) 50%,
+                rgba(0, 0, 0, 0.8) 100%);
+        opacity: 0.85;
+        transition: opacity 0.6s ease;
+    }
 
-                            {% if image.description %}
-                            <p class="text-base sm:text-xl md:text-2xl text-gray-200 mb-6 
-                                font-medium typewriter-text max-w-2xl mx-auto">
-                                {{ image.description }}
-                            </p>
-                            {% endif %}
+    .swiper-slide:hover .gradient-overlay {
+        opacity: 0.7;
+    }
 
-                            {% if image.action_url %}
-                            <a href="{{ image.action_url }}" 
-                               class="inline-flex items-center px-6 py-2 sm:px-8 sm:py-3 
-                                      border border-transparent text-sm sm:text-base font-medium 
-                                      rounded-full shadow-lg 
-                                      text-white bg-indigo-600 
-                                      hover:bg-indigo-700 
-                                      transition-all duration-300 
-                                      transform hover:scale-105 
-                                      group/btn">
-                                Learn More
-                                <i class="ri-arrow-right-line ml-2 
-                                    group-hover/btn:translate-x-1 
-                                    transition-transform"></i>
-                            </a>
-                            {% endif %}
-                        </div>
+    /* Content Container */
+    .slide-content {
+        position: relative;
+        z-index: 10;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    .content-wrapper {
+        max-width: 900px;
+        text-align: center;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: fadeInUp 1s ease-out 0.3s forwards;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Premium Typography */
+    .slide-caption {
+        font-size: clamp(2rem, 6vw, 5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.02em;
+        animation: textShimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes textShimmer {
+
+        0%,
+        100% {
+            filter: brightness(1);
+        }
+
+        50% {
+            filter: brightness(1.2);
+        }
+    }
+
+    .slide-description {
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-weight: 400;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 1s ease-out 0.6s backwards;
+    }
+
+    /* Premium CTA Button */
+    .slide-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2.5rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ffffff;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        animation: fadeInUp 1s ease-out 0.9s backwards;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .slide-cta:hover::before {
+        transform: translateX(0);
+    }
+
+    .slide-cta:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .slide-cta i {
+        transition: transform 0.4s ease;
+    }
+
+    .slide-cta:hover i {
+        transform: translateX(5px);
+    }
+
+    /* Glassmorphism Navigation */
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        color: #ffffff !important;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    /* Premium Pagination */
+    .swiper-pagination {
+        bottom: 40px !important;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.4);
+        opacity: 1;
+        border-radius: 50%;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+    }
+
+    .swiper-pagination-bullet-active {
+        width: 40px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.6);
+    }
+
+    .swiper-pagination-bullet:hover {
+        background: rgba(255, 255, 255, 0.7);
+        transform: scale(1.2);
+    }
+
+    /* Parallax Effect */
+    .parallax-bg {
+        transition: transform 0.3s ease-out;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .premium-slider {
+            height: 70vh;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            width: 45px;
+            height: 45px;
+        }
+
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+            font-size: 16px;
+        }
+
+        .slide-cta {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+        }
+    }
+
+    /* Loading Animation */
+    .slide-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        z-index: 100;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="premium-slider">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            {% for image in images %}
+            <div class="swiper-slide">
+                <!-- Ken Burns Effect Background -->
+                <div class="slide-image parallax-bg" style="background-image: url('{{ image.image.url }}');"
+                    data-swiper-parallax="-300"></div>
+
+                <!-- Dynamic Gradient Overlay -->
+                <div class="gradient-overlay"></div>
+
+                <!-- Content -->
+                <div class="slide-content">
+                    <div class="content-wrapper">
+                        {% if image.caption %}
+                        <h2 class="slide-caption">
+                            {{ image.caption }}
+                        </h2>
+                        {% endif %}
+
+                        {% if image.description %}
+                        <p class="slide-description">
+                            {{ image.description }}
+                        </p>
+                        {% endif %}
+
+                        {% if image.action_url %}
+                        <a href="{{ image.action_url }}" class="slide-cta">
+                            Learn More
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
-
-            <div class="swiper-button-prev rounded-full bg-white/20 backdrop-blur-sm 
-                        hover:bg-white/30 transition-all duration-300 
-                        hidden md:flex items-center justify-center 
-                        w-10 h-10 absolute top-1/2 left-4 z-20 
-                        -translate-y-1/2 text-white"></div>
-            <div class="swiper-button-next rounded-full bg-white/20 backdrop-blur-sm 
-                        hover:bg-white/30 transition-all duration-300 
-                        hidden md:flex items-center justify-center 
-                        w-10 h-10 absolute top-1/2 right-4 z-20 
-                        -translate-y-1/2 text-white"></div>
-
-            <div class="swiper-pagination 
-                        absolute bottom-8 left-1/2 
-                        -translate-x-1/2 
-                        flex space-x-2 z-20"></div>
+            {% endfor %}
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+        <!-- Glassmorphism Navigation -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+        <!-- Premium Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         const swiper = new Swiper('.swiper-container', {
+            // Core Settings
             loop: true,
-            speed: 1000,
+            speed: 1200,
             parallax: true,
+
+            // Autoplay
             autoplay: {
-                delay: 6000,
-                disableOnInteraction: false
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
             },
+
+            // Effects
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+
+            // Navigation
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+            // Pagination
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
-                renderBullet: function (index, className) {
-                    return `<span class="${className} w-6 h-2 
-                            bg-white/50 rounded-full mx-1 
-                            transition-all duration-300 
-                            hover:bg-white hover:w-8"></span>`;
-                },
+                dynamicBullets: false,
             },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev'
+
+            // Keyboard Control
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
             },
-            effect: 'creative',
-            creativeEffect: {
-                prev: {
-                    shadow: true,
-                    translate: ['-20%', 0, -1],
-                },
-                next: {
-                    translate: ['100%', 0, 0],
-                },
+
+            // Mouse Wheel
+            mousewheel: {
+                forceToAxis: true,
+                sensitivity: 1,
+                releaseOnEdges: true,
             },
+
+            // Lazy Loading
             lazy: {
                 loadPrevNext: true,
                 loadPrevNextAmount: 2
+            },
+
+            // Accessibility
+            a11y: {
+                enabled: true,
+                prevSlideMessage: 'Previous slide',
+                nextSlideMessage: 'Next slide',
+            },
+
+            // Performance
+            watchSlidesProgress: true,
+            watchSlidesVisibility: true,
+
+            // Events
+            on: {
+                init: function () {
+                    // Remove loading state
+                    const loader = document.querySelector('.slide-loading');
+                    if (loader) loader.remove();
+                },
+                slideChange: function () {
+                    // Reset Ken Burns animation on slide change
+                    const slides = document.querySelectorAll('.slide-image');
+                    slides.forEach(slide => {
+                        slide.style.animation = 'none';
+                        setTimeout(() => {
+                            slide.style.animation = 'kenBurns 20s ease-out infinite alternate';
+                        }, 10);
+                    });
+                }
+            }
+        });
+
+        // Parallax effect on mouse move
+        const slider = document.querySelector('.premium-slider');
+        slider.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+
+            const xPercent = (clientX / innerWidth - 0.5) * 2;
+            const yPercent = (clientY / innerHeight - 0.5) * 2;
+
+            const activeSlide = document.querySelector('.swiper-slide-active .parallax-bg');
+            if (activeSlide) {
+                activeSlide.style.transform = `scale(1.15) translate(${xPercent * 10}px, ${yPercent * 10}px)`;
+            }
+        });
+
+        // Reset parallax on mouse leave
+        slider.addEventListener('mouseleave', () => {
+            const activeSlide = document.querySelector('.swiper-slide-active .parallax-bg');
+            if (activeSlide) {
+                activeSlide.style.transform = 'scale(1.15)';
             }
         });
     });
-    </script>
-</body>
-</html>
+</script>

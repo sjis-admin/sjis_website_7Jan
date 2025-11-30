@@ -1,0 +1,54 @@
+{% load static %}
+
+<!-- Chatbot Widget -->
+<link rel="stylesheet" href="{% static 'chatbot/css/chatbot.css' %}">
+
+<!-- Floating Chat Button -->
+<button id="chatWidgetButton" class="chat-widget-button" aria-label="Open Chat">
+    💬
+</button>
+
+<!-- Chat Window -->
+<div id="chatWindow" class="chat-window">
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <div class="chat-header-content">
+            <span class="chat-icon">🤖</span>
+            <div class="chat-title">
+                <h3>SJIS Assistant</h3>
+                <span>Ask me anything!</span>
+            </div>
+        </div>
+        <button id="chatClose" class="chat-close" aria-label="Close Chat">
+            ✕
+        </button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="chatMessages" class="chat-messages">
+        <!-- Messages will be added here dynamically -->
+    </div>
+
+    <!-- Typing Indicator -->
+    <div id="typingIndicator" class="message bot typing-indicator">
+        <div class="message-avatar">🤖</div>
+        <div class="typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input-container">
+        <form id="chatForm" class="chat-input-form">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type your question..." autocomplete="off"
+                required>
+            <button type="submit" id="chatSendButton" class="chat-send-button" aria-label="Send message">
+                ➤
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'chatbot/js/chatbot.js' %}"></script>

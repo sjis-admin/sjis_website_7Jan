@@ -1,0 +1,124 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}Photo Gallery - St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-hero {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .album-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .album-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .album-cover {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .album-card:hover .album-cover {
+        transform: scale(1.05);
+    }
+
+    .album-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .album-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .album-card:hover .album-overlay {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mt-24">
+    <!-- Hero Section -->
+    <div class="gallery-hero">
+        <div class="container mx-auto px-4 text-center text-gray-800">
+            <h1 class="text-5xl font-bold mb-4">Photo Gallery</h1>
+            <p class="text-xl opacity-80 max-w-2xl mx-auto">Capturing moments, celebrating memories. Explore our
+                school's vibrant life through photos.</p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        {% if albums %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for album in albums %}
+            <a href="{% url 'gallery:album_detail' album.slug %}" class="block h-full">
+                <div class="album-card group relative">
+                    <div class="overflow-hidden relative">
+                        {% if album.cover_image %}
+                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-cover">
+                        {% else %}
+                        <div class="album-cover bg-gray-200 flex items-center justify-center">
+                            <span class="material-icons text-6xl text-gray-400">photo_album</span>
+                        </div>
+                        {% endif %}
+                        <div class="album-overlay">
+                            <span
+                                class="px-6 py-2 bg-white/90 backdrop-blur-sm rounded-full font-bold text-gray-800">View
+                                Album</span>
+                        </div>
+                    </div>
+                    <div class="album-content">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-pink-500 transition-colors">{{ album.title }}</h3>
+                        <p class="text-gray-600 text-sm mb-4 flex-grow">{{ album.description|truncatewords:20 }}</p>
+                        <div
+                            class="flex items-center justify-between text-xs text-gray-500 mt-auto pt-4 border-t border-gray-100">
+                            <span class="flex items-center"><i class="fas fa-camera mr-1"></i> {{ album.photos.count }}
+                                Photos</span>
+                            <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i>{{ album.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+            <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
+                <i class="fas fa-images text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-600">No albums yet</h3>
+            <p class="text-gray-500 mt-2">Check back soon for new photos!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
