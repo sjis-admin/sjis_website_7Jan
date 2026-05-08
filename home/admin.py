@@ -16,10 +16,10 @@ class CarouselImageAdmin(admin.ModelAdmin):
     
     def image_preview(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" style="max-height: 50px; max-width: 100px; object-fit: cover;" />'
+            return format_html('<img src="{}" style="max-height: 50px; max-width: 100px; object-fit: cover;" />', obj.image.url)
         return "No image"
     image_preview.short_description = 'Preview'
-    image_preview.allow_tags = True
+
 
 
 
