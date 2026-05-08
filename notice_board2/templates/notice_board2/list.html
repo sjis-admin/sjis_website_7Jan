@@ -1,142 +1,234 @@
-<!-- list.html -->
 {% extends 'mainbase.html' %}
 {% load static hitcount_tags %}
 
+{% block title %}Notice Board | St. Joseph International School{% endblock %}
+
 {% block content %}
-<div class="container mx-auto mt-24 px-4 py-8">
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-2xl mb-12 p-8">
-        <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-                Notice Board
+<style>
+    .notice-board-container {
+        background: radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.03) 0%, transparent 50%);
+    }
+
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .notice-card {
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .notice-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+        border-color: rgba(14, 165, 233, 0.2);
+    }
+
+    .search-input {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+        background: white;
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+    }
+
+    .category-chip {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        transition: all 0.2s ease;
+    }
+
+    .category-chip:hover {
+        background: white;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="notice-board-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-16 text-center animate-fadeIn">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                Notice <span class="text-brand-500">Board</span>
             </h1>
-            
-            
-            <!-- Search Bar -->
-            <form class="max-w-xl mx-auto flex" method="get">
-                <div class="relative flex-grow mr-2">
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+                Stay updated with the latest official announcements, event schedules, and important information from the SJIS administration.
+            </p>
+
+            <!-- Sophisticated Search & Filter -->
+            <div class="max-w-3xl mx-auto flex flex-col md:flex-row gap-4 p-2 mica-effect rounded-[2rem] shadow-xl">
+                <form class="flex-grow flex items-center relative group" method="get">
+                    <span class="material-icons absolute left-6 text-slate-400 group-focus-within:text-brand-500 transition-colors">search</span>
                     <input 
                         type="search" 
                         name="search" 
-                        placeholder="Search notices..." 
-                        class="w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white/30"
+                        placeholder="Search for notices, events or announcements..." 
+                        class="w-full pl-16 pr-6 py-5 rounded-[1.5rem] bg-white/50 border-none focus:ring-0 text-slate-700 placeholder-slate-400 font-medium text-lg"
+                        value="{{ request.GET.search|default:'' }}"
                     >
-                    <svg class="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-                <button type="submit" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300">
-                    Search
+                </form>
+                <button type="submit" class="fluent-button-primary px-10 py-5 rounded-[1.5rem] flex items-center justify-center gap-2 text-lg">
+                    <span>Search</span>
                 </button>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <!-- Notices Grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for notice in notices %}
-        <div class="group relative">
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3">
-                <!-- Decorative Gradient Overlay -->
-                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-                
-                <div class="p-6 relative">
-                    <!-- Title Section -->
-                    <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-xl font-bold text-gray-800 pr-4 break-words flex-grow">
-                            {{ notice.title }}
+        <!-- Featured Section (Newest Notice) -->
+        {% if notices and not request.GET.search %}
+        <div class="mb-20 animate-fadeIn" style="animation-delay: 0.1s">
+            <div class="relative group">
+                <div class="absolute inset-0 bg-brand-500 rounded-[3rem] blur-3xl opacity-5 group-hover:opacity-10 transition-opacity"></div>
+                <div class="relative mica-effect p-8 md:p-12 rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center gap-10">
+                    <div class="w-full lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-3">
+                            <span class="px-4 py-1.5 bg-rose-500 text-white text-[10px] font-bold rounded-full uppercase tracking-widest animate-pulse">FEATURED</span>
+                            <span class="text-slate-400 font-bold text-xs uppercase tracking-widest">LATEST UPDATE</span>
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 font-heading leading-tight">
+                            {{ notices.0.title }}
                         </h2>
-                        
-                        {% if notice.is_new %}
-                        <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full animate-pulse ml-2">
-                            New
-                        </span>
-                        {% endif %}
-                    </div>
-                    
-                    <!-- Notice Details -->
-                    <div class="space-y-3 mb-6">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <span>{{ notice.created_at|date:"F d, Y" }}</span>
+                        <div class="flex items-center gap-6 text-slate-500 font-semibold text-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="material-icons text-brand-500 text-lg">calendar_month</span>
+                                {{ notices.0.created_at|date:"F d, Y" }}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="material-icons text-brand-500 text-lg">visibility</span>
+                                {% get_hit_count for notices.0 %} Views
+                            </div>
                         </div>
-                        
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                            <span>Views: {% get_hit_count for notice %}</span>
+                        <p class="text-slate-600 line-clamp-2 text-lg leading-relaxed">
+                            {{ notices.0.content|striptags|truncatewords:30 }}
+                        </p>
+                        <div class="pt-4">
+                            <a href="{% url 'notice_board2:detail' notices.0.pk %}" class="fluent-button-primary inline-flex items-center gap-2 group/btn">
+                                View Full Notice
+                                <span class="material-icons transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                            </a>
                         </div>
-                        
-                    <div class="text-sm text-gray-700 flex items-center">
-                    <!-- Target Group Icon -->
-                    <span class="material-icons w-5 h-5 mr-2 text-blue-400">
-                        group
-                    </span>
-                    <span class="font-semibold">Target Group: </span>
-                    <span class="text-blue-600 ml-1">{{ notice.formatted_target_grades }}</span>
-                </div>
-
-
-
                     </div>
-                    
-                    <!-- View Details Button -->
-                    <a href="{% url 'notice_board2:detail' notice.pk %}"  
-                       class="w-full block text-center bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-3 rounded-lg 
-                              hover:from-blue-600 hover:to-purple-700 transition duration-300 
-                              group-hover:scale-105 transform">
-                        View Details
-                    </a>
+                    <div class="w-full lg:w-1/2 h-[300px] md:h-[400px] bg-slate-100 rounded-[2rem] overflow-hidden relative border border-white/50">
+                        <img src="{% if notices.0.attachment %}{{ notices.0.attachment.url }}{% else %}{% static 'images/sjis-placeholder.jpg' %}{% endif %}" 
+                             class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700" 
+                             alt="Notice Thumbnail">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="col-span-full text-center py-16 bg-white rounded-2xl shadow-lg">
-            <svg class="mx-auto w-24 h-24 text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 005.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <p class="text-2xl text-gray-600 mb-4">No notices available</p>
-            <p class="text-gray-500">Check back later for updates</p>
+        {% endif %}
+
+        <!-- Filter Chips -->
+        <div class="flex flex-wrap items-center gap-3 mb-10 animate-fadeIn" style="animation-delay: 0.2s">
+            <span class="text-sm font-bold text-slate-400 uppercase tracking-widest mr-2">Filter by:</span>
+            <a href="?" class="category-chip px-5 py-2 rounded-full text-sm font-bold {% if not request.GET.search %}bg-brand-500! text-white! border-brand-500! shadow-lg shadow-brand-500/20{% else %}text-slate-600{% endif %}">
+                All Notices
+            </a>
+            <a href="?search=Academic" class="category-chip px-5 py-2 rounded-full text-sm font-bold text-slate-600">Academic</a>
+            <a href="?search=Holiday" class="category-chip px-5 py-2 rounded-full text-sm font-bold text-slate-600">Holidays</a>
+            <a href="?search=Exam" class="category-chip px-5 py-2 rounded-full text-sm font-bold text-slate-600">Exams</a>
+            <a href="?search=Event" class="category-chip px-5 py-2 rounded-full text-sm font-bold text-slate-600">Events</a>
         </div>
-        {% endfor %}
-    </div>
 
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <div class="flex justify-center mt-12">
-        <div class="inline-flex items-center space-x-2 bg-white rounded-lg shadow-md p-1">
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" 
-                   class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-l-lg">
-                    Previous
+        <!-- Grid Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fadeIn" style="animation-delay: 0.3s">
+            {% for notice in notices %}
+            {% if not forloop.first or request.GET.search %}
+            <div class="notice-card mica-effect p-8 rounded-[2.5rem] flex flex-col h-full relative group">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-500/[0.08] text-brand-500 flex items-center justify-center group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                        <span class="material-icons">feed</span>
+                    </div>
+                    {% if notice.is_new %}
+                    <span class="px-3 py-1 bg-rose-500/10 text-rose-600 text-[10px] font-bold rounded-full uppercase tracking-widest border border-rose-500/10">NEW</span>
+                    {% endif %}
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-900 mb-4 font-heading group-hover:text-brand-600 transition-colors line-clamp-2">
+                    {{ notice.title }}
+                </h3>
+
+                <div class="space-y-4 mb-8 mt-auto">
+                    <div class="flex items-center gap-2 text-slate-500 font-semibold text-xs uppercase tracking-wider">
+                        <span class="material-icons text-brand-500 text-lg">calendar_today</span>
+                        {{ notice.created_at|date:"M d, Y" }}
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500 font-semibold text-xs uppercase tracking-wider">
+                        <span class="material-icons text-brand-500 text-lg">groups</span>
+                        Target: {{ notice.formatted_target_grades }}
+                    </div>
+                </div>
+
+                <a href="{% url 'notice_board2:detail' notice.pk %}" class="w-full py-4 rounded-2xl bg-slate-900 text-white font-bold text-center hover:bg-brand-500 hover:shadow-xl hover:shadow-brand-500/30 transition-all duration-300 group-hover:translate-y-[-2px]">
+                    Read Notice
                 </a>
+            </div>
             {% endif %}
+            {% empty %}
+            <div class="col-span-full py-24 text-center">
+                <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <span class="material-icons text-slate-300 text-6xl">search_off</span>
+                </div>
+                <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No results found</h3>
+                <p class="text-slate-500 max-w-sm mx-auto mb-10">We couldn't find any notices matching your criteria. Try adjusting your search or filters.</p>
+                <a href="?" class="fluent-button-primary">View All Notices</a>
+            </div>
+            {% endfor %}
+        </div>
 
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <span class="px-4 py-2 bg-blue-500 text-white">
-                        {{ num }}
-                    </span>
-                {% else %}
-                    <a href="?page={{ num }}" 
-                       class="px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        {{ num }}
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="mt-20 flex justify-center animate-fadeIn" style="animation-delay: 0.4s">
+            <nav class="flex items-center gap-3 p-2 mica-effect rounded-2xl shadow-lg border border-white/40">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-brand-500 hover:bg-white transition-all">
+                        <span class="material-icons">west</span>
                     </a>
                 {% endif %}
-            {% endfor %}
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" 
-                   class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-r-lg">
-                    Next
-                </a>
-            {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="w-12 h-12 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold shadow-lg shadow-brand-500/30">
+                            {{ num }}
+                        </span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-500 font-bold hover:bg-white hover:text-brand-500 transition-all">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-brand-500 hover:bg-white transition-all">
+                        <span class="material-icons">east</span>
+                    </a>
+                {% endif %}
+            </nav>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

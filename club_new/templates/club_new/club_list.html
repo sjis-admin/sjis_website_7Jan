@@ -1,36 +1,84 @@
 {% extends "mainbase.html" %}
 
-{% block content %}
-<div class="container mx-auto mt-36 mb-28">
-    <!-- Page Header -->
-    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-12">
-        <span class="border-b-4 border-blue-600 pb-2">Our Clubs</span>
-    </h1>
+{% block title %}Our Clubs | St. Joseph International School{% endblock %}
 
-    <!-- Clubs Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for club in clubs %}
-        <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
-            <!-- Club Logo -->
-            <div class="h-40 bg-gray-100 flex items-center justify-center">
-                <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="h-32 w-32 rounded-full border-4 border-gray-200">
-            </div>
-            
-            <!-- Club Info -->
-            <div class="p-6">
-                <h2 class="text-2xl font-semibold text-center text-gray-700">{{ club.name }}</h2>
-                <p class="text-center text-gray-500 mt-2">Established: 
-                    <span class="font-medium text-gray-600">{{ club.established_year }}</span>
-                </p>
+{% block content %}
+<style>
+    .club-list-container {
+        background: radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+    }
+
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .club-card {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .club-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+        border-color: rgba(14, 165, 233, 0.3);
+    }
+</style>
+
+<div class="club-list-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Header -->
+        <div class="text-center mb-16 reveal visible">
+            <span class="inline-block px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Student Life
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                Our <span class="text-brand-500">Clubs</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                Discover your passion, develop new skills, and connect with peers through our diverse range of student-led clubs and organizations.
+            </p>
+        </div>
+
+        <!-- Clubs Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal visible">
+            {% for club in clubs %}
+            <div class="club-card rounded-[2.5rem] flex flex-col items-center text-center p-8 group">
+                <!-- Club Logo -->
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl mb-6 bg-white flex items-center justify-center">
+                    <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                
+                <!-- Club Info -->
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 font-heading group-hover:text-brand-600 transition-colors">{{ club.name }}</h2>
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-8">
+                    <i class="ri-calendar-line"></i>
+                    Established {{ club.established_year }}
+                </div>
 
                 <!-- View Details Button -->
                 <a href="{% url 'club_new:club_detail' club.id %}" 
-                   class="mt-6 block bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                    <i class="fas fa-info-circle mr-2"></i>View Details
+                   class="mt-auto fluent-button-primary w-full py-4 rounded-2xl flex items-center justify-center gap-2 group/btn">
+                    Explore Club
+                    <i class="ri-arrow-right-up-line transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></i>
                 </a>
             </div>
+            {% empty %}
+            <div class="col-span-full py-24 text-center">
+                <div class="w-24 h-24 bg-white/50 mica-effect rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl border border-white">
+                    <i class="ri-group-line text-slate-300 text-5xl"></i>
+                </div>
+                <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No clubs yet</h3>
+                <p class="text-slate-500 max-w-sm mx-auto mb-10">Check back later for exciting new student organizations.</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

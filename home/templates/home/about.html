@@ -1,31 +1,32 @@
 <section class="py-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Left Side: Main Image with Gradient Background -->
+            <!-- Left Side: Main Image with Mica Backdrop -->
             <div class="relative group max-w-md mx-auto lg:max-w-none">
-                <div class="absolute -inset-1 bg-gradient-to-br from-purple-300 to-pink-300 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                <img src="{{ about_us.main_image.url }}" alt="{{ about_us.title }}" class="relative w-full max-w-md h-auto rounded-lg shadow-2xl transition duration-300 group-hover:scale-105">
+                <div class="absolute -inset-4 mica-effect rounded-2xl opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <img src="{{ about_us.main_image.url }}" alt="{{ about_us.title }}" class="relative w-full max-w-md h-auto rounded-xl shadow-2xl transition duration-500 group-hover:scale-105 border border-white/20">
             </div>
 
             <!-- Right Side: Content -->
-            <div class="space-y-8">
-                <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
-                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-                        {{ about_us.title|safe }}
-                    </span>
-                </h2>
-                <p class="text-xl text-gray-700 leading-relaxed">
-                    {{ about_us.short_description|safe }}
-                </p>
-                <div class="pt-4">
-                    <a href="{% url 'home:about_us_view' %}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-lg transform transition duration-500 hover:scale-105">
-                        Read More
-                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
+                <div class="space-y-6 lg:pl-8 reveal">
+                    <div class="space-y-3">
+                        <h3 class="text-brand-600 font-bold uppercase tracking-widest text-xs sm:text-sm">A Legacy of Excellence</h3>
+                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">
+                            {{ about_us.title|safe }}
+                        </h2>
+                    </div>
+                    <p class="text-lg text-slate-600 leading-relaxed font-light">
+                        {{ about_us.short_description|safe }}
+                    </p>
+                    <div class="pt-2">
+                        <a href="{% url 'home:about_us_view' %}" class="fluent-button-primary inline-flex items-center text-base shadow-xl">
+                            Explore Our Story
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </section>

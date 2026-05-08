@@ -1,191 +1,282 @@
-<!-- templates/contact.html -->
 {% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}Contact Us | St. Joseph International School{% endblock %}
+
 {% block extra_css %}
 <style>
-    /* Contact Form Unique Styling */
-    .contact-page {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        max-width: 1200px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .contact-container {
+        background: radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
     }
 
-    .contact-info {
-        flex: 1;
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(40px) saturate(180%);
+        -webkit-backdrop-filter: blur(40px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    .contact-info h3 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 15px;
+    .info-card {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.3s ease;
     }
 
-    .contact-info p {
-        font-size: 16px;
-        margin-bottom: 10px;
-        line-height: 1.6;
+    .info-card:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: translateY(-2px);
     }
 
-    .contact-info i {
-        color: #4CAF50;
-        margin-right: 10px;
-    }
-
-    .contact-info a {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .contact-info a:hover {
-        text-decoration: underline;
-    }
-
-    .google-map {
-        margin-top: 20px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .contact-form-container {
-        flex: 1;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-form-title {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-        font-size: 28px;
-    }
-
-    .contact-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .contact-form input, .contact-form textarea {
+    .contact-form input, 
+    .contact-form textarea,
+    .contact-form select {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        color: #1e293b;
     }
 
-    .contact-form textarea {
-        height: 150px;
-        resize: vertical;
+    .contact-form input:focus, 
+    .contact-form textarea:focus {
+        background: white;
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        outline: none;
     }
 
-    .contact-form-button {
-        padding: 12px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .contact-form-button:hover {
-        background-color: #45a049;
-    }
-    .contact-page {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        max-width: 1200px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-info, .contact-form-container {
-        flex: 1;
-        min-width: 300px;
-    }
-
-    /* Google Map Styling */
-    .google-map {
-        width: 100%;
-        height: 400px; /* Increased height for better visibility */
-        border-radius: 8px;
+    .map-wrapper {
+        position: relative;
         overflow: hidden;
-        margin-top: 20px;
-        background-color: #f0f0f0;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .map-wrapper iframe {
+        filter: grayscale(0.2) contrast(1.1);
+        transition: filter 0.5s ease;
+    }
+
+    .map-wrapper:hover iframe {
+        filter: grayscale(0);
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
         display: flex;
-        justify-content: center;
         align-items: center;
-        color: #888;
+        justify-content: center;
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        transition: all 0.2s ease;
     }
 
-    @media (max-width: 768px) {
-        .contact-page {
-            flex-direction: column;
-        }
-
-        .contact-form-container {
-            margin-bottom: 20px;
-        }
+    .social-link:hover {
+        background: #0ea5e9;
+        color: white;
+        border-color: #0ea5e9;
+        transform: translateY(-2px);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="contact-page" style="margin-top: 120px;">
-    <!-- Contact Information Section -->
-    <div class="contact-info">
-        <h3>Contact Information</h3>
-        <p><i class="fas fa-map-marker-alt"></i> Address: 97, Asad Avenue, Mohammadpur, Dhaka</p>
-        <p><i class="fas fa-envelope"></i> Email: <a href="mailto:info@sjis.edu.bd">info@sjis.edu.bd</a></p>
-        <p><i class="fas fa-phone"></i> Mobile: <a href="tel:+880188920020">0188920020</a></p>
-        <p><i class="fas fa-clock"></i> School hours: 9:00 AM to 5:20 PM</p>
-        <p><i class="fas fa-calendar"></i> Weekends: Friday & Saturday</p>
+<div class="contact-container min-h-screen pt-32 pb-20 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-16 animate-fadeIn">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                Get in <span class="text-brand-500">Touch</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl leading-relaxed font-medium">
+                Have questions or need assistance? Our team is here to help. Reach out via the form below or use our official contact channels.
+            </p>
+        </div>
 
-        <!-- Google Map Embed -->
-        <div id="map" class="google-map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.6543619965005!2d90.36774997483273!3d23.759701888420167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf542648ba63%3A0xdb1b53586c75ba96!2sSt.%20Joseph%20Higher%20Secondary%20School!5e0!3m2!1sen!2sbd!4v1764348278327!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Info & Map -->
+            <div class="lg:col-span-5 space-y-8 animate-fadeIn" style="animation-delay: 0.1s">
+                <div class="mica-effect p-8 rounded-[2.5rem] shadow-xl border border-white/50">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-8 font-heading">Contact Information</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="info-card p-4 rounded-2xl flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-600 flex items-center justify-center flex-shrink-0">
+                                <i class="ri-map-pin-2-line text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Our Location</h4>
+                                <p class="text-slate-700 font-bold">{% if site_config.address %}{{ site_config.address }}{% else %}97, Asad Avenue, Mohammadpur, Dhaka-1207{% endif %}</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card p-4 rounded-2xl flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                                <i class="ri-mail-send-line text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Email Us</h4>
+                                <p class="text-slate-700 font-bold">
+                                    <a href="mailto:{% if site_config.email %}{{ site_config.email }}{% else %}info@sjis.edu.bd{% endif %}" class="hover:text-brand-500 transition-colors">
+                                        {% if site_config.email %}{{ site_config.email }}{% else %}info@sjis.edu.bd{% endif %}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="info-card p-4 rounded-2xl flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                                <i class="ri-phone-line text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Call Support</h4>
+                                <p class="text-slate-700 font-bold">
+                                    <a href="tel:{% if site_config.phone %}{{ site_config.phone }}{% else %}+880188920020{% endif %}" class="hover:text-brand-500 transition-colors">
+                                        {% if site_config.phone %}{{ site_config.phone }}{% else %}0188920020{% endif %}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="info-card p-4 rounded-2xl flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center flex-shrink-0">
+                                <i class="ri-time-line text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Working Hours</h4>
+                                <p class="text-slate-700 font-bold">9:00 AM - 5:20 PM (Sun - Thu)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="mt-10 pt-8 border-t border-slate-100 flex items-center gap-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Follow us:</span>
+                        {% if site_config.facebook_url %}
+                        <a href="{{ site_config.facebook_url }}" target="_blank" class="social-link"><i class="ri-facebook-fill text-lg"></i></a>
+                        {% endif %}
+                        {% if site_config.instagram_url %}
+                        <a href="{{ site_config.instagram_url }}" target="_blank" class="social-link"><i class="ri-instagram-line text-lg"></i></a>
+                        {% endif %}
+                        {% if site_config.youtube_url %}
+                        <a href="{{ site_config.youtube_url }}" target="_blank" class="social-link"><i class="ri-youtube-fill text-lg"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Small Map Preview -->
+                <div class="map-wrapper h-[350px]">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.6543619965005!2d90.36774997483273!3d23.759701888420167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf542648ba63%3A0xdb1b53586c75ba96!2sSt.%20Joseph%20Higher%20Secondary%20School!5e0!3m2!1sen!2sbd!4v1764348278327!5m2!1sen!2sbd" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form -->
+            <div class="lg:col-span-7 animate-fadeIn" style="animation-delay: 0.2s">
+                <div class="mica-effect p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 relative overflow-hidden">
+                    <!-- Background Accent -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl"></div>
+                    
+                    <div class="relative">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-2 font-heading tracking-tight">Send a Message</h2>
+                        <p class="text-slate-500 mb-10 font-medium">We usually respond within 24 business hours.</p>
+
+                        <form method="post" class="contact-form space-y-6">
+                            {% csrf_token %}
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1">Full Name</label>
+                                    <input type="text" name="name" required placeholder="John Doe">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+                                    <input type="email" name="email" required placeholder="john@example.com">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1">Subject</label>
+                                <input type="text" name="subject" required placeholder="How can we help?">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-slate-700 ml-1">Your Message</label>
+                                <textarea name="message" required rows="5" placeholder="Tell us more about your inquiry..."></textarea>
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="fluent-button-primary w-full py-5 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-xl shadow-brand-500/20 group">
+                                    <span class="material-icons text-xl transition-transform group-hover:translate-x-1">send</span>
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if messages %}
+                        <div class="mt-8 space-y-4">
+                            {% for message in messages %}
+                            <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-100{% else %}bg-amber-50 text-amber-700 border border-amber-100{% endif %} flex items-center gap-3 animate-fadeIn">
+                                <i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} text-xl"></i>
+                                <span class="text-sm font-bold">{{ message }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Support Card -->
+                <div class="mt-8 mica-effect p-6 rounded-[2rem] border border-white/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-lg">
+                            <i class="ri-customer-service-2-fill text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-slate-900 font-extrabold tracking-tight">Direct Support</h4>
+                            <p class="text-xs text-slate-500 font-medium">Chat with our admission office directly</p>
+                        </div>
+                    </div>
+                    <a href="tel:{% if site_config.phone %}{{ site_config.phone }}{% else %}+880188920020{% endif %}" class="fluent-button-secondary px-8 py-3 rounded-xl text-sm font-bold border border-slate-200">
+                        Call Now
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <!-- Contact Form Section -->
-    <div class="contact-form-container">
-        <h2 class="contact-form-title">Contact Us</h2>
-        <form method="post" class="contact-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="contact-form-button">Send</button>
-        </form>
-
-        {% if messages %}
-            <ul class="contact-form-messages">
-                {% for message in messages %}
-                    <li class="contact-form-message-item">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}
 
-{% block extra_js %}
-<!-- Fontawesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-{% endblock %}
 

@@ -2,112 +2,278 @@
 {% extends 'mainbase.html' %}
 {% load static hitcount_tags %}
 
+{% block title %}{{ notice.title }} | Notice Board{% endblock %}
+
 {% block content %}
-<div class="container mx-auto mt-28 px-4 py-8">
-    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
-        <div class="p-8">
-            <div class="flex justify-between items-start mb-6">
-                <div class="flex-grow pr-4">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ notice.title }}</h1>
-                    {% if notice.is_new %}
-                        <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full animate-pulse">
-                            New Notice
+<style>
+    .notice-container {
+        background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.05), transparent),
+                    radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.05), transparent);
+    }
+    
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(40px) saturate(180%);
+        -webkit-backdrop-filter: blur(40px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .stat-pill {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.2s ease;
+    }
+
+    .stat-pill:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .content-area img {
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+    }
+
+    .attachment-viewer {
+        min-height: 600px;
+        background: rgba(248, 250, 252, 0.5);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .fluent-button-secondary {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(226, 232, 240, 1);
+        color: #475569;
+        transition: all 0.2s ease;
+    }
+
+    .fluent-button-secondary:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="notice-container min-h-screen pt-32 pb-20 px-4">
+    <div class="max-w-5xl mx-auto">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8 animate-fadeIn" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm font-medium text-slate-500">
+                <li class="inline-flex items-center">
+                    <a href="/" class="hover:text-brand-500 flex items-center gap-1">
+                        <span class="material-icons text-base">home</span> Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <span class="material-icons text-base mx-1 text-slate-400">chevron_right</span>
+                        <a href="{% url 'notice_board2:notice_board' %}" class="hover:text-brand-500">Notices</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <span class="material-icons text-base mx-1 text-slate-400">chevron_right</span>
+                        <span class="text-slate-400 truncate max-w-[200px]">Notice Details</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Main Card -->
+        <div class="mica-effect rounded-[2.5rem] overflow-hidden shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)] border border-white/50 animate-fadeIn">
+            <!-- Header Section -->
+            <div class="p-8 md:p-12 bg-gradient-to-br from-brand-500/[0.03] to-transparent border-b border-slate-100/50">
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="px-3 py-1 bg-brand-500/10 text-brand-600 text-[10px] font-bold rounded-full uppercase tracking-[0.1em] border border-brand-500/10">
+                            Official Publication
                         </span>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-4 mb-6 text-gray-600">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <span>Created: {{ notice.created_at|date:"F d, Y H:i" }}</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                    <span>Views: {% get_hit_count for notice %}</span>
-                </div>
-            </div>
-            
-            <div class="mb-6 flex items-center">
-            <span class="material-icons w-5 h-5 mr-2 text-blue-400">
-                group
-            </span>
-            <span class="font-semibold text-gray-700 mr-2">Target Group:</span>
-            <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-                {{ notice.formatted_target_grades }}
-            </span>
-        </div>
-
-
-            
-            <hr class="border-gray-200 my-6">
-            
-            <div class="prose prose-lg max-w-none mb-6 text-gray-800">
-                {{ notice.content|safe }}
-            </div>
-            
-            {% if notice.attachment %}
-            <div class="bg-gray-100 p-6 rounded-lg mb-6">
-                <h3 class="text-lg font-semibold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0013.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                    </svg>
-                    Attachment
-                </h3>
-                
-                {% with ext=notice.attachment.name|lower|slice:"-3:" %}
-                    {% if ext in 'jpegpnggifjpg' %}
-                        <div class="w-full h-[800px] flex items-center justify-center">
-                            <img src="{{ notice.attachment.url }}" 
-                                alt="{{ notice.attachment.name }}" 
-                                class="max-w-full max-h-full object-contain rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-zoom-in">
-                        </div>
-                    {% elif ext == 'pdf' %}
-                        <div class="w-full h-[800px] relative">
-                            <iframe 
-                                src="{{ notice.attachment.url }}" 
-                                width="100%" 
-                                height="100%" 
-                                class="border rounded-lg shadow-md"
-                                type="application/pdf">
-                                <p>Your browser does not support PDFs. 
-                                    <a href="{{ notice.attachment.url }}" download class="text-blue-600 hover:underline">
-                                        Download the PDF
-                                    </a>
-                                </p>
-                            </iframe>
-                        </div>
-                    {% endif %}
-                {% endwith %}
+                        {% if notice.is_new %}
+                            <span class="px-3 py-1 bg-rose-500/10 text-rose-600 text-[10px] font-bold rounded-full uppercase tracking-[0.1em] border border-rose-500/10 animate-pulse">
+                                Latest Release
+                            </span>
+                        {% endif %}
+                    </div>
                     
-                    <div class="mt-4 flex items-center justify-between">
-                        <a href="{{ notice.attachment.url }}"
-                           download
-                           class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                            </svg>
-                            Download Attachment
-                        </a>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] font-heading tracking-tight">
+                        {{ notice.title }}
+                    </h1>
+
+                    <div class="flex flex-wrap items-center gap-4 mt-2">
+                        <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-2xl">
+                            <span class="material-icons text-brand-500 text-lg">event_available</span>
+                            <span class="text-sm font-semibold text-slate-600">{{ notice.created_at|date:"M d, Y • H:i" }}</span>
+                        </div>
+                        <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-2xl">
+                            <span class="material-icons text-slate-400 text-lg">visibility</span>
+                            <span class="text-sm font-semibold text-slate-600">{% get_hit_count for notice %} Views</span>
+                        </div>
+                        <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-2xl bg-brand-500/[0.05] border-brand-500/10!">
+                            <span class="material-icons text-brand-500 text-lg">groups_2</span>
+                            <span class="text-sm font-bold text-brand-700">Target: {{ notice.formatted_target_grades }}</span>
+                        </div>
                     </div>
                 </div>
-            {% endif %}
-            
-            <div class="mt-6 flex space-x-4">
-                <a href="{% url 'notice_board2:notice_board' %}"
-                   class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-300 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to Notices
-                </a>
+            </div>
+
+            <!-- Content Section -->
+            <div class="p-8 md:p-12">
+                <div class="content-area prose prose-slate prose-lg max-w-none text-slate-700 leading-relaxed font-normal">
+                    {{ notice.content|safe }}
+                </div>
+
+                <!-- Attachments Section -->
+                {% if notice.attachment %}
+                <div class="mt-16 pt-12 border-t border-slate-100">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-brand-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-brand-500/20">
+                                <i class="ri-attachment-2 text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-slate-900 font-heading">Associated Document</h3>
+                                <p class="text-sm text-slate-500 font-medium">Official release for reference</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 w-full md:w-auto">
+                            <a href="{{ notice.attachment.url }}" target="_blank" class="fluent-button-secondary px-6 py-3 rounded-2xl flex items-center gap-2 text-sm font-bold flex-1 md:flex-none justify-center">
+                                <i class="ri-external-link-line text-lg"></i>
+                                Open Fullscreen
+                            </a>
+                            <a href="{{ notice.attachment.url }}" download class="fluent-button-primary px-6 py-3 rounded-2xl flex items-center gap-2 text-sm font-bold flex-1 md:flex-none justify-center">
+                                <i class="ri-download-2-line text-lg"></i>
+                                Save File
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced File Viewer -->
+                    <div class="mica-effect rounded-[2.5rem] overflow-hidden border border-white/60 shadow-xl relative group">
+                        {% with filename=notice.attachment.name|lower %}
+                            {% if ".jpg" in filename or ".jpeg" in filename or ".png" in filename or ".gif" in filename or ".webp" in filename %}
+                                <!-- Image Viewer -->
+                                <div class="w-full flex items-center justify-center p-4 md:p-8 bg-slate-50/50">
+                                    <img src="{{ notice.attachment.url }}" 
+                                         alt="Document Preview" 
+                                         class="max-w-full h-auto rounded-3xl shadow-2xl transition-all duration-700 group-hover:scale-[1.01] cursor-zoom-in"
+                                         onclick="window.open(this.src, '_blank')">
+                                </div>
+                            {% elif ".pdf" in filename %}
+                                <!-- PDF Rich Viewer Card -->
+                                <div class="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center p-8 md:p-20 bg-slate-900 relative overflow-hidden">
+                                    <!-- Background Pattern -->
+                                    <div class="absolute inset-0 opacity-10 pointer-events-none">
+                                        <i class="ri-file-pdf-2-line text-[20rem] absolute -bottom-20 -right-20"></i>
+                                    </div>
+                                    
+                                    <div class="relative z-10 text-center max-w-md">
+                                        <div class="w-24 h-24 bg-rose-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                                            <i class="ri-file-pdf-fill text-white text-5xl"></i>
+                                        </div>
+                                        <h4 class="text-2xl font-black text-white mb-4 font-heading tracking-tight">PDF Document Ready</h4>
+                                        <p class="text-slate-400 text-sm leading-relaxed mb-10 font-medium">
+                                            This document is available for secure viewing and high-quality printing. 
+                                            You can open it in a specialized viewer for the best experience.
+                                        </p>
+                                        
+                                        <div class="grid grid-cols-1 gap-3">
+                                            <a href="{{ notice.attachment.url }}" target="_blank" class="w-full py-4 bg-white text-slate-900 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-slate-100 transition-all">
+                                                <i class="ri-eye-line text-xl"></i>
+                                                Launch PDF Viewer
+                                            </a>
+                                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-[0.2em] mt-4">
+                                                Supported on Desktop, Mobile & Tablets
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <!-- Generic File Viewer -->
+                                <div class="flex flex-col items-center justify-center py-24 px-8 text-center">
+                                    <div class="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center mb-6">
+                                        <i class="ri-file-unknow-line text-4xl text-slate-400"></i>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-slate-900 mb-2">File Format Detected</h4>
+                                    <p class="text-slate-500 text-sm max-w-xs mx-auto mb-8">This file type does not support live previews. Please download the file to view its contents.</p>
+                                    <a href="{{ notice.attachment.url }}" download class="fluent-button-primary px-8 py-4 rounded-2xl flex items-center gap-2 text-sm font-bold">
+                                        <i class="ri-download-cloud-2-line text-xl"></i>
+                                        Download File
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Action Footer -->
+                <div class="mt-16 flex items-center justify-between pt-8 border-t border-slate-100/50">
+                    <a href="{% url 'notice_board2:notice_board' %}" class="fluent-button-secondary px-6 py-3 rounded-xl flex items-center gap-2 text-sm font-bold group">
+                        <span class="material-icons text-lg transition-transform group-hover:-translate-x-1">west</span>
+                        All Notices
+                    </a>
+                    
+                    <div class="flex items-center gap-4">
+                         <button onclick="window.print()" class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-500 hover:bg-white transition-all shadow-sm">
+                            <span class="material-icons text-xl">print</span>
+                         </button>
+                         <button onclick="navigator.share({title: '{{ notice.title }}', url: window.location.href})" class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-500 hover:bg-white transition-all shadow-sm">
+                            <span class="material-icons text-xl">share</span>
+                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Links / Related (Optional) -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="mica-effect p-6 rounded-3xl border border-white/50 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                    <span class="material-icons text-lg">help_outline</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800">Need Help?</h4>
+                    <p class="text-xs text-slate-500">Contact support office</p>
+                </div>
+            </div>
+             <div class="mica-effect p-6 rounded-3xl border border-white/50 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                    <span class="material-icons text-lg">history</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800">Archive</h4>
+                    <p class="text-xs text-slate-500">View past notices</p>
+                </div>
+            </div>
+             <div class="mica-effect p-6 rounded-3xl border border-white/50 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-brand-500/10 text-brand-600 flex items-center justify-center">
+                    <span class="material-icons text-lg">notifications_active</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800">Updates</h4>
+                    <p class="text-xs text-slate-500">Subscribe for more</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Add interaction logic if needed
+    document.addEventListener('DOMContentLoaded', () => {
+        // Animation sequence
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.mica-effect').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

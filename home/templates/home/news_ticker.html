@@ -1,60 +1,65 @@
 <style>
-    /* Dropdown styles */
-    .desktop-dropdown-content {
-        z-index: 1001;
-        /* Higher than header but lower than ticker */
-    }
-
-    /* News Ticker styles */
+    /* Modern News Ticker - Microsoft Fluent Style */
     .ticker-container {
-        background-color: #05445E;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         color: white;
-        height: 40px;
+        height: 48px;
         position: fixed;
-        top: 5rem;
-        /* 80px = h-20 mobile header */
+        top: calc(5rem + env(safe-area-inset-top)); /* h-20 mobile header */
         left: 0;
         right: 0;
         overflow: hidden;
-        z-index: 40;
-        /* Just below header (z-50) */
+        z-index: 45; /* Below header z-50 */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 1024px) {
         .ticker-container {
-            top: 6rem;
-            /* 96px = h-24 desktop header */
+            top: calc(6rem + env(safe-area-inset-top)); /* h-24 desktop header */
         }
     }
 
     .ticker-label {
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
+        background: #0ea5e9;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0 1.5rem;
+        height: 100%;
         display: flex;
         align-items: center;
-        padding: 0 20px;
-        background: linear-gradient(135deg, #1A5F7A, #127490);
-        font-weight: bold;
         z-index: 50;
-        color: white;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        border-right: 2px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .ticker-label::after {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 0;
+        border-top: 24px solid transparent;
+        border-bottom: 24px solid transparent;
+        border-left: 10px solid #0ea5e9;
     }
 
     .ticker-wrapper {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding-left: 150px;
+        flex: 1;
+        overflow: hidden;
+        position: relative;
     }
 
     .ticker {
         white-space: nowrap;
         display: inline-block;
         padding-left: 100%;
-        animation: ticker 40s linear infinite;
+        animation: tickerScroll 35s linear infinite;
     }
 
     .ticker:hover {
@@ -63,73 +68,74 @@
 
     .ticker-item {
         display: inline-block;
-        padding: 0 2rem;
-        color: rgba(255, 255, 255, 0.9);
+        padding: 0 3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.875rem;
+        font-weight: 500;
         text-decoration: none;
-        transition: color 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     .ticker-item:hover {
-        color: #8CDBF4;
-        text-decoration: none;
+        color: #0ea5e9;
     }
 
-
-    @keyframes ticker {
-        0% {
-            transform: translate3d(0, 0, 0);
-        }
-
-        100% {
-            transform: translate3d(-100%, 0, 0);
-        }
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        margin-right: 10px;
+        animation: pulse 1.5s infinite;
     }
 
-    /* Main content adjustment */
-    main {
-        margin-top: calc(5rem + 40px);
-        /* Mobile: Header height (80px) + ticker height (40px) = 120px */
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.5); opacity: 0.5; }
+        100% { transform: scale(1); opacity: 1; }
     }
 
-    @media (min-width: 768px) {
-        main {
-            margin-top: calc(6rem + 40px);
-            /* Desktop: Header height (96px) + ticker height (40px) = 136px */
+    @keyframes tickerScroll {
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    /* Padding for main content */
+    #main-content {
+        padding-top: calc(5rem + 48px + env(safe-area-inset-top));
+    }
+
+    @media (min-width: 1024px) {
+        #main-content {
+            padding-top: calc(6rem + 48px + env(safe-area-inset-top));
         }
     }
 </style>
 
 <!-- News Ticker -->
 <div class="ticker-container">
-    <div class="ticker-label">NOTICE</div>
+    <div class="ticker-label">
+        <span class="live-dot"></span>
+        Latest News
+    </div>
     <div class="ticker-wrapper">
         <div class="ticker">
             {% for notice in notices %}
-            <a href="{% url 'notice_board2:detail' notice.pk %}" class="ticker-item">{{ notice.title }}</a>
+            <a href="{% url 'notice_board2:detail' notice.pk %}" class="ticker-item">
+                <span class="text-brand-400 mr-2">/</span> {{ notice.title }}
+            </a>
+            {% empty %}
+            <span class="ticker-item">Welcome to St. Joseph International School - Admissions are open for the 2024-25 session.</span>
             {% endfor %}
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Duplicate ticker content for seamless scrolling
+    document.addEventListener('DOMContentLoaded', () => {
         const ticker = document.querySelector('.ticker');
         if (ticker) {
-            ticker.innerHTML += ticker.innerHTML;
+            ticker.innerHTML += ticker.innerHTML; // Duplicate for seamless scroll
         }
-
-        // Handle dropdown z-index dynamically
-        const dropdowns = document.querySelectorAll('.desktop-dropdown');
-        dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('mouseenter', () => {
-                const content = dropdown.querySelector('.desktop-dropdown-content');
-                if (content) content.style.zIndex = '1001';
-            });
-            dropdown.addEventListener('mouseleave', () => {
-                const content = dropdown.querySelector('.desktop-dropdown-content');
-                if (content) content.style.zIndex = '1001';
-            });
-        });
     });
 </script>

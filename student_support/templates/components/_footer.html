@@ -18,16 +18,16 @@
             <address class="not-italic">
                 <p class="flex items-center space-x-2 mb-2">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>97, Asad Avenue, Mohammadpur, Dhaka, Bangladesh</span>
+                    <span>{% if site_config.address %}{{ site_config.address }}{% else %}97, Asad Avenue, Mohammadpur, Dhaka, Bangladesh{% endif %}</span>
                 </p>
                 <p class="flex items-center space-x-2 mb-2">
                     <i class="fas fa-phone"></i>
-                    <span>+880 1793-970729</span>
+                    <span>{% if site_config.phone %}{{ site_config.phone }}{% else %}+880 1793-970729{% endif %}</span>
                 </p>
                 <p class="flex items-center space-x-2">
                     <i class="fas fa-envelope"></i>
-                    <a href="mailto:studentsupport@sjs.edu.bd" class="hover:text-secondary">
-                        studentsupport@sjs.edu.bd
+                    <a href="mailto:{% if site_config.email %}{{ site_config.email }}{% else %}info@sjis.edu.bd{% endif %}" class="hover:text-secondary">
+                        {% if site_config.email %}{{ site_config.email }}{% else %}info@sjis.edu.bd{% endif %}
                     </a>
                 </p>
             </address>
@@ -37,11 +37,15 @@
         <div>
             <h4 class="text-xl font-semibold mb-4">Follow Us</h4>
             <div class="flex space-x-4 text-2xl">
-                <a href="#" class="hover:text-secondary"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="hover:text-secondary"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="hover:text-secondary"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="hover:text-secondary"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-secondary"><i class="fab fa-youtube"></i></a>
+                {% if site_config.facebook_url %}
+                <a href="{{ site_config.facebook_url }}" target="_blank" class="hover:text-secondary"><i class="fab fa-facebook"></i></a>
+                {% endif %}
+                {% if site_config.instagram_url %}
+                <a href="{{ site_config.instagram_url }}" target="_blank" class="hover:text-secondary"><i class="fab fa-instagram"></i></a>
+                {% endif %}
+                {% if site_config.youtube_url %}
+                <a href="{{ site_config.youtube_url }}" target="_blank" class="hover:text-secondary"><i class="fab fa-youtube"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,80 +1,72 @@
 {% load static %}
-{% block extra_css %}
-<!-- Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <!-- Splide.js CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
-{% endblock %}
 <style>
-  /* Style arrows to position them outside the slider */
-
-
   .splide__arrow {
-    background-color: #4a5568; /* Dark gray */
-    color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #0c4a6e;
+    width: 48px;
+    height: 48px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
   .splide__arrow:hover {
-    background-color: #2d3748; /* Darker gray on hover */
-    
+    background: #0ea5e9;
+    color: white;
+    transform: scale(1.1);
   }
 
-  .splide__arrow--prev {
-    position: absolute;
-    left: -50px; /* Adjust to move the arrow further left */
-    top: 50%;
-    transform: translateY(-50%);
-  }
+  .splide__arrow--prev { left: -24px; }
+  .splide__arrow--next { right: -24px; }
 
-  .splide__arrow--next {
-    position: absolute;
-    right: -50px; /* Adjust to move the arrow further right */
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .splide__arrow i {
-    font-size: 18px;
+  @media (max-width: 1280px) {
+    .splide__arrow--prev { left: 0; }
+    .splide__arrow--next { right: 0; }
   }
 </style>
 
-<div class="bg-gray-50 dark:bg-gray-900 py-8">
-  <div class="container mx-auto px-4">
-    <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">Latest News</h2>
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+        <div class="space-y-4">
+            <h3 class="text-brand-600 font-bold uppercase tracking-widest text-sm">Stay Updated</h3>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 font-heading">Latest News & Events</h2>
+            <div class="w-20 h-1.5 bg-brand-500 rounded-full"></div>
+        </div>
+        <a href="{% url 'home:news_list' %}" class="text-brand-600 font-semibold flex items-center hover:gap-2 transition-all">
+            View All News <i class="ri-arrow-right-line ml-2"></i>
+        </a>
+    </div>
+
     <!-- Splide Slider -->
-    <div id="news-slider" class="splide">
-      <!-- Arrows -->
-      <div class="splide__arrows custom-arrows">
-        <button class="splide__arrow splide__arrow--prev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="splide__arrow splide__arrow--next">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
+    <div id="news-slider" class="splide group">
       <div class="splide__track">
         <ul class="splide__list">
           {% for article in news_articles %}
-          <li class="splide__slide">
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
-              <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-48 object-cover">
-              <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ article.title }}</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ article.short_description|slice:":100" }}...</p>
-                <div class="flex items-center justify-between text-gray-500 dark:text-gray-400">
-                  <div class="flex items-center space-x-1">
-                    <i class="far fa-calendar-alt"></i>
-                    <span>{{ article.published_date }}</span>
-                  </div>
-                  <a href="{% url 'home:news_detail' article.pk %}" class="text-blue-500 hover:underline">Read More</a>
+          <li class="splide__slide p-2">
+            <div class="fluent-card rounded-2xl overflow-hidden h-full flex flex-col border border-slate-100 group/card">
+              <div class="relative overflow-hidden aspect-video">
+                <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover transform group-hover/card:scale-110 transition-transform duration-700">
+                <div class="absolute top-4 left-4">
+                    <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+                        {{ article.published_date|date:"M d, Y" }}
+                    </span>
+                </div>
+              </div>
+              <div class="p-8 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold text-slate-900 mb-4 line-clamp-2 leading-snug group-hover/card:text-brand-600 transition-colors">{{ article.title }}</h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 font-light">{{ article.short_description|striptags }}</p>
+                <div class="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                  <span class="text-slate-400 text-xs flex items-center">
+                    <i class="ri-time-line mr-1.5"></i> 5 min read
+                  </span>
+                  <a href="{% url 'home:news_detail' article.pk %}" class="text-brand-600 font-bold text-sm inline-flex items-center group/link">
+                    Read Story
+                    <i class="ri-arrow-right-up-line ml-1 transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform"></i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -84,10 +76,8 @@
       </div>
     </div>
   </div>
-</div>
+</section>
 
-
-{% block extra_js %}
 <!-- Splide.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
 <script>
@@ -96,21 +86,18 @@
       type: 'loop',
       perPage: 3,
       perMove: 1,
-      autoplay: true, // Enable autoplay
-      interval: 3000, // Time in milliseconds between slides (3 seconds)
-      pauseOnHover: true, // Pause autoplay when hovering over the slider
+      autoplay: true,
+      interval: 4000,
+      pauseOnHover: true,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      speed: 800,
       breakpoints: {
         1024: { perPage: 2 },
         768: { perPage: 1 },
       },
-      gap: '1rem',
-      pagination: false,
+      gap: '2rem',
+      pagination: true,
       arrows: true,
     }).mount();
   });
 </script>
-{% endblock %}
-
-
-
-

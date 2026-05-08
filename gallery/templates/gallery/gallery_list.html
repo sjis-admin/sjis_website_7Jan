@@ -1,109 +1,120 @@
 {% extends 'mainbase.html' %}
 {% load static %}
 
-{% block title %}Photo Gallery - St. Joseph International School{% endblock %}
+{% block title %}Photo Gallery | St. Joseph International School{% endblock %}
 
 {% block extra_css %}
 <style>
-    .gallery-hero {
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-        padding: 4rem 0;
-        margin-bottom: 3rem;
+    .gallery-container {
+        background: radial-gradient(circle at 0% 0%, rgba(244, 114, 182, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.03) 0%, transparent 50%);
+    }
+
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .album-card {
-        background: white;
-        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
         overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
     }
 
     .album-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        transform: translateY(-10px) scale(1.02);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.15);
+        border-color: rgba(244, 114, 182, 0.3);
     }
 
-    .album-cover {
-        height: 250px;
-        width: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
+    .album-image-wrapper img {
+        transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
     }
 
-    .album-card:hover .album-cover {
-        transform: scale(1.05);
+    .album-card:hover .album-image-wrapper img {
+        transform: scale(1.1);
     }
 
-    .album-content {
-        padding: 1.5rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .album-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
+    .view-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
     }
 
-    .album-card:hover .album-overlay {
+    .album-card:hover .view-badge {
         opacity: 1;
+        transform: translateY(0);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="mt-24">
-    <!-- Hero Section -->
-    <div class="gallery-hero">
-        <div class="container mx-auto px-4 text-center text-gray-800">
-            <h1 class="text-5xl font-bold mb-4">Photo Gallery</h1>
-            <p class="text-xl opacity-80 max-w-2xl mx-auto">Capturing moments, celebrating memories. Explore our
-                school's vibrant life through photos.</p>
+<div class="gallery-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Hero Header -->
+        <div class="text-center mb-20 animate-fadeIn">
+            <span class="inline-block px-4 py-1.5 bg-pink-50 text-pink-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Visual Journey
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-8 font-heading tracking-tight">
+                Photo <span class="text-pink-500">Gallery</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                Capturing moments, celebrating memories. Explore the vibrant life and events of our school through our official photo archives.
+            </p>
         </div>
-    </div>
 
-    <div class="container mx-auto px-4 pb-12">
         {% if albums %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Album Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 animate-fadeIn" style="animation-delay: 0.1s">
             {% for album in albums %}
-            <a href="{% url 'gallery:album_detail' album.slug %}" class="block h-full">
-                <div class="album-card group relative">
-                    <div class="overflow-hidden relative">
-                        {% if album.cover_image %}
-                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-cover">
-                        {% else %}
-                        <div class="album-cover bg-gray-200 flex items-center justify-center">
-                            <span class="material-icons text-6xl text-gray-400">photo_album</span>
-                        </div>
-                        {% endif %}
-                        <div class="album-overlay">
-                            <span
-                                class="px-6 py-2 bg-white/90 backdrop-blur-sm rounded-full font-bold text-gray-800">View
-                                Album</span>
+            <a href="{% url 'gallery:album_detail' album.slug %}" class="album-card rounded-[2.5rem] shadow-sm flex flex-col group">
+                <!-- Cover Image -->
+                <div class="relative aspect-[4/3] overflow-hidden album-image-wrapper">
+                    {% if album.cover_image %}
+                    <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-slate-100 flex flex-col items-center justify-center text-slate-300">
+                        <i class="ri-gallery-line text-7xl mb-4"></i>
+                        <p class="text-xs font-bold uppercase tracking-widest">No Cover Image</p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- View Badge Overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="view-badge px-8 py-3 rounded-full text-white font-bold flex items-center gap-2">
+                            <i class="ri-eye-line"></i>
+                            View Album
                         </div>
                     </div>
-                    <div class="album-content">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-pink-500 transition-colors">{{ album.title }}</h3>
-                        <p class="text-gray-600 text-sm mb-4 flex-grow">{{ album.description|truncatewords:20 }}</p>
-                        <div
-                            class="flex items-center justify-between text-xs text-gray-500 mt-auto pt-4 border-t border-gray-100">
-                            <span class="flex items-center"><i class="fas fa-camera mr-1"></i> {{ album.photos.count }}
-                                Photos</span>
-                            <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i>{{ album.created_at|date:"M d, Y" }}</span>
+                </div>
+
+                <!-- Info Area -->
+                <div class="p-8 bg-white/40 border-t border-white/20">
+                    <h3 class="text-2xl font-extrabold text-slate-900 mb-2 font-heading group-hover:text-pink-600 transition-colors">
+                        {{ album.title }}
+                    </h3>
+                    <p class="text-slate-500 text-sm mb-6 line-clamp-2 leading-relaxed">
+                        {{ album.description|default:"Explore the beautiful moments captured during this event." }}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-200/50">
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="ri-camera-lens-line text-lg"></i>
+                            <span class="text-xs font-bold uppercase tracking-widest">{{ album.photos.count }} Photos</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="ri-calendar-event-line text-lg"></i>
+                            <span class="text-xs font-bold uppercase tracking-widest">{{ album.created_at|date:"M d, Y" }}</span>
                         </div>
                     </div>
                 </div>
@@ -111,14 +122,30 @@
             {% endfor %}
         </div>
         {% else %}
-        <div class="text-center py-20">
-            <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
-                <i class="fas fa-images text-4xl text-gray-400"></i>
+        <!-- Empty State -->
+        <div class="py-32 text-center animate-fadeIn">
+            <div class="w-24 h-24 bg-white/50 mica-effect rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl border border-white">
+                <i class="ri-image-add-line text-slate-300 text-5xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-600">No albums yet</h3>
-            <p class="text-gray-500 mt-2">Check back soon for new photos!</p>
+            <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No albums yet</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-10">We're currently curating our photo collection. Please check back soon for new updates!</p>
         </div>
         {% endif %}
+
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

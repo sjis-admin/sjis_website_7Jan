@@ -1,180 +1,109 @@
 {% extends 'mainbase.html' %}
 {% load static %}
 
-{% block title %}School Rules & Regulations - St. Joseph International School{% endblock %}
+{% block title %}Rules & Regulations | St. Joseph International School{% endblock %}
 
 {% block extra_css %}
 <style>
-    .rules-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 4rem 0;
-        margin-bottom: 3rem;
+    .rules-container {
+        background: radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+    }
+
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .rule-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        border-left-width: 8px;
     }
 
     .rule-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        transform: translateX(10px) scale(1.01);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
     }
 
-    .rule-card.severity-low {
-        border-left-color: #10b981;
-    }
+    .severity-low { border-left-color: #10b981; }
+    .severity-medium { border-left-color: #f59e0b; }
+    .severity-high { border-left-color: #ef4444; }
+    .severity-critical { border-left-color: #7c3aed; }
 
-    .rule-card.severity-medium {
-        border-left-color: #f59e0b;
-    }
-
-    .rule-card.severity-high {
-        border-left-color: #ef4444;
-    }
-
-    .rule-card.severity-critical {
-        border-left-color: #7c3aed;
-    }
-
-    .severity-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.375rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .severity-badge.low {
-        background-color: #d1fae5;
-        color: #065f46;
-    }
-
-    .severity-badge.medium {
-        background-color: #fef3c7;
-        color: #92400e;
-    }
-
-    .severity-badge.high {
-        background-color: #fee2e2;
-        color: #991b1b;
-    }
-
-    .severity-badge.critical {
-        background-color: #ede9fe;
-        color: #5b21b6;
-    }
-
-    .category-pill {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        margin: 0.25rem;
-        background: white;
-        border: 2px solid #e5e7eb;
-        border-radius: 9999px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-weight: 500;
-    }
-
-    .category-pill:hover {
-        border-color: #667eea;
-        background: #f3f4f6;
-        transform: translateY(-2px);
-    }
-
-    .category-pill.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-color: transparent;
-    }
-
-    .search-box {
-        background: white;
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    }
-
-    .filter-sidebar {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    .sidebar-sticky {
         position: sticky;
         top: 120px;
     }
 
-    .applicable-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.25rem 0.75rem;
-        background: #f3f4f6;
-        border-radius: 6px;
-        font-size: 0.875rem;
-        color: #4b5563;
+    .filter-btn {
+        transition: all 0.2s ease;
+    }
+
+    .filter-btn.active {
+        background: #7c3aed;
+        color: white;
+        box-shadow: 0 8px 15px rgba(124, 58, 237, 0.2);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="mt-24">
-    <!-- Hero Section -->
-    <div class="rules-hero">
-        <div class="container mx-auto px-4">
-            <div class="text-center text-white">
-                <h1 class="text-5xl font-bold mb-4">School Rules & Regulations</h1>
-                <p class="text-xl opacity-90">Guidelines for a safe and respectful learning environment</p>
-            </div>
+<div class="rules-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Hero Header -->
+        <div class="text-center mb-16 animate-fadeIn">
+            <span class="inline-block px-4 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Conduct & Ethics
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                Rules & <span class="text-purple-600">Regulations</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                Guidelines for a safe, respectful, and inclusive learning environment for all members of the SJIS community.
+            </p>
         </div>
-    </div>
 
-    <div class="container mx-auto px-4 pb-12">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            
             <!-- Sidebar Filters -->
-            <div class="lg:col-span-1">
-                <div class="filter-sidebar">
-                    <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <span class="material-icons mr-2 text-purple-600">filter_list</span>
-                        Filters
-                    </h3>
-
-                    <!-- Search -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Search Rules</label>
-                        <form method="get" action="">
-                            <input type="text" name="query" value="{{ query }}" placeholder="Search by keyword..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            <button type="submit"
-                                class="w-full mt-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 rounded-lg hover:shadow-lg transition-all duration-300">
-                                Search
+            <aside class="lg:col-span-1 space-y-8 animate-fadeIn" style="animation-delay: 0.1s">
+                <div class="sidebar-sticky space-y-8">
+                    <!-- Search Box -->
+                    <div class="mica-effect p-6 rounded-3xl border border-white/60 shadow-xl">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Search Keywords</h3>
+                        <form method="get" action="" class="relative">
+                            <input type="text" name="query" value="{{ query|default:'' }}" 
+                                   class="w-full bg-white/50 border-none rounded-2xl px-4 py-3 text-slate-700 placeholder-slate-400 font-medium focus:ring-2 focus:ring-purple-500 transition-all"
+                                   placeholder="Type to search...">
+                            <button type="submit" class="absolute right-2 top-2 w-8 h-8 bg-purple-600 text-white rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="ri-search-line"></i>
                             </button>
                         </form>
                     </div>
 
                     <!-- Categories -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Categories</label>
+                    <div class="mica-effect p-6 rounded-3xl border border-white/60 shadow-xl">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Categories</h3>
                         <div class="space-y-2">
-                            <a href="{% url 'rules:public_rules_list' %}"
-                                class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
-                                All Rules
+                            <a href="{% url 'rules:public_rules_list' %}" 
+                               class="filter-btn block px-4 py-3 rounded-2xl font-bold text-sm {% if not selected_category %}active{% else %}text-slate-600 hover:bg-white/50{% endif %}">
+                                <div class="flex items-center gap-3">
+                                    <i class="ri-apps-line"></i>
+                                    All Rules
+                                </div>
                             </a>
                             {% for category in categories %}
-                            <a href="?category={{ category.id }}"
-                                class="block px-4 py-2 rounded-lg {% if selected_category == category.id|stringformat:'s' %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
-                                <div class="flex items-center">
-                                    {% if category.icon %}
-                                    <i class="fas {{ category.icon }} mr-2"></i>
-                                    {% endif %}
+                            <a href="?category={{ category.id }}" 
+                               class="filter-btn block px-4 py-3 rounded-2xl font-bold text-sm {% if selected_category == category.id|stringformat:'s' %}active{% else %}text-slate-600 hover:bg-white/50{% endif %}">
+                                <div class="flex items-center gap-3">
+                                    <i class="ri-folder-info-line"></i>
                                     {{ category.name }}
                                 </div>
                             </a>
@@ -182,94 +111,114 @@
                         </div>
                     </div>
 
-                    <!-- Severity Filter -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Severity Level</label>
+                    <!-- Severity -->
+                    <div class="mica-effect p-6 rounded-3xl border border-white/60 shadow-xl">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Severity Level</h3>
                         <div class="space-y-2">
-                            <a href="{% url 'rules:public_rules_list' %}"
-                                class="block px-4 py-2 rounded-lg {% if not selected_severity %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
-                                All Levels
-                            </a>
                             {% for value, label in severity_choices %}
-                            <a href="?severity={{ value }}"
-                                class="block px-4 py-2 rounded-lg {% if selected_severity == value %}bg-purple-100 text-purple-700 font-semibold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
-                                {{ label }}
+                            <a href="?severity={{ value }}" 
+                               class="filter-btn block px-4 py-3 rounded-2xl font-bold text-sm {% if selected_severity == value %}active{% else %}text-slate-600 hover:bg-white/50{% endif %}">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 rounded-full severity-{{ value|lower }}"></span>
+                                    {{ label }}
+                                </div>
                             </a>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
-            </div>
+            </aside>
 
-            <!-- Rules List -->
-            <div class="lg:col-span-3">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        {% if selected_category %}
-                        Category: {{ categories|first }}
-                        {% elif query %}
-                        Search Results for "{{ query }}"
-                        {% else %}
-                        All Rules & Regulations
-                        {% endif %}
+            <!-- Rules Content -->
+            <main class="lg:col-span-3 space-y-6 animate-fadeIn" style="animation-delay: 0.2s">
+                <div class="flex items-center justify-between mb-8 px-4">
+                    <h2 class="text-xl font-bold text-slate-800">
+                        {{ rules.count }} Official Regulation{{ rules.count|pluralize }}
                     </h2>
-                    <p class="text-gray-600 mt-1">{{ rules.count }} rule{{ rules.count|pluralize }} found</p>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                        Last Updated: {% now "F Y" %}
+                    </div>
                 </div>
 
                 {% if rules %}
                 {% for rule in rules %}
-                <div class="rule-card severity-{{ rule.severity }}">
-                    <div class="flex items-start justify-between mb-3">
+                <div class="rule-card severity-{{ rule.severity }} p-8 rounded-[2.5rem] shadow-sm flex flex-col group relative overflow-hidden">
+                    <!-- Background Decor -->
+                    <div class="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                        <i class="ri-shield-check-line text-8xl"></i>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
                         <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="severity-badge {{ rule.severity }}">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest 
+                                             {% if rule.severity == 'low' %}bg-emerald-50 text-emerald-600{% elif rule.severity == 'medium' %}bg-amber-50 text-amber-600{% else %}bg-rose-50 text-rose-600{% endif %}">
                                     {{ rule.get_severity_display }}
                                 </span>
-                                <span class="applicable-tag">
-                                    <span class="material-icons text-sm mr-1">group</span>
+                                <span class="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                    <i class="ri-group-line text-xs"></i>
                                     {{ rule.applicable_to }}
                                 </span>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ rule.title }}</h3>
-                            <p class="text-gray-600 mb-3">{{ rule.description|truncatewords:30 }}</p>
-
-                            <div class="flex items-center text-sm text-gray-500 gap-4">
-                                <span class="flex items-center">
-                                    <span class="material-icons text-sm mr-1">category</span>
-                                    {{ rule.category.name }}
-                                </span>
-                                {% if rule.effective_date %}
-                                <span class="flex items-center">
-                                    <span class="material-icons text-sm mr-1">event</span>
-                                    Effective: {{ rule.effective_date|date:"M d, Y" }}
-                                </span>
-                                {% endif %}
-                            </div>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mb-2 font-heading group-hover:text-purple-600 transition-colors">
+                                {{ rule.title }}
+                            </h3>
+                            <p class="text-slate-500 leading-relaxed max-w-2xl">
+                                {{ rule.description|truncatewords:30 }}
+                            </p>
+                        </div>
+                        
+                        <div class="flex-shrink-0">
+                            <a href="{% url 'rules:public_rule_detail' rule.id %}" 
+                               class="w-14 h-14 rounded-2xl bg-white/50 border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all shadow-sm">
+                                <i class="ri-arrow-right-line text-xl"></i>
+                            </a>
                         </div>
                     </div>
 
-                    <div class="flex justify-end">
-                        <a href="{% url 'rules:public_rule_detail' rule.id %}"
-                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                            Read Full Rule
-                            <span class="material-icons ml-2 text-sm">arrow_forward</span>
-                        </a>
+                    <!-- Meta -->
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap gap-6 relative z-10">
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="ri-bookmark-3-line"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">{{ rule.category.name }}</span>
+                        </div>
+                        {% if rule.effective_date %}
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="ri-calendar-check-line"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Effective: {{ rule.effective_date|date:"M d, Y" }}</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
                 {% else %}
-                <div class="text-center py-12">
-                    <span class="material-icons text-gray-300" style="font-size: 80px;">search_off</span>
-                    <h3 class="text-2xl font-bold text-gray-600 mt-4">No Rules Found</h3>
-                    <p class="text-gray-500 mt-2">Try adjusting your filters or search terms</p>
-                    <a href="{% url 'rules:public_rules_list' %}"
-                        class="inline-block mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                        Clear All Filters
-                    </a>
+                <!-- Empty State -->
+                <div class="py-32 text-center mica-effect rounded-[3rem] border border-white/60">
+                    <div class="w-24 h-24 bg-white/50 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl border border-white">
+                        <i class="ri-search-eye-line text-slate-300 text-5xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No Rules Found</h3>
+                    <p class="text-slate-500 max-w-sm mx-auto mb-10">We couldn't find any regulations matching your current filters. Please try broadining your search.</p>
+                    <a href="{% url 'rules:public_rules_list' %}" class="fluent-button-primary">Reset Filters</a>
                 </div>
                 {% endif %}
-            </div>
+            </main>
         </div>
+
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

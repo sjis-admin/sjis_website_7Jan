@@ -1,8 +1,9 @@
 # home/admin.py
 from django.contrib import admin
-from .models import CarouselImage, AboutUs, NewsArticle, NewsTicker, FacultyMember, PrincipalMessage, AboutUsSection, SiteConfiguration
+from .models import CarouselImage, AboutUs, NewsArticle, NewsTicker, FacultyMember, PrincipalMessage, AboutUsSection, SiteConfiguration, PopupAnnouncement
 from tinymce.widgets import TinyMCE
 from django.db import models
+from django.utils.html import format_html
 
 @admin.register(CarouselImage)
 class CarouselImageAdmin(admin.ModelAdmin):
@@ -90,13 +91,13 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
     list_display = ('site_name', 'email', 'phone')
     fieldsets = (
         ('General', {
-            'fields': ('site_name', 'logo', 'favicon')
+            'fields': ('site_name', 'logo', 'logo_footer', 'favicon')
         }),
         ('Contact Information', {
             'fields': ('address', 'email', 'phone')
         }),
         ('Social Media', {
-            'fields': ('facebook_url', 'twitter_url', 'instagram_url', 'youtube_url')
+            'fields': ('facebook_url', 'instagram_url', 'youtube_url')
         }),
     )
 
@@ -105,3 +106,43 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
         if self.model.objects.exists():
             return False
         return super().has_add_permission(request)
+
+@admin.register(PopupAnnouncement)
+class PopupAnnouncementAdmin(admin.ModelAdmin):
+    list_display = ['image_preview', 'title', 'is_active', 'show_once_per_session', 'created_at']
+    list_display_links = ['image_preview', 'title']
+    list_filter = ['is_active', 'show_once_per_session']
+    search_fields = ['title']
+    readonly_fields = ['design_tips']
+    
+    fieldsets = (
+        ('Design Guidance', {
+            'fields': ('design_tips',),
+            'description': 'Follow these tips to ensure your popups look premium and load fast.'
+        }),
+        ('Popup Content', {
+            'fields': ('title', 'image', 'link')
+        }),
+        ('Settings', {
+            'fields': ('is_active', 'show_once_per_session')
+        }),
+    )
+
+    def design_tips(self, obj):
+        return format_html(
+            '<div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; color: #475569;">'
+            '<h4 style="color: #0ea5e9; margin-top: 0;">🚀 Pro-Tips for Premium Banners:</h4>'
+            '<ul style="margin-bottom: 0;">'
+                '<li><b>Best Formats:</b> Use <b>PNG</b> for sharp text or <b>JPG</b> for colorful photos.</li>'
+                '<li><b>File Size:</b> Keep images under <b>500KB</b> for instant loading.</li>'
+                '<li><b>High-DPI:</b> Upload 1600px wide images for perfect clarity on iPhone/Retina screens.</li>'
+            '</ul>'
+            '</div>'
+        )
+    design_tips.short_description = 'Professional Guidance'
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 50px; border-radius: 4px;" />', obj.image.url)
+        return "No image"
+    image_preview.short_description = 'Preview'

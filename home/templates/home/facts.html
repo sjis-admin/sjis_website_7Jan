@@ -1,52 +1,62 @@
 {% load static %}
-<div class="bg-gray-100 dark:bg-gray-900 py-16">
-  <div class="container mx-auto px-4">
-    <h2 class="text-center text-4xl font-extrabold text-gray-900 dark:text-white mb-12">Facts and Figures</h2>
-    
-    <div class="grid gap-8 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1">
-      <!-- Teachers Card -->
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-        <div class="flex items-center mb-4">
-          <i class="material-icons text-blue-500 text-6xl mr-4">school</i> <!-- Changed icon to represent Teachers -->
-          <div>
-            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">80+</h3>
-            <p class="text-gray-600 dark:text-gray-400">Teachers</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Students Card -->
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-        <div class="flex items-center mb-4">
-          <i class="material-icons text-green-500 text-6xl mr-4">groups</i> <!-- Changed icon to represent Students -->
-          <div>
-            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">600</h3>
-            <p class="text-gray-600 dark:text-gray-400">Students</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Years Card -->
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-        <div class="flex items-center mb-4">
-          <i class="material-icons text-red-500 text-6xl mr-4">history_edu</i> <!-- Changed icon to represent Years -->
-          <div>
-            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">71</h3>
-            <p class="text-gray-600 dark:text-gray-400">Years</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Building Card -->
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-        <div class="flex items-center mb-4">
-          <i class="material-icons text-yellow-500 text-6xl mr-4">apartment</i> <!-- Changed icon to represent Buildings -->
-          <div>
-            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">100%</h3>
-            <p class="text-gray-600 dark:text-gray-400">Passing to Percentage</p>
-          </div>
-        </div>
-      </div>
+<div class="bg-slate-900 py-16 md:py-24 relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-brand-500 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-5%] w-[30%] h-[30%] bg-blue-600 rounded-full blur-[100px]"></div>
     </div>
-  </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-10 md:mb-16 space-y-3">
+            <h3 class="text-brand-400 font-bold uppercase tracking-widest text-xs sm:text-sm">By the Numbers</h3>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white font-heading">Our Impact in Figures</h2>
+            <div class="w-16 h-1.5 bg-brand-500 mx-auto rounded-full"></div>
+        </div>
+        
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 reveal">
+            <!-- Teachers Card -->
+            <div class="bg-white/10 backdrop-blur-md border border-white/10 p-5 md:p-8 rounded-2xl transition-all duration-300 hover:bg-white/20 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-brand-500/20 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="material-icons text-brand-400 text-2xl md:text-3xl">school</i>
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-black text-white mb-1 md:mb-2 tracking-tighter">80+</h3>
+                    <p class="text-blue-100/70 font-medium tracking-wide uppercase text-[10px] md:text-xs">Expert Teachers</p>
+                </div>
+            </div>
+
+            <!-- Students Card -->
+            <div class="bg-white/10 backdrop-blur-md border border-white/10 p-5 md:p-8 rounded-2xl transition-all duration-300 hover:bg-white/20 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="material-icons text-blue-400 text-2xl md:text-3xl">groups</i>
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-black text-white mb-1 md:mb-2 tracking-tighter">600</h3>
+                    <p class="text-blue-100/70 font-medium tracking-wide uppercase text-[10px] md:text-xs">Bright Students</p>
+                </div>
+            </div>
+
+            <!-- Years Card -->
+            <div class="bg-white/10 backdrop-blur-md border border-white/10 p-5 md:p-8 rounded-2xl transition-all duration-300 hover:bg-white/20 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-brand-500/20 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="material-icons text-brand-400 text-2xl md:text-3xl">history_edu</i>
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-black text-white mb-1 md:mb-2 tracking-tighter">71</h3>
+                    <p class="text-blue-100/70 font-medium tracking-wide uppercase text-[10px] md:text-xs">Years Legacy</p>
+                </div>
+            </div>
+
+            <!-- Passing Card -->
+            <div class="bg-white/10 backdrop-blur-md border border-white/10 p-5 md:p-8 rounded-2xl transition-all duration-300 hover:bg-white/20 group">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="material-icons text-blue-400 text-2xl md:text-3xl">emoji_events</i>
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-black text-white mb-1 md:mb-2 tracking-tighter">100%</h3>
+                    <p class="text-blue-100/70 font-medium tracking-wide uppercase text-[10px] md:text-xs">Success Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

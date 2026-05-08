@@ -5,97 +5,108 @@
 
 {% block extra_css %}
 <style>
-    .resources-hero {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        padding: 3rem 0;
-        margin-bottom: 3rem;
+    .resources-container {
+        background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.05), transparent 40%),
+                    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.05), transparent 40%);
     }
 
-    .filter-pill {
-        padding: 0.5rem 1.5rem;
-        border-radius: 9999px;
-        background: white;
-        color: #4b5563;
-        font-weight: 500;
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(40px) saturate(180%);
+        -webkit-backdrop-filter: blur(40px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .resource-card {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .resource-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.15);
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .filter-chip {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
         transition: all 0.3s ease;
-        border: 1px solid #e5e7eb;
     }
 
-    .filter-pill:hover,
-    .filter-pill.active {
+    .filter-chip:hover, .filter-chip.active {
         background: #10b981;
         color: white;
         border-color: #10b981;
-        box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
-    }
-
-    .resource-item {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        border: 1px solid #e5e7eb;
-        transition: all 0.3s ease;
-    }
-
-    .resource-item:hover {
-        border-color: #10b981;
+        box-shadow: 0 8px 20px -5px rgba(16, 185, 129, 0.3);
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="mt-24">
-    <div class="resources-hero">
-        <div class="container mx-auto px-4 text-center text-white">
-            <h1 class="text-4xl font-bold mb-2">Support Resources</h1>
-            <p class="text-lg opacity-90">Downloadable guides, links, and materials for your success</p>
+<div class="resources-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Header -->
+        <div class="text-center mb-16 animate-fadeIn">
+            <span class="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Student Resources
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                Support <span class="text-emerald-500">Materials</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                Access downloadable guides, academic materials, and essential links carefully curated for your success.
+            </p>
         </div>
-    </div>
 
-    <div class="container mx-auto px-4 pb-12">
         <!-- Filters -->
-        <div class="flex flex-wrap justify-center gap-4 mb-10">
+        <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fadeIn" style="animation-delay: 0.1s">
             <a href="{% url 'student_support:resource_list' %}"
-                class="filter-pill {% if not selected_category %}active{% endif %}">
+                class="filter-chip px-6 py-2.5 rounded-full text-sm font-bold {% if not selected_category %}active{% else %}text-slate-600{% endif %}">
                 All Resources
             </a>
             {% for code, name in categories %}
-            <a href="?category={{ code }}" class="filter-pill {% if selected_category == code %}active{% endif %}">
+            <a href="?category={{ code }}" 
+               class="filter-chip px-6 py-2.5 rounded-full text-sm font-bold {% if selected_category == code %}active{% else %}text-slate-600{% endif %}">
                 {{ name }}
             </a>
             {% endfor %}
         </div>
 
+        <!-- Resource Grid -->
         {% if resources %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-fadeIn" style="animation-delay: 0.2s">
             {% for resource in resources %}
-            <div class="resource-item">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="p-3 bg-green-50 rounded-lg text-green-600">
-                        <i class="fas fa-{{ resource.icon }} text-xl"></i>
+            <div class="resource-card rounded-[2rem] p-6 md:p-8 flex flex-col h-full group">
+                <div class="flex items-start justify-between mb-6">
+                    <div class="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-{{ resource.icon }} text-2xl"></i>
                     </div>
-                    <span class="text-xs font-semibold px-2 py-1 bg-gray-100 text-gray-600 rounded-full uppercase">
+                    <span class="text-[10px] font-bold px-3 py-1 bg-white/60 border border-slate-200 text-slate-500 rounded-full uppercase tracking-widest shadow-sm">
                         {{ resource.get_category_display }}
                     </span>
                 </div>
 
-                <h3 class="text-lg font-bold text-gray-800 mb-2">{{ resource.title }}</h3>
-                <p class="text-gray-600 text-sm mb-4">{{ resource.description }}</p>
+                <h3 class="text-xl font-bold text-slate-900 mb-3 font-heading group-hover:text-emerald-600 transition-colors">{{ resource.title }}</h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-8 flex-grow font-medium">{{ resource.description }}</p>
 
-                <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
-                    <span class="text-xs text-gray-400">Added {{ resource.uploaded_at|date:"M d, Y" }}</span>
+                <div class="pt-6 border-t border-slate-200/50 flex flex-wrap gap-4 justify-between items-center mt-auto">
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                        <i class="ri-calendar-line"></i> {{ resource.uploaded_at|date:"M d, Y" }}
+                    </span>
 
                     {% if resource.file %}
                     <a href="{{ resource.file.url }}" download
-                        class="text-green-600 font-semibold text-sm hover:underline flex items-center">
-                        Download <i class="fas fa-download ml-2"></i>
+                        class="px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-2">
+                        Download <i class="ri-download-2-line"></i>
                     </a>
                     {% elif resource.external_link %}
                     <a href="{{ resource.external_link }}" target="_blank"
-                        class="text-green-600 font-semibold text-sm hover:underline flex items-center">
-                        Visit Link <i class="fas fa-external-link-alt ml-2"></i>
+                        class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 hover:shadow-lg transition-all flex items-center gap-2">
+                        Open Link <i class="ri-external-link-line"></i>
                     </a>
                     {% endif %}
                 </div>
@@ -103,14 +114,29 @@
             {% endfor %}
         </div>
         {% else %}
-        <div class="text-center py-12">
-            <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
-                <i class="fas fa-folder-open text-4xl text-gray-400"></i>
+        <!-- Empty State -->
+        <div class="py-24 text-center animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="w-24 h-24 bg-white/50 mica-effect rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl border border-white">
+                <i class="ri-folder-open-line text-slate-300 text-5xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-600">No resources found</h3>
-            <p class="text-gray-500 mt-2">Try selecting a different category or check back later.</p>
+            <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No resources found</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-10">Try selecting a different category or check back later for new materials.</p>
         </div>
         {% endif %}
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

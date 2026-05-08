@@ -32,7 +32,7 @@ def home(request):
 
 def news_list(request):
     news_articles = NewsArticle.objects.all().order_by('-published_date')
-    return render(request, 'home/news_list.html', {'news_articles': news_articles})
+    return render(request, 'home/news_archive.html', {'news_articles': news_articles})
 
 def news_detail(request, pk):
     news_article = get_object_or_404(NewsArticle, pk=pk)

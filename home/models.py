@@ -116,17 +116,17 @@ class PrincipalMessage(models.Model):
 
 class SiteConfiguration(models.Model):
     site_name = models.CharField(max_length=255, default="St. Joseph International School")
-    logo = models.ImageField(upload_to='site_config/', help_text="Upload the school logo here")
+    logo = models.ImageField(upload_to='site_config/', help_text="Primary logo (shown on light backgrounds)")
+    logo_footer = models.ImageField(upload_to='site_config/', blank=True, null=True, help_text="Optional: Light/White logo for dark footers")
     favicon = models.ImageField(upload_to='site_config/', blank=True, null=True, help_text="Upload the favicon here")
     
     # Contact Info
-    address = models.TextField(blank=True)
-    email = models.EmailField(blank=True)
-    phone = models.CharField(max_length=50, blank=True)
+    address = models.TextField(blank=True, help_text="Physical address shown in footer")
+    email = models.EmailField(blank=True, help_text="Primary contact email")
+    phone = models.CharField(max_length=50, blank=True, help_text="Primary contact phone number")
     
     # Social Media
     facebook_url = models.URLField(blank=True)
-    twitter_url = models.URLField(blank=True)
     instagram_url = models.URLField(blank=True)
     youtube_url = models.URLField(blank=True)
     
@@ -139,11 +139,24 @@ class SiteConfiguration(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk and SiteConfiguration.objects.exists():
-            # If you want to ensure only one instance exists, you can raise an error
-            # or just update the existing one. For simplicity in admin, we might just let it be
-            # but usually singleton is better.
             return super(SiteConfiguration, self).save(*args, **kwargs)
         return super(SiteConfiguration, self).save(*args, **kwargs)
+
+class PopupAnnouncement(models.Model):
+    title = models.CharField(max_length=255, help_text="Internal name for the popup (e.g. Admission Open 2026)")
+    image = models.ImageField(upload_to='popups/', help_text="Best size: 800px x 1000px (Vertical) or 800px x 800px (Square). High-resolution PNG or JPG recommended.")
+    link = models.URLField(blank=True, null=True, help_text="Optional: URL to redirect when the image is clicked.")
+    is_active = models.BooleanField(default=True, help_text="Check to display this popup on the website.")
+    show_once_per_session = models.BooleanField(default=True, help_text="If checked, the popup will only appear once per browser session.")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Popup Announcement"
+        verbose_name_plural = "Popup Announcements"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
 
 
 

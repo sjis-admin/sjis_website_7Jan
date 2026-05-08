@@ -1,111 +1,220 @@
 {% extends "mainbase.html" %}
 {% load static %}
-{% block title %}About Us{% endblock %}
+
+{% block title %}About Us | St. Joseph International School{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-container {
+        background: radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+    }
+
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .section-card {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .section-card.active {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .tab-btn {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn.active {
+        background: #0ea5e9;
+        color: white;
+        box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .prose {
+        color: #334155;
+        line-height: 1.8;
+    }
+
+    .prose p {
+        margin-bottom: 1.5rem;
+    }
+
+    .prose h2, .prose h3 {
+        font-family: 'Outfit', sans-serif;
+        color: #0f172a;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .mobile-select {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(14, 165, 233, 0.2);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white mt-14 py-16">
-  <div class="container mx-auto px-4 max-w-7xl">
-    <!-- Hero Section -->
-    <div class="mb-12 text-center">
-      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-400">
-          {{ about_us.title }}
-        </span>
-      </h1>
-      <p class="text-base md:text-xl text-gray-600 max-w-3xl mx-auto">
-        {{ about_us.short_description|safe }}
-      </p>
-    </div>
-
-    <!-- Responsive Tabbed Navigation -->
-    <div class="mb-12">
-      <!-- Mobile Dropdown -->
-      <div class="md:hidden mb-4">
-        <select id="mobile-section-select" class="w-full p-3 border-2 border-blue-500 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-          {% for section in sections %}
-            <option value="{{ section.id }}">{{ section.title }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <!-- Desktop Tabs -->
-      <div class="hidden md:flex justify-center">
-        <div class="bg-white rounded-full shadow-lg p-2 flex space-x-2">
-          {% for section in sections %}
-            <button 
-              data-section="{{ section.id }}" 
-              class="tab-btn px-6 py-2 rounded-full text-gray-600 hover:text-blue-600 transition-all duration-300 focus:outline-none"
-            >
-              {{ section.title }}
-            </button>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-
-    <!-- Content Sections -->
-    <div id="content-sections" class="space-y-8">
-      {% for section in sections %}
-        <div 
-          id="{{ section.id }}" 
-          class="section-content bg-white rounded-3xl shadow-xl overflow-hidden transform transition-all duration-500 hover:scale-[1.02]"
-          style="display: none;"
-        >
-          <div class="bg-gradient-to-r from-blue-500 to-teal-400 px-6 md:px-8 py-4 md:py-6">
-            <h2 class="text-2xl md:text-3xl font-bold text-white">{{ section.title }}</h2>
-          </div>
-          <div class="p-6 md:p-8">
-            <div class="prose prose-sm md:prose-lg max-w-none text-gray-800">
-              {{ section.content|safe }}
+<div class="about-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-16 animate-fadeIn">
+            <span class="inline-block px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                Our Legacy
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-8 font-heading tracking-tight">
+                {{ about_us.title|default:"About Our School" }}
+            </h1>
+            <div class="max-w-3xl mx-auto mica-effect p-8 rounded-[2.5rem] shadow-xl border border-white/50">
+                <p class="text-lg md:text-xl text-slate-600 leading-relaxed font-medium">
+                    {{ about_us.short_description|safe }}
+                </p>
             </div>
-          </div>
         </div>
-      {% endfor %}
+
+        <!-- Interactive Navigation -->
+        <div class="mb-12 animate-fadeIn" style="animation-delay: 0.1s">
+            <!-- Mobile Select -->
+            <div class="md:hidden">
+                <select id="mobile-section-select" class="mobile-select w-full p-4 rounded-2xl text-slate-700 font-bold focus:ring-2 focus:ring-brand-500 outline-none shadow-lg">
+                    {% for section in sections %}
+                        <option value="section-{{ section.id }}">{{ section.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Desktop Tabs -->
+            <div class="hidden md:flex justify-center">
+                <div class="mica-effect p-2 rounded-full shadow-lg flex gap-2 border border-white/60">
+                    {% for section in sections %}
+                    <button 
+                        data-target="section-{{ section.id }}" 
+                        class="tab-btn px-8 py-3 rounded-full text-sm font-bold text-slate-500 hover:text-slate-800 transition-all
+                               {% if forloop.first %}active{% endif %}"
+                    >
+                        {{ section.title }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="section-container" class="animate-fadeIn" style="animation-delay: 0.2s">
+            {% for section in sections %}
+            <div 
+                id="section-{{ section.id }}" 
+                class="section-card rounded-[3rem] shadow-2xl overflow-hidden border border-white/50 {% if forloop.first %}active{% endif %}"
+            >
+                <!-- Section Header -->
+                <div class="bg-gradient-to-r from-brand-600 to-indigo-600 px-8 md:px-16 py-8 md:py-12 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+                    </div>
+                    <div class="relative z-10 flex items-center gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-xl">
+                            <i class="ri-information-line text-3xl"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-black text-white font-heading tracking-tight">{{ section.title }}</h2>
+                    </div>
+                </div>
+
+                <!-- Section Content -->
+                <div class="p-8 md:p-16">
+                    <div class="prose prose-lg max-w-none">
+                        {{ section.content|safe }}
+                    </div>
+                </div>
+
+                <!-- Footer Accent -->
+                <div class="bg-slate-50/50 p-6 flex justify-center border-t border-slate-100">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <i class="ri-shield-star-line text-xl"></i>
+                        <span class="text-xs font-bold uppercase tracking-widest">Official Academic Statement</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
     </div>
-  </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const sections = document.querySelectorAll('.section-content');
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const mobileSelect = document.getElementById('mobile-section-select');
-  
-  function showSection(sectionId) {
-    // Reset all sections and buttons
-    sections.forEach(section => section.style.display = 'none');
-    tabButtons.forEach(btn => {
-      btn.classList.remove('bg-blue-500', 'text-white');
-      btn.classList.add('text-gray-600');
-    });
-
-    // Show selected section
-    const selectedSection = document.getElementById(sectionId);
-    const selectedButton = document.querySelector(`[data-section="${sectionId}"]`);
+    const sections = document.querySelectorAll('.section-card');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const mobileSelect = document.getElementById('mobile-section-select');
     
-    selectedSection.style.display = 'block';
-    if (selectedButton) {
-      selectedButton.classList.add('bg-blue-500', 'text-white');
+    function showSection(sectionId) {
+        // Handle Section Switching with Animation
+        sections.forEach(section => {
+            section.classList.remove('active');
+            // Small delay for the exit animation feel
+        });
+
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // Update Desktop Tabs
+        tabButtons.forEach(btn => {
+            if (btn.getAttribute('data-target') === sectionId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Update Mobile Select
+        if (mobileSelect) {
+            mobileSelect.value = sectionId;
+        }
     }
-    
-    // Sync mobile dropdown
-    mobileSelect.value = sectionId;
-  }
 
-  // Show first section by default
-  showSection('{{ sections.0.id }}');
-
-  // Desktop tab click handler
-  tabButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const sectionId = this.getAttribute('data-section');
-      showSection(sectionId);
+    // Desktop Click Events
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            showSection(target);
+        });
     });
-  });
 
-  // Mobile select handler
-  mobileSelect.addEventListener('change', function() {
-    showSection(this.value);
-  });
+    // Mobile Select Events
+    if (mobileSelect) {
+        mobileSelect.addEventListener('change', function() {
+            showSection(this.value);
+        });
+    }
+
+    // Intersection Observer for Scroll Effects
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fadeIn');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
 });
 </script>
 {% endblock %}
+

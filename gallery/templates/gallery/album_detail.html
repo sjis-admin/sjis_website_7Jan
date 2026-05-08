@@ -1,248 +1,151 @@
 {% extends 'mainbase.html' %}
 {% load static %}
 
-{% block title %}{{ album.title }} - Photo Gallery{% endblock %}
+{% block title %}{{ album.title }} | Photo Gallery{% endblock %}
 
 {% block extra_css %}
 <style>
-    .album-hero {
-        background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-        padding: 3rem 0;
-        margin-bottom: 3rem;
+    .album-detail-container {
+        background: radial-gradient(circle at 0% 0%, rgba(161, 140, 209, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(251, 194, 235, 0.05) 0%, transparent 50%);
     }
 
-    .photo-grid {
-        column-count: 1;
-        column-gap: 1.5rem;
+    .mica-effect {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    @media (min-width: 640px) {
-        .photo-grid {
-            column-count: 2;
-        }
+    /* NanoGallery2 Custom Styles */
+    .nngy2_container {
+        font-family: 'Inter', sans-serif !important;
+    }
+    
+    .nanogallery-wrapper {
+        margin-top: 3rem;
     }
 
-    @media (min-width: 1024px) {
-        .photo-grid {
-            column-count: 3;
-        }
-    }
-
-    .photo-item {
-        break-inside: avoid;
-        margin-bottom: 1.5rem;
-        border-radius: 12px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease;
-    }
-
-    .photo-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .photo-item img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    /* Lightbox */
-    .lightbox {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.95);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .lightbox.active {
-        display: flex;
-        opacity: 1;
-    }
-
-    .lightbox-content {
-        max-width: 90%;
-        max-height: 90vh;
-        position: relative;
-    }
-
-    .lightbox-img {
-        max-width: 100%;
-        max-height: 90vh;
-        object-fit: contain;
-        border-radius: 4px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    }
-
-    .lightbox-close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        color: white;
-        font-size: 40px;
-        cursor: pointer;
-        z-index: 10000;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .lightbox-caption {
-        position: absolute;
-        bottom: -40px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        color: white;
-        font-size: 1.1rem;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    }
-
-    .lightbox-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: white;
-        font-size: 50px;
-        cursor: pointer;
-        padding: 20px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        transition: opacity 0.3s;
-        opacity: 0.7;
-    }
-
-    .lightbox-nav:hover {
-        opacity: 1;
-    }
-
-    .lightbox-prev {
-        left: 20px;
-    }
-
-    .lightbox-next {
-        right: 20px;
+    /* Lightbox customization */
+    .nanogallery2 .ngy2lightbox {
+        backdrop-filter: blur(25px) saturate(150%) !important;
+        background-color: rgba(15, 23, 42, 0.9) !important;
     }
 </style>
+
+<!-- NanoGallery2 Assets -->
+<link href="https://cdn.jsdelivr.net/npm/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
-<div class="mt-24">
-    <!-- Hero Section -->
-    <div class="album-hero">
-        <div class="container mx-auto px-4 text-center text-white">
-            <a href="{% url 'gallery:gallery_list' %}"
-                class="inline-flex items-center text-white/80 hover:text-white mb-4 transition-colors">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Gallery
+<div class="album-detail-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Hero Header -->
+        <div class="text-center mb-20 animate-fadeIn">
+            <a href="{% url 'gallery:gallery_list' %}" 
+               class="inline-flex items-center gap-2 text-slate-500 font-bold hover:text-brand-500 transition-colors mb-8 group">
+                <i class="ri-arrow-left-line text-xl transition-transform group-hover:-translate-x-2"></i>
+                Back to Gallery
             </a>
-            <h1 class="text-4xl font-bold mb-2">{{ album.title }}</h1>
-            {% if album.description %}
-            <p class="text-lg opacity-90 max-w-2xl mx-auto">{{ album.description }}</p>
-            {% endif %}
-            <div class="mt-4 text-sm opacity-75">
-                <i class="fas fa-calendar-alt mr-1"></i> {{ album.created_at|date:"F d, Y" }}
-            </div>
-        </div>
-    </div>
-
-    <div class="container mx-auto px-4 pb-12">
-        {% if photos %}
-        <div class="photo-grid" id="gallery">
-            {% for photo in photos %}
-            <div class="photo-item" onclick="openLightbox({{ forloop.counter0 }})">
-                <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" loading="lazy">
-                {% if photo.caption %}
-                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4 pt-8">
-                    <p class="text-white text-sm font-medium">{{ photo.caption }}</p>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 font-heading tracking-tight">
+                {{ album.title }}
+            </h1>
+            
+            <div class="flex items-center justify-center gap-6 text-slate-400">
+                <div class="flex items-center gap-2">
+                    <i class="ri-calendar-event-line text-lg"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">{{ album.created_at|date:"M d, Y" }}</span>
                 </div>
-                {% endif %}
+                <div class="w-1 h-1 rounded-full bg-slate-300"></div>
+                <div class="flex items-center gap-2">
+                    <i class="ri-image-line text-lg"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">{{ photos|length }} Photos</span>
+                </div>
             </div>
-            {% endfor %}
+
+            {% if album.description %}
+            <div class="max-w-2xl mx-auto mt-8 p-6 mica-effect rounded-3xl border border-white/50 text-slate-600 font-medium">
+                {{ album.description }}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if photos %}
+        <!-- NanoGallery2 - Pro Mosaic Layout -->
+        <div class="nanogallery-wrapper animate-fadeIn">
+            <div id="nanogallery2">
+              {% for photo in photos %}
+                <a href="{{ photo.image.url }}" data-ngthumb="{{ photo.image.url }}">{{ photo.caption|default:'' }}</a>
+              {% endfor %}
+            </div>
         </div>
         {% else %}
-        <div class="text-center py-20">
-            <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
-                <i class="fas fa-camera text-4xl text-gray-400"></i>
+        <!-- Empty State -->
+        <div class="py-32 text-center animate-fadeIn">
+            <div class="w-24 h-24 bg-white/50 mica-effect rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl border border-white">
+                <i class="ri-camera-lens-line text-slate-300 text-5xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-600">No photos yet</h3>
-            <p class="text-gray-500 mt-2">Photos will be added to this album soon.</p>
+            <h3 class="text-3xl font-extrabold text-slate-800 mb-4 font-heading">No photos yet</h3>
+            <p class="text-slate-500 max-w-sm mx-auto mb-10">We're still processing the media for this album. Please check back later!</p>
         </div>
         {% endif %}
+
     </div>
 </div>
 
-<!-- Lightbox -->
-<div id="lightbox" class="lightbox">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-    <div class="lightbox-nav lightbox-prev" onclick="changePhoto(-1)">&#10094;</div>
-    <div class="lightbox-nav lightbox-next" onclick="changePhoto(1)">&#10095;</div>
-
-    <div class="lightbox-content">
-        <img id="lightbox-img" class="lightbox-img" src="" alt="">
-        <div id="lightbox-caption" class="lightbox-caption"></div>
-    </div>
-</div>
+<!-- NanoGallery2 JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
 
 <script>
-    const photos = [
-        {% for photo in photos %}
-    {
-        src: "{{ photo.image.url }}",
-            caption: "{{ photo.caption|escapejs }}"
-    },
-    {% endfor %}
-    ];
+    $(document).ready(function () {
+        $("#nanogallery2").nanogallery2({
+            // Gallery Layout
+            thumbnailHeight:  280,
+            thumbnailWidth:   "auto",
+            galleryDisplayMode: "all",
+            thumbnailAlignment: "center",
+            thumbnailGutterWidth: 10,
+            thumbnailGutterHeight: 10,
+            
+            // Interaction & Effects
+            thumbnailDisplayTransition: "fadeIn",
+            thumbnailDisplayTransitionDuration: 500,
+            thumbnailBuildInit2: "scale(0.9) translateY(20px)",
+            thumbnailHoverEffect2: "imageScale150|labelSlideUp", // More stable effects
+            
+            // Viewport & Lightbox
+            allowHTMLinLabels: true,
+            viewerToolbar: { display: true, standard: "label", minimized: "label" },
+            viewerTools: { topLeft: "label", topRight: "fullscreen, close" },
+            
+            // Aesthetics
+            thumbnailLabel: { display: true, position: "overImageOnBottom", align: "left" },
+            thumbnailBorderBoth: 2,
+            thumbnailBorderVertical: 2,
+            thumbnailBorderHorizontal: 2,
+            colorScheme: {
+                thumbnail: {
+                    borderColor: '#000000'
+                }
+            },
+            
+            // Error handling & small counts
+            galleryMaxRows: 5,
+            debug: false
+        });
 
-    let currentIndex = 0;
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
 
-    function openLightbox(index) {
-        currentIndex = index;
-        updateLightbox();
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    function changePhoto(direction) {
-        currentIndex += direction;
-        if (currentIndex < 0) currentIndex = photos.length - 1;
-        if (currentIndex >= photos.length) currentIndex = 0;
-        updateLightbox();
-    }
-
-    function updateLightbox() {
-        const photo = photos[currentIndex];
-        lightboxImg.src = photo.src;
-        lightboxCaption.textContent = photo.caption;
-    }
-
-    // Keyboard navigation
-    document.addEventListener('keydown', function (e) {
-        if (!lightbox.classList.contains('active')) return;
-
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') changePhoto(-1);
-        if (e.key === 'ArrowRight') changePhoto(1);
-    });
-
-    // Close on background click
-    lightbox.addEventListener('click', function (e) {
-        if (e.target === lightbox) closeLightbox();
+        document.querySelectorAll('.reveal-anim').forEach(el => observer.observe(el));
     });
 </script>
 {% endblock %}
