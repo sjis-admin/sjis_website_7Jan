@@ -21,12 +21,19 @@
         overflow: hidden;
     }
 
-    /* Media Layers */
+    /* Media Layers with Skeleton Effect */
     .slide-media {
         position: absolute;
         inset: 0;
         z-index: 1;
         overflow: hidden;
+        background: linear-gradient(110deg, #020617 8%, #0f172a 18%, #020617 33%);
+        background-size: 200% 100%;
+        animation: skeleton-pulse 1.5s linear infinite;
+    }
+
+    @keyframes skeleton-pulse {
+        to { background-position-x: -200%; }
     }
 
     .slide-media img, 
@@ -35,7 +42,13 @@
         height: 100%;
         object-fit: cover;
         transform: scale(1.1);
-        transition: transform 6s linear;
+        transition: transform 6s linear, opacity 0.8s ease-in-out;
+        opacity: 0; /* Hidden until loaded */
+    }
+
+    .slide-media.loaded img,
+    .slide-media.loaded video {
+        opacity: 1;
     }
 
     .swiper-slide-active .slide-media img,
@@ -193,13 +206,18 @@
             {% for item in images %}
             <div class="swiper-slide" data-media-type="{{ item.media_type }}">
                 
-                <div class="slide-media">
+                <div class="slide-media" id="media-{{ forloop.counter }}">
                     {% if item.media_type == 'video' %}
-                        <video src="{{ item.video_file.url }}" autoplay muted loop playsinline poster="{{ item.image.url }}"></video>
+                        <video src="{{ item.video_file.url }}" autoplay muted loop playsinline poster="{{ item.image.url }}" onloadeddata="this.parentElement.classList.add('loaded')"></video>
                     {% elif item.media_type == 'youtube' %}
                         <div class="youtube-container" id="youtube-{{ forloop.counter }}" data-youtube-url="{{ item.youtube_url }}"></div>
+                        {# YouTube manages its own loading #}
+                        <script>document.getElementById('media-{{ forloop.counter }}').classList.add('loaded');</script>
                     {% else %}
-                        <img src="{{ item.image.url }}" alt="{{ item.alt_text|default:item.caption }}">
+                        <img src="{{ item.image.url }}" 
+                             alt="{{ item.alt_text|default:item.caption }}"
+                             onload="this.parentElement.classList.add('loaded')"
+                             {% if forloop.first %}fetchpriority="high"{% endif %}>
                     {% endif %}
                 </div>
                 

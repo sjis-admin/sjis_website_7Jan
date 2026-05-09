@@ -1,6 +1,9 @@
 # home/models.py
 from django.db import models
 from tinymce.models import HTMLField
+from PIL import Image
+import io
+from django.core.files.base import ContentFile
 
 class CarouselImage(models.Model):
     MEDIA_TYPE_CHOICES = [
@@ -29,6 +32,31 @@ class CarouselImage(models.Model):
 
     def __str__(self):
         return self.caption or self.alt_text or f"Slide {self.id}"
+
+    def save(self, *args, **kwargs):
+        # Professional Image Optimization
+        if self.image:
+            img = Image.open(self.image)
+            
+            # Convert to RGB if necessary (handles PNG with alpha or CMYK)
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+            
+            # Maximum width for high-premium displays (4K/HD)
+            max_width = 2560
+            if img.width > max_width:
+                output_size = (max_width, int((max_width / img.width) * img.height))
+                img = img.resize(output_size, Image.Resampling.LANCZOS)
+            
+            # Compress and save
+            output = io.BytesIO()
+            img.save(output, format='JPEG', quality=80, optimize=True)
+            output.seek(0)
+            
+            # Replace the image with the compressed version
+            self.image.save(self.image.name, ContentFile(output.read()), save=False)
+            
+        super().save(*args, **kwargs)
 
 
 
