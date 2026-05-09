@@ -1,22 +1,34 @@
-# sitemaps.py
-from django.contrib.sitemaps import Sitemap
+from django.contrib import sitemaps
 from django.urls import reverse
-from .models import NewsArticle, NewsTicker, FacultyMember, AboutUs
+from .models import NewsArticle, AboutUs
+from notice_board2.models import NoticeBoard
 
-class StaticViewSitemap(Sitemap):
+class StaticViewSitemap(sitemaps.Sitemap):
     priority = 0.5
     changefreq = 'daily'
 
     def items(self):
-        return ['home:home', 'home:about_us_view', 'home:faculty_list', 
-                'home:principal_message', 'home:vice_principal_message']
+        return [
+            'home:home',
+            'home:about_us_view',
+            'home:faculty_list',
+            'home:principal_message',
+            'home:vice_principal_message',
+            'contact:contact',
+            'notice_board2:list',
+            'syllabus:syllabus_list',
+            'rules:public_rules_list',
+            'yearbook:yearbook_list',
+            'gallery:gallery_list',
+            'admission:admission_home',
+        ]
 
     def location(self, item):
         return reverse(item)
 
-class NewsArticleSitemap(Sitemap):
+class NewsArticleSitemap(sitemaps.Sitemap):
     changefreq = "weekly"
-    priority = 0.6
+    priority = 0.7
 
     def items(self):
         return NewsArticle.objects.all()
@@ -24,18 +36,12 @@ class NewsArticleSitemap(Sitemap):
     def lastmod(self, obj):
         return obj.published_date
 
-    def location(self, obj):
-        return reverse('home:news_detail', args=[obj.pk])
-
-class NewsTickerSitemap(Sitemap):
-    changefreq = "weekly"
-    priority = 0.5
+class NoticeBoardSitemap(sitemaps.Sitemap):
+    changefreq = "daily"
+    priority = 0.8
 
     def items(self):
-        return NewsTicker.objects.all()
+        return NoticeBoard.objects.all()
 
     def lastmod(self, obj):
-        return obj.date
-
-    def location(self, obj):
-        return reverse('home:news_ticker_details', args=[obj.pk])
+        return obj.created_at

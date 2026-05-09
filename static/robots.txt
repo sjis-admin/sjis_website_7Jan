@@ -1,4 +1,11 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /tinymce/
+Disallow: /debug/
+Disallow: /student_support/
 
+# Host
+Host: https://www.sjis.edu.bd
+
+# Sitemaps
 Sitemap: https://www.sjis.edu.bd/sitemap.xml

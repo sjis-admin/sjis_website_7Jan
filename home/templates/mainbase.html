@@ -10,6 +10,13 @@
         content="{% block meta_description %}St. Joseph International School is a leading educational institution in Dhaka, Bangladesh, offering a world-class education from kindergarten to high school.{% endblock %}">
     <meta name="keywords"
         content="{% block meta_keywords %}St. Joseph International School, SJIS, school in Dhaka, international school, education in Bangladesh{% endblock %}">
+    
+    <!-- SEO Master Configuration -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta name="author" content="St. Joseph International School">
+    <meta name="geo.region" content="BD">
+    <meta name="geo.placename" content="Dhaka">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -55,8 +62,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Include your slider CSS -->
 
+    <!-- Preconnect to external resources for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
