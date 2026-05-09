@@ -7,12 +7,24 @@ from django.utils.html import format_html
 
 @admin.register(CarouselImage)
 class CarouselImageAdmin(admin.ModelAdmin):
-    list_display = ['image_preview', 'caption', 'order', 'is_active']
+    list_display = ['image_preview', 'caption', 'media_type', 'order', 'is_active']
     list_display_links = ['image_preview', 'caption']
     list_editable = ['order', 'is_active']
-    list_filter = ['is_active']
+    list_filter = ['media_type', 'is_active']
     search_fields = ['caption', 'alt_text', 'description']
-    fields = ['order', 'image', 'caption', 'alt_text', 'description', 'action_url', 'is_active']
+    
+    fieldsets = (
+        ('Media Content', {
+            'fields': ('media_type', 'image', 'video_file', 'youtube_url'),
+            'description': 'Choose whether to display an image, a direct video file, or a YouTube video link.'
+        }),
+        ('Captions & Text', {
+            'fields': ('caption', 'description', 'alt_text', 'action_url')
+        }),
+        ('Settings', {
+            'fields': ('order', 'is_active')
+        }),
+    )
     
     def image_preview(self, obj):
         if obj.image:
