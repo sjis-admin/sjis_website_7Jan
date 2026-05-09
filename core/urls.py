@@ -17,10 +17,16 @@ admin.site.site_header = "St. Joseph International School"
 admin.site.site_title = "SJIS Admin Portal"
 admin.site.index_title = "Welcome to SJIS Portal"
 
+from django.http import HttpResponse
+
+def robots_txt(request):
+    content = "User-agent: *\nDisallow: /admin/\nDisallow: /tinymce/\nDisallow: /debug/\nDisallow: /student_support/\n\nHost: https://www.sjis.edu.bd\nSitemap: https://www.sjis.edu.bd/sitemap.xml"
+    return HttpResponse(content, content_type="text/plain")
+
 urlpatterns =[
     path('admin/', admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path('robots.txt', RedirectView.as_view(url="/static/robots.txt", permanent=True)),
+    path('robots.txt', robots_txt),
     path('', include('home.urls', namespace='home')),
     path('notice-board2/', include('notice_board2.urls', namespace='notice_board2')),
     # path('notice-board2/', include('notice_board2.urls', namespace='notice_board2')),

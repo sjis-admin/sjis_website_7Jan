@@ -104,6 +104,10 @@ class NewsArticle(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('home:news_detail', args=[str(self.id)])
+
 
 class NewsTicker(models.Model):
     title = models.CharField(max_length=200)
@@ -112,6 +116,10 @@ class NewsTicker(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('home:news_ticker_details', args=[str(self.id)])
 
 
 class FacultyMember(models.Model):
