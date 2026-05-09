@@ -5,8 +5,8 @@
     .premium-slider {
         position: relative;
         width: 100%;
-        height: 100svh;   /* safe area on iOS */
-        min-height: 520px;
+        height: 100svh;
+        min-height: 550px;
         overflow: hidden;
         background: #020617;
     }
@@ -21,15 +21,16 @@
         overflow: hidden;
     }
 
-    /* Professional Ken Burns */
-    .slide-image {
+    /* Media Layers */
+    .slide-media {
         position: absolute;
         inset: 0;
         z-index: 1;
-        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
     }
 
-    .slide-image img {
+    .slide-media img, 
+    .slide-media video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -37,72 +38,83 @@
         transition: transform 6s linear;
     }
 
-    .swiper-slide-active .slide-image img {
+    .swiper-slide-active .slide-media img,
+    .swiper-slide-active .slide-media video {
         transform: scale(1);
     }
 
-    /* Glassmorphic Overlay Gradient */
+    /* YouTube Layer */
+    .youtube-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 56.25vw; /* 16:9 ratio */
+        min-height: 100vh;
+        min-width: 177.77vh; /* 16:9 ratio */
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    /* Professional Overlays */
     .slide-overlay {
         position: absolute;
         inset: 0;
         z-index: 2;
-        background: linear-gradient(to right, 
-            rgba(2, 6, 23, 0.8) 0%, 
-            rgba(2, 6, 23, 0.4) 40%,
-            transparent 100%);
+        background: radial-gradient(circle at 20% 50%, rgba(2, 6, 23, 0.7) 0%, rgba(2, 6, 23, 0.3) 50%, transparent 100%);
     }
 
     @media (max-width: 768px) {
         .slide-overlay {
-            background: linear-gradient(to top, 
-                rgba(2, 6, 23, 0.9) 0%, 
-                rgba(2, 6, 23, 0.4) 60%,
-                transparent 100%);
+            background: linear-gradient(to top, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0.4) 60%, transparent 100%);
         }
     }
 
     /* Content Styling */
     .slide-content {
         position: absolute;
-        bottom: 15%;
+        bottom: 18%;
         left: 8%;
         right: 8%;
         z-index: 10;
-        max-width: 800px;
+        max-width: 850px;
         color: white;
     }
 
     .slide-caption {
         font-family: 'Outfit', sans-serif;
-        font-size: 4.5rem;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem;
         opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        transform: translateY(40px);
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
         letter-spacing: -0.02em;
-        text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        background: linear-gradient(to bottom, #ffffff, #e2e8f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .slide-description {
-        font-size: 1.25rem;
+        font-size: clamp(1rem, 2vw, 1.25rem);
         font-weight: 400;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.85);
         margin-bottom: 2.5rem;
         opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
-        max-width: 600px;
+        transform: translateY(30px);
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+        max-width: 650px;
+        line-height: 1.6;
     }
 
     .slide-action {
         opacity: 0;
         transform: translateY(20px);
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s;
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s;
     }
 
-    /* Active State Animations */
     .swiper-slide-active .slide-caption,
     .swiper-slide-active .slide-description,
     .swiper-slide-active .slide-action {
@@ -110,23 +122,17 @@
         transform: translateY(0);
     }
 
-    @media (max-width: 768px) {
-        .slide-caption { font-size: 2.5rem; }
-        .slide-description { font-size: 1rem; }
-        .slide-content { bottom: 10%; text-align: center; left: 5%; right: 5%; }
-    }
-
-    /* Navigation Capsules */
-    .nav-capsule {
+    /* Premium Navigation */
+    .nav-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
         z-index: 50;
-        width: 64px;
-        height: 64px;
-        background: rgba(255, 255, 255, 0.1);
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -136,58 +142,40 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .nav-capsule:hover {
+    .nav-btn:hover {
         background: #0ea5e9;
         border-color: #0ea5e9;
-        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
     }
 
-    .nav-capsule.prev { left: 40px; }
-    .nav-capsule.next { right: 40px; }
+    .nav-btn.prev { left: 30px; }
+    .nav-btn.next { right: 30px; }
 
-    @media (max-width: 768px) {
-        .nav-capsule { display: none; } /* Hide on mobile to focus on content */
+    @media (max-width: 1024px) {
+        .nav-btn { display: none; }
+        .slide-content { bottom: 12%; text-align: center; left: 5%; right: 5%; }
     }
 
-    /* Progress Indicator */
-    .slider-progress {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.1);
-        z-index: 100;
-    }
-
-    .slider-progress-bar {
-        height: 100%;
-        width: 0%;
-        background: #0ea5e9;
-        transition: width linear;
-    }
-
-    /* Custom Pagination Dots */
+    /* Custom Pagination */
     .swiper-pagination-bullets {
-        bottom: 3rem !important;
+        bottom: 3.5rem !important;
         left: 8% !important;
         text-align: left !important;
         width: auto !important;
     }
 
     .swiper-pagination-bullet {
-        background: rgba(255, 255, 255, 0.4) !important;
+        background: rgba(255, 255, 255, 0.3) !important;
         opacity: 1 !important;
-        width: 40px !important;
+        width: 30px !important;
         height: 3px !important;
         border-radius: 2px !important;
-        transition: all 0.3s ease !important;
-        margin: 0 4px !important;
+        transition: all 0.4s ease !important;
     }
 
     .swiper-pagination-bullet-active {
         background: #0ea5e9 !important;
-        width: 60px !important;
+        width: 50px !important;
     }
 
     @media (max-width: 768px) {
@@ -195,41 +183,42 @@
             left: 0 !important;
             width: 100% !important;
             text-align: center !important;
-            bottom: 2rem !important;
         }
     }
 </style>
 
 <div class="premium-slider">
-    <div class="swiper">
+    <div class="swiper main-hero-swiper">
         <div class="swiper-wrapper">
-            {% for image in images %}
-            <div class="swiper-slide">
-                <!-- Image Layer -->
-                <div class="slide-image">
-                    <img src="{{ image.image.url }}" 
-                         alt="{{ image.alt_text|default:image.caption|default:'SJIS Slide' }}"
-                         {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+            {% for item in images %}
+            <div class="swiper-slide" data-media-type="{{ item.media_type }}">
+                
+                <div class="slide-media">
+                    {% if item.media_type == 'video' %}
+                        <video src="{{ item.video_file.url }}" autoplay muted loop playsinline poster="{{ item.image.url }}"></video>
+                    {% elif item.media_type == 'youtube' %}
+                        <div class="youtube-container" id="youtube-{{ forloop.counter }}" data-youtube-url="{{ item.youtube_url }}"></div>
+                    {% else %}
+                        <img src="{{ item.image.url }}" alt="{{ item.alt_text|default:item.caption }}">
+                    {% endif %}
                 </div>
                 
-                <!-- Dark Overlay -->
                 <div class="slide-overlay"></div>
 
-                <!-- Text Content -->
                 <div class="slide-content">
-                    {% if image.caption %}
-                    <h2 class="slide-caption">{{ image.caption }}</h2>
+                    {% if item.caption %}
+                    <h2 class="slide-caption" data-swiper-parallax="-400">{{ item.caption }}</h2>
                     {% endif %}
                     
-                    {% if image.description %}
-                    <p class="slide-description">{{ image.description }}</p>
+                    {% if item.description %}
+                    <p class="slide-description" data-swiper-parallax="-300">{{ item.description }}</p>
                     {% endif %}
 
-                    {% if image.action_url %}
-                    <div class="slide-action">
-                        <a href="{{ image.action_url }}" class="inline-flex items-center px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-brand-500/30">
-                            Learn More
-                            <i class="ri-arrow-right-line ml-2"></i>
+                    {% if item.action_url %}
+                    <div class="slide-action" data-swiper-parallax="-200">
+                        <a href="{{ item.action_url }}" class="inline-flex items-center px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl transition-all hover:scale-105 shadow-xl shadow-brand-500/30 group">
+                            Explore More
+                            <i class="ri-arrow-right-line ml-2 group-hover:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                     {% endif %}
@@ -238,76 +227,91 @@
             {% endfor %}
         </div>
         
-        <!-- Navigation -->
-        <div class="nav-capsule prev swiper-btn-prev">
-            <i class="ri-arrow-left-s-line text-2xl"></i>
-        </div>
-        <div class="nav-capsule next swiper-btn-next">
-            <i class="ri-arrow-right-s-line text-2xl"></i>
-        </div>
-
-        <!-- Pagination -->
+        <div class="nav-btn prev main-prev"><i class="ri-arrow-left-s-line text-2xl"></i></div>
+        <div class="nav-btn next main-next"><i class="ri-arrow-right-s-line text-2xl"></i></div>
         <div class="swiper-pagination"></div>
-
-        <!-- Progress Bar -->
-        <div class="slider-progress">
-            <div class="slider-progress-bar"></div>
-        </div>
     </div>
 </div>
 
-<!-- Swiper dependencies are usually in mainbase, but including here for self-containment if needed or ensuring latest version -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const AUTOPLAY_DELAY = 7000;
-        const progressBar = document.querySelector('.slider-progress-bar');
+        // YouTube API Loader
+        if (!window.YT) {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        const ytPlayers = {};
         
-        const swiper = new Swiper('.swiper', {
+        function getYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length == 11) ? match[2] : null;
+        }
+
+        window.onYouTubeIframeAPIReady = function() {
+            document.querySelectorAll('.youtube-container').forEach(container => {
+                const url = container.dataset.youtubeUrl;
+                const videoId = getYoutubeId(url);
+                const containerId = container.id;
+
+                if (videoId) {
+                    ytPlayers[containerId] = new YT.Player(containerId, {
+                        videoId: videoId,
+                        playerVars: {
+                            'autoplay': 1,
+                            'controls': 0,
+                            'rel': 0,
+                            'showinfo': 0,
+                            'mute': 1,
+                            'loop': 1,
+                            'playlist': videoId,
+                            'modestbranding': 1,
+                            'iv_load_policy': 3
+                        },
+                        events: {
+                            'onReady': (event) => event.target.playVideo()
+                        }
+                    });
+                }
+            });
+        };
+
+        const swiper = new Swiper('.main-hero-swiper', {
             loop: true,
-            speed: 1400,
+            speed: 1500,
+            parallax: true,
             effect: 'fade',
             fadeEffect: { crossFade: true },
-            grabCursor: true,
             autoplay: {
-                delay: AUTOPLAY_DELAY,
+                delay: 8000,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true,
             },
             navigation: {
-                nextEl: '.swiper-btn-next',
-                prevEl: '.swiper-btn-prev',
+                nextEl: '.main-next',
+                prevEl: '.main-prev',
             },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
             },
             on: {
-                init: function() {
-                    resetProgressBar();
-                },
-                slideChangeTransitionStart: function() {
-                    resetProgressBar();
-                },
-                autoplayTimeLeft(s, time, progress) {
-                    // Update progress bar width based on time left
-                    if (progressBar) {
-                        progressBar.style.width = ((1 - progress) * 100) + '%';
+                slideChange: function () {
+                    // Pause/Play logic if needed for performance
+                    const currentSlide = this.slides[this.activeIndex];
+                    if (!currentSlide) return;
+                    const mediaType = currentSlide.dataset.mediaType;
+                    
+                    if (mediaType === 'youtube') {
+                        const ytContainer = currentSlide.querySelector('.youtube-container');
+                        if (ytContainer && ytPlayers[ytContainer.id]) {
+                            ytPlayers[ytContainer.id].playVideo();
+                        }
                     }
                 }
             }
         });
-
-        function resetProgressBar() {
-            if (progressBar) {
-                progressBar.style.transition = 'none';
-                progressBar.style.width = '0%';
-                setTimeout(() => {
-                    progressBar.style.transition = `width ${AUTOPLAY_DELAY}ms linear`;
-                }, 10);
-            }
-        }
     });
 </script>

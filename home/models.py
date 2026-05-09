@@ -3,18 +3,29 @@ from django.db import models
 from tinymce.models import HTMLField
 
 class CarouselImage(models.Model):
-    image = models.ImageField(upload_to='carousel_images/')
+    MEDIA_TYPE_CHOICES = [
+        ('image', 'Image'),
+        ('video', 'Video File'),
+        ('youtube', 'YouTube Video'),
+    ]
+    
+    media_type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES, default='image')
+    image = models.ImageField(upload_to='carousel_images/', help_text="Used for image slides or as a placeholder/poster for videos")
+    video_file = models.FileField(upload_to='carousel_videos/', blank=True, null=True, help_text="Upload a direct video file (MP4 recommended)")
+    youtube_url = models.URLField(blank=True, help_text="Enter YouTube video URL (e.g., https://www.youtube.com/watch?v=...)")
+    
     alt_text = models.CharField(max_length=255, blank=True)
     caption = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True, help_text="Optional description shown on the slide")
     action_url = models.URLField(blank=True, help_text="Optional URL for 'Learn More' button")
+    
     order = models.PositiveIntegerField(default=0, help_text="Order of appearance (lower numbers appear first)")
     is_active = models.BooleanField(default=True, help_text="Uncheck to hide this slide")
     
     class Meta:
         ordering = ['order', 'id']
-        verbose_name = 'Slider Image'
-        verbose_name_plural = 'Slider Images'
+        verbose_name = 'Slider Item'
+        verbose_name_plural = 'Slider Items'
 
     def __str__(self):
         return self.caption or self.alt_text or f"Slide {self.id}"
