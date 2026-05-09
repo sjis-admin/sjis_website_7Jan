@@ -142,52 +142,91 @@
 
                 {% if rules %}
                 {% for rule in rules %}
-                <div class="rule-card severity-{{ rule.severity }} p-8 rounded-[2.5rem] shadow-sm flex flex-col group relative overflow-hidden">
+                <div class="rule-card severity-{{ rule.severity }} p-8 rounded-[2.5rem] shadow-sm flex flex-col group relative overflow-hidden animate-on-scroll">
                     <!-- Background Decor -->
                     <div class="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
                         <i class="ri-shield-check-line text-8xl"></i>
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest 
-                                             {% if rule.severity == 'low' %}bg-emerald-50 text-emerald-600{% elif rule.severity == 'medium' %}bg-amber-50 text-amber-600{% else %}bg-rose-50 text-rose-600{% endif %}">
-                                    {{ rule.get_severity_display }}
-                                </span>
-                                <span class="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <i class="ri-group-line text-xs"></i>
-                                    {{ rule.applicable_to }}
-                                </span>
-                            </div>
-                            <h3 class="text-2xl font-extrabold text-slate-900 mb-2 font-heading group-hover:text-purple-600 transition-colors">
-                                {{ rule.title }}
-                            </h3>
-                            <p class="text-slate-500 leading-relaxed max-w-2xl">
-                                {{ rule.description|truncatewords:30 }}
-                            </p>
+                    <div class="relative z-10">
+                        <!-- Top Meta -->
+                        <div class="flex flex-wrap items-center gap-3 mb-6">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest 
+                                         {% if rule.severity == 'low' %}bg-emerald-50 text-emerald-600{% elif rule.severity == 'medium' %}bg-amber-50 text-amber-600{% else %}bg-rose-50 text-rose-600{% endif %}">
+                                {{ rule.get_severity_display }}
+                            </span>
+                            <span class="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <i class="ri-group-line text-xs"></i>
+                                {{ rule.applicable_to }}
+                            </span>
+                            
+                            <!-- Context Chips -->
+                            {% if 'fine' in rule.description|lower or 'fine' in rule.full_text|lower %}
+                            <span class="flex items-center gap-1.5 px-2 py-1 bg-rose-50 text-rose-500 rounded-lg text-[9px] font-bold uppercase tracking-wider">
+                                <i class="ri-money-dollar-circle-line"></i> Penalty Applies
+                            </span>
+                            {% endif %}
+                            {% if 'mandatory' in rule.description|lower or 'mandatory' in rule.full_text|lower %}
+                            <span class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-500 rounded-lg text-[9px] font-bold uppercase tracking-wider">
+                                <i class="ri-checkbox-circle-line"></i> Mandatory
+                            </span>
+                            {% endif %}
                         </div>
-                        
-                        <div class="flex-shrink-0">
-                            <a href="{% url 'rules:public_rule_detail' rule.id %}" 
-                               class="w-14 h-14 rounded-2xl bg-white/50 border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all shadow-sm">
-                                <i class="ri-arrow-right-line text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Meta -->
-                    <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap gap-6 relative z-10">
-                        <div class="flex items-center gap-2 text-slate-400">
-                            <i class="ri-bookmark-3-line"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">{{ rule.category.name }}</span>
+                        <div class="flex flex-col md:flex-row md:items-start justify-between gap-8">
+                            <div class="flex-1">
+                                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-4 font-heading group-hover:text-purple-600 transition-colors">
+                                    {{ rule.title }}
+                                </h3>
+                                <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                    {{ rule.description }}
+                                </p>
+
+                                <!-- Collapsible Full Text -->
+                                {% if rule.full_text %}
+                                <div id="details-{{ rule.id }}" class="hidden mt-6 pt-6 border-t border-slate-100/50">
+                                    <div class="bg-slate-50/50 rounded-2xl p-6 border border-slate-100">
+                                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Official Handbook Reference</h4>
+                                        <div class="text-slate-500 text-sm leading-relaxed italic">
+                                            "{{ rule.full_text }}"
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button onclick="toggleDetails('{{ rule.id }}')" 
+                                        id="btn-{{ rule.id }}"
+                                        class="flex items-center gap-2 text-purple-600 font-bold text-xs uppercase tracking-widest hover:gap-4 transition-all">
+                                    <span class="btn-text">View Full Regulation</span>
+                                    <i class="ri-add-line transition-transform"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex-shrink-0 flex flex-col gap-3">
+                                <a href="{% url 'rules:public_rule_detail' rule.id %}" 
+                                   class="w-14 h-14 rounded-2xl bg-white/50 border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all shadow-sm group/btn">
+                                    <i class="ri-external-link-line text-xl"></i>
+                                </a>
+                            </div>
                         </div>
-                        {% if rule.effective_date %}
-                        <div class="flex items-center gap-2 text-slate-400">
-                            <i class="ri-calendar-check-line"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">Effective: {{ rule.effective_date|date:"M d, Y" }}</span>
+
+                        <!-- Footer Meta -->
+                        <div class="mt-10 flex flex-wrap gap-6 text-slate-400">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-purple-600">
+                                    <i class="ri-folder-info-line"></i>
+                                </div>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">{{ rule.category.name }}</span>
+                            </div>
+                            {% if rule.effective_date %}
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-blue-500">
+                                    <i class="ri-calendar-check-line"></i>
+                                </div>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Active Since {{ rule.effective_date|date:"Y" }}</span>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -209,6 +248,23 @@
 </div>
 
 <script>
+    function toggleDetails(id) {
+        const details = document.getElementById(`details-${id}`);
+        const btn = document.getElementById(`btn-${id}`);
+        const text = btn.querySelector('.btn-text');
+        const icon = btn.querySelector('i');
+        
+        if (details.classList.contains('hidden')) {
+            details.classList.remove('hidden');
+            text.innerText = 'Hide Details';
+            icon.classList.replace('ri-add-line', 'ri-subtract-line');
+        } else {
+            details.classList.add('hidden');
+            text.innerText = 'View Full Regulation';
+            icon.classList.replace('ri-subtract-line', 'ri-add-line');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -218,7 +274,7 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
     });
 </script>
 {% endblock %}
