@@ -39,6 +39,14 @@
         box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
     }
 
+    @media (max-width: 640px) {
+        .ticker-label {
+            padding: 0 0.75rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+        }
+    }
+
     .ticker-label::after {
         content: '';
         position: absolute;
@@ -116,7 +124,8 @@
 <div class="ticker-container">
     <div class="ticker-label">
         <span class="live-dot"></span>
-        Latest News
+        <span class="hidden sm:inline">Latest News</span>
+        <span class="sm:hidden">News</span>
     </div>
     <div class="ticker-wrapper">
         <div class="ticker">
