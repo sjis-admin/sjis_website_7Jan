@@ -20,41 +20,51 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost,sjis.edu.bd,www.sjis.edu.bd').split(',')
 
 # DATABASE SETTINGS (Flexible for Local/Production)
-DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
-
-if DB_ENGINE == 'postgresql':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
-    }
-elif DB_ENGINE == 'mysql':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '3306'),
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
-    }
-else:
-    # Default to SQLite for local development
+if DEBUG:
+    # Always default to SQLite for local development when DEBUG is True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+else:
+    # Use Production Database Engine from environment variables
+    DB_ENGINE = os.getenv('DB_ENGINE', 'postgresql').lower()
+
+    if DB_ENGINE == 'postgresql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.getenv('DB_NAME'),
+                'USER': os.getenv('DB_USER'),
+                'PASSWORD': os.getenv('DB_PASSWORD'),
+                'HOST': os.getenv('DB_HOST', 'localhost'),
+                'PORT': os.getenv('DB_PORT', '5432'),
+            }
+        }
+    elif DB_ENGINE == 'mysql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.getenv('DB_NAME'),
+                'USER': os.getenv('DB_USER'),
+                'PASSWORD': os.getenv('DB_PASSWORD'),
+                'HOST': os.getenv('DB_HOST', 'localhost'),
+                'PORT': os.getenv('DB_PORT', '3306'),
+                'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                },
+            }
+        }
+    else:
+        # Fallback to SQLite if engine is explicitly set to sqlite or unrecognized
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),
+            }
+        }
 
 # APPLICATION DEFINITION
 INSTALLED_APPS = [

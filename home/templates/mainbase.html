@@ -949,7 +949,7 @@
                         </div>
                     </div>
 
-                    <a href="{% url 'notice_board2:notice_board' %}" class="header-nav-item {% if '/notices' in request.path %}active{% endif %}">Notices</a>
+                    <a href="{% url 'notice_board2:list' %}" class="header-nav-item {% if '/notices' in request.path %}active{% endif %}">Notices</a>
                     <a href="{% url 'contact:contact' %}" class="header-nav-item {% if '/contact' in request.path %}active{% endif %}">Contact</a>
 
                     <div class="flex items-center ml-6 pl-6 border-l border-slate-200 gap-4">
@@ -1178,7 +1178,7 @@
                                 class="material-icons text-indigo-500 group-hover:scale-110 transition-transform">event</span>
                             <span class="text-xs font-semibold text-gray-700">Events</span>
                         </a>
-                        <a href="{% url 'notice_board2:notice_board' %}"
+                        <a href="{% url 'notice_board2:list' %}"
                             class="flex flex-col items-center justify-center space-y-1.5 p-3 bg-white/70 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 group border border-transparent hover:border-purple-200">
                             <span
                                 class="material-icons text-purple-500 group-hover:scale-110 transition-transform">notifications</span>
@@ -1312,7 +1312,7 @@
                 </div>
 
                 <!-- Notice Board -->
-                <a href="{% url 'notice_board2:notice_board' %}"
+                <a href="{% url 'notice_board2:list' %}"
                     class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group {% if '/notices' in request.path %}bg-white/10 text-brand-400 border-l-4 border-brand-500{% else %}text-white hover:bg-white/10{% endif %}">
                     <span class="material-icons {% if '/notices' in request.path %}text-white{% else %}text-red-300{% endif %} group-hover:text-white transition-colors">campaign</span>
                     <span class="font-medium">Notice Board</span>
@@ -1422,7 +1422,7 @@
                         <li><a href="{% url 'academic_calendar:academic_calendar' %}"
                                 class="text-slate-400 hover:text-brand-400 transition-all flex items-center group">
                                 <i class="ri-arrow-right-s-line mr-2 text-brand-500 group-hover:translate-x-1 transition-transform"></i>Calendar</a></li>
-                        <li><a href="{% url 'notice_board2:notice_board' %}"
+                        <li><a href="{% url 'notice_board2:list' %}"
                                 class="text-slate-400 hover:text-brand-400 transition-all flex items-center group">
                                 <i class="ri-arrow-right-s-line mr-2 text-brand-500 group-hover:translate-x-1 transition-transform"></i>Notice Board</a></li>
                         <li><a href="{% url 'contact:contact' %}"
@@ -1498,9 +1498,9 @@
                         <a href="{% url 'home:terms_of_service' %}" class="hover:text-white transition-colors">Terms of Service</a>
                     </div>
                 </div>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 rounded-full bg-slate-800 text-slate-400 hover:bg-brand-500 hover:text-white transition-all flex items-center justify-center shadow-lg group">
-                    <i class="ri-arrow-up-line group-hover:-translate-y-1 transition-transform"></i>
-                </button>
+                <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center shadow-lg hover:bg-brand-600 transition-all duration-300 group relative z-[100]">
+                    <i class="ri-arrow-up-line text-2xl group-hover:-translate-y-1 transition-transform"></i>
+                </a>
             </div>
         </div>
     </footer>
@@ -1514,7 +1514,7 @@
                 <i class="ri-home-5-line text-xl"></i>
                 <span class="text-[10px] font-bold uppercase tracking-wide">Home</span>
             </a>
-            <a href="{% url 'notice_board2:notice_board' %}"
+            <a href="{% url 'notice_board2:list' %}"
                class="bottom-nav-item flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all text-slate-400 hover:text-brand-400">
                 <i class="ri-notification-3-line text-xl"></i>
                 <span class="text-[10px] font-bold uppercase tracking-wide">Notices</span>

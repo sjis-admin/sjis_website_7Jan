@@ -5,7 +5,7 @@ from . import views
 app_name = 'notice_board2'  # Namespace for the notice board app
 urlpatterns = [
     # Default notice board view
-    path('', views.NoticeBoardListView.as_view(), name='notice_board'),  # Change this to match template
+    path('', views.NoticeBoardListView.as_view(), name='list'),
     
     # Detail view - accessible to all
     path('notice/<int:pk>/', views.NoticeBoardDetailView.as_view(), name='detail'),

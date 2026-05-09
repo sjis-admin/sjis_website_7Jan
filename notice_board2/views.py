@@ -23,19 +23,35 @@ class NoticeBoardListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
+        # Base queryset (removed status='published' as it doesn't exist in the model)
         queryset = NoticeBoard.objects.all()
-
-        grade_filter = self.request.GET.get('grade', None)
-        search_query = self.request.GET.get('search', None)
-
-        if grade_filter:
-            queryset = queryset.filter(target_grades__name=grade_filter)
-
+        
+        # Search handling
+        search_query = self.request.GET.get('search')
         if search_query:
-            queryset = queryset.filter(
-                Q(title__icontains=search_query) | 
-                Q(content__icontains=search_query)
-            )
+            if search_query.lower() == 'academic':
+                queryset = queryset.filter(Q(title__icontains='Academic') | Q(content__icontains='Academic'))
+            elif search_query.lower() == 'holiday':
+                queryset = queryset.filter(Q(title__icontains='Holiday') | Q(content__icontains='Holiday'))
+            elif search_query.lower() == 'exam':
+                queryset = queryset.filter(Q(title__icontains='Exam') | Q(title__icontains='Assessment') | Q(content__icontains='Exam'))
+            else:
+                queryset = queryset.filter(
+                    Q(title__icontains=search_query) | 
+                    Q(content__icontains=search_query)
+                )
+
+        # Grade filtering
+        grade_id = self.request.GET.get('grade')
+        if grade_id:
+            queryset = queryset.filter(target_grades__id=grade_id)
+
+        # Sorting
+        sort_by = self.request.GET.get('sort', 'newest')
+        if sort_by == 'oldest':
+            queryset = queryset.order_by('created_at')
+        else:
+            queryset = queryset.order_by('-created_at')
 
         return queryset.distinct()
 
