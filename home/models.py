@@ -183,7 +183,8 @@ class SiteConfiguration(models.Model):
 
 class PopupAnnouncement(models.Model):
     title = models.CharField(max_length=255, help_text="Internal name for the popup (e.g. Admission Open 2026)")
-    image = models.ImageField(upload_to='popups/', help_text="Best size: 800px x 1000px (Vertical) or 800px x 800px (Square). High-resolution PNG or JPG recommended.")
+    image = models.ImageField(upload_to='popups/', help_text="Mobile Image: Best size 800px x 1000px (Vertical). Shown on phones.")
+    desktop_image = models.ImageField(upload_to='popups/', blank=True, null=True, help_text="Desktop Image: Best size 1200px x 600px (Wide). Shown on Laptops/Desktops. If empty, mobile image will be used.")
     link = models.URLField(blank=True, null=True, help_text="Optional: URL to redirect when the image is clicked.")
     is_active = models.BooleanField(default=True, help_text="Check to display this popup on the website.")
     show_once_per_session = models.BooleanField(default=True, help_text="If checked, the popup will only appear once per browser session.")
@@ -196,6 +197,31 @@ class PopupAnnouncement(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        # Optimize Mobile Image
+        if self.image:
+            self._optimize_image(self.image, 1000)
+        
+        # Optimize Desktop Image
+        if self.desktop_image:
+            self._optimize_image(self.desktop_image, 1920)
+            
+        super().save(*args, **kwargs)
+
+    def _optimize_image(self, field, max_width):
+        img = Image.open(field)
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+        
+        if img.width > max_width:
+            output_size = (max_width, int((max_width / img.width) * img.height))
+            img = img.resize(output_size, Image.Resampling.LANCZOS)
+        
+        output = io.BytesIO()
+        img.save(output, format='JPEG', quality=85, optimize=True)
+        output.seek(0)
+        field.save(field.name, ContentFile(output.read()), save=False)
 
 
 

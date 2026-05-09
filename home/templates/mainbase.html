@@ -1703,7 +1703,7 @@
     {% if active_popup %}
     <!-- Premium Announcement Popup (Microsoft Fluent Design) -->
     <div id="announcement-popup" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-700 ease-out" style="background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(12px);">
-        <div class="relative max-w-md w-full transform scale-90 transition-all duration-700 ease-out" id="popup-content">
+        <div class="relative max-w-[90vw] md:max-w-2xl lg:max-w-5xl w-full transform scale-90 transition-all duration-700 ease-out" id="popup-content">
             <!-- Glassmorphic Close Button -->
             <button onclick="closeAnnouncement()" class="absolute -top-3 -right-3 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl shadow-2xl flex items-center justify-center text-slate-900 hover:bg-red-500 hover:text-white transition-all z-20 group">
                 <i class="ri-close-line text-2xl"></i>
@@ -1712,12 +1712,22 @@
             <!-- Premium Ad Container (Sharp Edges) -->
             <div class="rounded-none overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.3)] border-4 border-white bg-white group/popup">
                 {% if active_popup.link %}
-                <a href="{{ active_popup.link }}" target="_blank" class="block overflow-hidden">
-                    <img src="{{ active_popup.image.url }}" alt="{{ active_popup.title }}" class="w-full h-auto group-hover/popup:scale-105 transition-transform duration-[2s] ease-out">
+                <a href="{{ active_popup.link }}" target="_blank" class="block overflow-hidden relative">
+                    <picture>
+                        {% if active_popup.desktop_image %}
+                        <source media="(min-width: 768px)" srcset="{{ active_popup.desktop_image.url }}">
+                        {% endif %}
+                        <img src="{{ active_popup.image.url }}" alt="{{ active_popup.title }}" class="w-full h-auto group-hover/popup:scale-105 transition-transform duration-[2s] ease-out">
+                    </picture>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/popup:opacity-100 transition-opacity"></div>
                 </a>
                 {% else %}
-                <img src="{{ active_popup.image.url }}" alt="{{ active_popup.title }}" class="w-full h-auto">
+                <picture>
+                    {% if active_popup.desktop_image %}
+                    <source media="(min-width: 768px)" srcset="{{ active_popup.desktop_image.url }}">
+                    {% endif %}
+                    <img src="{{ active_popup.image.url }}" alt="{{ active_popup.title }}" class="w-full h-auto">
+                </picture>
                 {% endif %}
             </div>
         </div>
