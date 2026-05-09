@@ -1,7 +1,7 @@
 {% load static %}
 
 <style>
-    /* Premium Microsoft Fluent Slider */
+    /* Premium Professional Slider */
     .premium-slider {
         position: relative;
         width: 100%;
@@ -11,33 +11,7 @@
         background: #020617;
     }
 
-    /* Loading Skeleton for slow connections */
-    .premium-slider::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(255,255,255,0.03) 50%, 
-            transparent 100%);
-        background-size: 200% 100%;
-        animation: slideSkeleton 2s infinite linear;
-        z-index: 0;
-    }
-
-    @keyframes slideSkeleton {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-    }
-
-    @media (max-width: 768px) {
-        .premium-slider {
-            height: 100svh;
-            min-height: 480px;
-        }
-    }
-
-    .swiper-container {
+    .swiper {
         width: 100%;
         height: 100%;
     }
@@ -47,46 +21,119 @@
         overflow: hidden;
     }
 
-    /* Enhanced Ken Burns - Zoom + Subtle Pan */
+    /* Professional Ken Burns */
     .slide-image {
         position: absolute;
         inset: 0;
         z-index: 1;
+        transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .slide-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        animation: kenBurns 25s ease-in-out infinite alternate;
-        transform-origin: center;
-        will-change: transform;
+        transform: scale(1.1);
+        transition: transform 6s linear;
     }
 
-    @keyframes kenBurns {
-        0% { transform: scale(1) translateX(0); }
-        100% { transform: scale(1.15) translateX(2%); }
+    .swiper-slide-active .slide-image img {
+        transform: scale(1);
     }
 
-    /* Modern Navigation Capsules */
+    /* Glassmorphic Overlay Gradient */
+    .slide-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: linear-gradient(to right, 
+            rgba(2, 6, 23, 0.8) 0%, 
+            rgba(2, 6, 23, 0.4) 40%,
+            transparent 100%);
+    }
+
+    @media (max-width: 768px) {
+        .slide-overlay {
+            background: linear-gradient(to top, 
+                rgba(2, 6, 23, 0.9) 0%, 
+                rgba(2, 6, 23, 0.4) 60%,
+                transparent 100%);
+        }
+    }
+
+    /* Content Styling */
+    .slide-content {
+        position: absolute;
+        bottom: 15%;
+        left: 8%;
+        right: 8%;
+        z-index: 10;
+        max-width: 800px;
+        color: white;
+    }
+
+    .slide-caption {
+        font-family: 'Outfit', sans-serif;
+        font-size: 4.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        letter-spacing: -0.02em;
+        text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .slide-description {
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+        max-width: 600px;
+    }
+
+    .slide-action {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s;
+    }
+
+    /* Active State Animations */
+    .swiper-slide-active .slide-caption,
+    .swiper-slide-active .slide-description,
+    .swiper-slide-active .slide-action {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+        .slide-caption { font-size: 2.5rem; }
+        .slide-description { font-size: 1rem; }
+        .slide-content { bottom: 10%; text-align: center; left: 5%; right: 5%; }
+    }
+
+    /* Navigation Capsules */
     .nav-capsule {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
         z-index: 50;
-        width: 56px;
-        height: 56px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%; /* Circle for more modern look */
+        width: 64px;
+        height: 64px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .nav-capsule:hover {
@@ -95,79 +142,137 @@
         transform: translateY(-50%) scale(1.1);
     }
 
-    .nav-capsule.prev { left: 16px; }
-    .nav-capsule.next { right: 16px; }
+    .nav-capsule.prev { left: 40px; }
+    .nav-capsule.next { right: 40px; }
 
-    @media (max-width: 640px) {
-        .nav-capsule { width: 44px; height: 44px; }
-        .nav-capsule.prev { left: 8px; }
-        .nav-capsule.next { right: 8px; }
+    @media (max-width: 768px) {
+        .nav-capsule { display: none; } /* Hide on mobile to focus on content */
     }
 
-    @media (min-width: 1024px) {
-        .nav-capsule { width: 64px; height: 64px; }
-        .nav-capsule.prev { left: 40px; }
-        .nav-capsule.next { right: 40px; }
+    /* Progress Indicator */
+    .slider-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 100;
     }
 
-    /* Swiper dot bullets */
+    .slider-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #0ea5e9;
+        transition: width linear;
+    }
+
+    /* Custom Pagination Dots */
+    .swiper-pagination-bullets {
+        bottom: 3rem !important;
+        left: 8% !important;
+        text-align: left !important;
+        width: auto !important;
+    }
+
     .swiper-pagination-bullet {
-        background: rgba(255,255,255,0.7) !important;
-        width: 10px !important;
-        height: 10px !important;
+        background: rgba(255, 255, 255, 0.4) !important;
+        opacity: 1 !important;
+        width: 40px !important;
+        height: 3px !important;
+        border-radius: 2px !important;
         transition: all 0.3s ease !important;
+        margin: 0 4px !important;
     }
+
     .swiper-pagination-bullet-active {
         background: #0ea5e9 !important;
-        width: 32px !important;
-        border-radius: 5px !important;
+        width: 60px !important;
     }
-    .swiper-pagination {
-        bottom: 2rem !important;
+
+    @media (max-width: 768px) {
+        .swiper-pagination-bullets {
+            left: 0 !important;
+            width: 100% !important;
+            text-align: center !important;
+            bottom: 2rem !important;
+        }
     }
 </style>
 
-<div class="premium-slider group">
-    <div class="swiper-container">
+<div class="premium-slider">
+    <div class="swiper">
         <div class="swiper-wrapper">
             {% for image in images %}
             <div class="swiper-slide">
-                <!-- Optimized Image Layer -->
+                <!-- Image Layer -->
                 <div class="slide-image">
                     <img src="{{ image.image.url }}" 
-                         alt="{{ image.caption|default:'SJIS Campus' }}"
-                         {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
-                         class="w-full h-full object-cover">
+                         alt="{{ image.alt_text|default:image.caption|default:'SJIS Slide' }}"
+                         {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+                </div>
+                
+                <!-- Dark Overlay -->
+                <div class="slide-overlay"></div>
+
+                <!-- Text Content -->
+                <div class="slide-content">
+                    {% if image.caption %}
+                    <h2 class="slide-caption">{{ image.caption }}</h2>
+                    {% endif %}
+                    
+                    {% if image.description %}
+                    <p class="slide-description">{{ image.description }}</p>
+                    {% endif %}
+
+                    {% if image.action_url %}
+                    <div class="slide-action">
+                        <a href="{{ image.action_url }}" class="inline-flex items-center px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-brand-500/30">
+                            Learn More
+                            <i class="ri-arrow-right-line ml-2"></i>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
         </div>
-    </div>
+        
+        <!-- Navigation -->
+        <div class="nav-capsule prev swiper-btn-prev">
+            <i class="ri-arrow-left-s-line text-2xl"></i>
+        </div>
+        <div class="nav-capsule next swiper-btn-next">
+            <i class="ri-arrow-right-s-line text-2xl"></i>
+        </div>
 
-    <!-- Pagination dots (visible on mobile) -->
-    <div class="swiper-pagination"></div>
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
 
-    <!-- Navigation -->
-    <div class="nav-capsule prev swiper-btn-prev">
-        <i class="ri-arrow-left-s-line text-2xl"></i>
-    </div>
-    <div class="nav-capsule next swiper-btn-next">
-        <i class="ri-arrow-right-s-line text-2xl"></i>
+        <!-- Progress Bar -->
+        <div class="slider-progress">
+            <div class="slider-progress-bar"></div>
+        </div>
     </div>
 </div>
 
+<!-- Swiper dependencies are usually in mainbase, but including here for self-containment if needed or ensuring latest version -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        new Swiper('.swiper-container', {
+        const AUTOPLAY_DELAY = 7000;
+        const progressBar = document.querySelector('.slider-progress-bar');
+        
+        const swiper = new Swiper('.swiper', {
             loop: true,
-            speed: 1200,
+            speed: 1400,
             effect: 'fade',
             fadeEffect: { crossFade: true },
+            grabCursor: true,
             autoplay: {
-                delay: 6000,
+                delay: AUTOPLAY_DELAY,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
             },
@@ -178,10 +283,31 @@
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
-                dynamicBullets: true,
             },
-            a11y: { enabled: true },
-            grabCursor: true,
+            on: {
+                init: function() {
+                    resetProgressBar();
+                },
+                slideChangeTransitionStart: function() {
+                    resetProgressBar();
+                },
+                autoplayTimeLeft(s, time, progress) {
+                    // Update progress bar width based on time left
+                    if (progressBar) {
+                        progressBar.style.width = ((1 - progress) * 100) + '%';
+                    }
+                }
+            }
         });
+
+        function resetProgressBar() {
+            if (progressBar) {
+                progressBar.style.transition = 'none';
+                progressBar.style.width = '0%';
+                setTimeout(() => {
+                    progressBar.style.transition = `width ${AUTOPLAY_DELAY}ms linear`;
+                }, 10);
+            }
+        }
     });
 </script>
