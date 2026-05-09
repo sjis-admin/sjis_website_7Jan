@@ -1,6 +1,6 @@
 from django.contrib import sitemaps
 from django.urls import reverse
-from .models import NewsArticle, AboutUs
+from .models import NewsArticle, AboutUs, NewsTicker
 from notice_board2.models import NoticeBoard
 
 class StaticViewSitemap(sitemaps.Sitemap):
@@ -45,3 +45,10 @@ class NoticeBoardSitemap(sitemaps.Sitemap):
 
     def lastmod(self, obj):
         return obj.created_at
+
+class NewsTickerSitemap(sitemaps.Sitemap):
+    changefreq = "daily"
+    priority = 0.6
+
+    def items(self):
+        return NewsTicker.objects.all()

@@ -1,16 +1,8 @@
 from django.urls import path
 from . import views
 from .views import faculty_list, about_us_view, principal_message_view, privacy_policy, terms_of_service, sitemap
-from django.contrib.sitemaps.views import sitemap as sitemap_view
-from home.sitemaps import StaticViewSitemap, NewsArticleSitemap, NewsTickerSitemap
-
+# Sitemaps are handled in core/urls.py
 app_name = 'home'
-
-sitemaps = {
-    'static': StaticViewSitemap,
-    'news': NewsArticleSitemap,
-    'news_ticker': NewsTickerSitemap,
-}
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -26,7 +18,6 @@ urlpatterns = [
     path('privacy-policy/', privacy_policy, name='privacy_policy'),
     path('terms-of-service/', terms_of_service, name='terms_of_service'),
     path('sitemap/', sitemap, name='sitemap'),
-    path('sitemap.xml', sitemap_view, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
 ]
 
