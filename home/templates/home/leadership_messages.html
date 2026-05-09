@@ -1,0 +1,81 @@
+<section class="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 space-y-4 reveal">
+            <h3 class="text-brand-600 font-bold uppercase tracking-widest text-sm">Leadership Voice</h3>
+            <h2 class="text-4xl md:text-5xl font-black text-slate-900">Messages from Our Directors</h2>
+            <div class="w-24 h-1.5 bg-brand-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            
+            <!-- Principal's Card -->
+            {% if principal_msg %}
+            <div class="group relative bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl transition-all duration-500 reveal">
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="relative w-full md:w-40 aspect-[4/5] shrink-0">
+                        {% if principal_msg.image %}
+                        <img src="{{ principal_msg.image.url }}" alt="Principal" class="w-full h-full object-cover rounded-2xl shadow-lg border-2 border-white">
+                        {% else %}
+                        <div class="w-full h-full bg-slate-100 rounded-2xl flex items-center justify-center text-slate-300">
+                            <i class="ri-user-smile-line text-4xl"></i>
+                        </div>
+                        {% endif %}
+                        <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg rotate-12 group-hover:rotate-0 transition-transform">
+                            <i class="ri-double-quotes-l text-xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest">The Principal</h4>
+                        <h3 class="text-2xl font-bold text-slate-900">{{ principal_msg.title }}</h3>
+                        <div class="text-slate-600 line-clamp-4 leading-relaxed italic text-sm md:text-base">
+                            {{ principal_msg.message|striptags|safe }}
+                        </div>
+                        <div class="pt-4">
+                            <a href="{% url 'home:principal_message' %}" class="inline-flex items-center text-sm font-bold text-brand-600 group/link">
+                                Read Full Message
+                                <i class="ri-arrow-right-line ml-2 group-hover/link:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Vice Principal's Card -->
+            {% if vp_msg %}
+            <div class="group relative bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl transition-all duration-500 reveal" style="transition-delay: 0.1s;">
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="relative w-full md:w-40 aspect-[4/5] shrink-0">
+                        {% if vp_msg.image %}
+                        <img src="{{ vp_msg.image.url }}" alt="Vice Principal" class="w-full h-full object-cover rounded-2xl shadow-lg border-2 border-white">
+                        {% else %}
+                        <div class="w-full h-full bg-slate-100 rounded-2xl flex items-center justify-center text-slate-300">
+                            <i class="ri-user-smile-line text-4xl"></i>
+                        </div>
+                        {% endif %}
+                        <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg -rotate-12 group-hover:rotate-0 transition-transform">
+                            <i class="ri-double-quotes-l text-xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest">The Vice-Principal</h4>
+                        <h3 class="text-2xl font-bold text-slate-900">{{ vp_msg.title }}</h3>
+                        <div class="text-slate-600 line-clamp-4 leading-relaxed italic text-sm md:text-base">
+                            {{ vp_msg.message|striptags|safe }}
+                        </div>
+                        <div class="pt-4">
+                            <a href="{% url 'home:vice_principal_message' %}" class="inline-flex items-center text-sm font-bold text-brand-600 group/link">
+                                Read Full Message
+                                <i class="ri-arrow-right-line ml-2 group-hover/link:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>

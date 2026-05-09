@@ -15,6 +15,10 @@ def home(request):
     news_items = NewsTicker.objects.all()
     notices = NoticeBoard.objects.all().order_by('-created_at')[:5]
     
+    # Leadership Messages
+    principal_msg = PrincipalMessage.objects.filter(is_active=True, type='Principal').first()
+    vp_msg = PrincipalMessage.objects.filter(is_active=True, type='VicePrincipal').first()
+    
     context = {
         'images': images,
         'image_count': images.count(),
@@ -22,6 +26,8 @@ def home(request):
         'news_articles': news_articles,
         'news_items': news_items,
         'notices': notices,
+        'principal_msg': principal_msg,
+        'vp_msg': vp_msg,
     }
     return render(request, 'home/home.html', context)
 
