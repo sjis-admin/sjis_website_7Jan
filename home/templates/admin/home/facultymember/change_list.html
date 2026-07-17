@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="bulk-upload/" class="addlink" style="background-color: #417690; color: white;">
+            {% trans "Bulk Upload Faculty" %}
+        </a>
+    </li>
+    {{ block.super }}
+{% endblock %}

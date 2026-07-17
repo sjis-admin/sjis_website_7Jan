@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; {% trans 'Bulk Upload Faculty' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <h2>How to use the Bulk Upload tool</h2>
+        <p>This tool allows you to upload multiple faculty members at once. You will need to prepare two files: a <strong>CSV file</strong> containing their information, and a <strong>ZIP file</strong> containing their photos.</p>
+
+        <h3>Step 1: Prepare the CSV File</h3>
+        <p>Create an Excel spreadsheet and save it as a <strong>.csv (Comma Separated Values)</strong> file. Ensure it has the exact following headers in the first row:</p>
+        <p>
+            <a href="sample-csv/" class="button" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">
+                📥 Download Sample CSV Template
+            </a>
+        </p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ccc; padding: 8px; background: #f8f8f8;">Column Header</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; background: #f8f8f8;">Data Type / Format</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; background: #f8f8f8;">Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;"><code>name</code></td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Text (Required)</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">John Doe</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;"><code>designation</code></td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Text (Required)</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Mathematics Teacher</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;"><code>category</code></td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Must be one of: <strong>Administration</strong>, <strong>Teacher</strong>, or <strong>Office Staff</strong></td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Teacher</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;"><code>image_filename</code></td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">The exact filename of their photo in the ZIP (including extension).</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">john_doe.jpg</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Step 2: Prepare the ZIP File</h3>
+        <p>Place all the faculty photos (e.g. <code>john_doe.jpg</code>, <code>jane_smith.png</code>) into a folder. Right-click the folder and select "Compress" or "Send to Compressed (zipped) folder" to create a <strong>.zip</strong> file.</p>
+        <p><em>Note: Make sure the names of the images inside the ZIP exactly match the <code>image_filename</code> column in your CSV!</em></p>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>Step 3: Upload Files</h3>
+        <form method="post" enctype="multipart/form-data" style="margin-top: 20px; padding: 20px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 4px;">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="csv_file" style="display: block; font-weight: bold; margin-bottom: 5px;">1. Select CSV File:</label>
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="zip_file" style="display: block; font-weight: bold; margin-bottom: 5px;">2. Select ZIP File (Images):</label>
+                <input type="file" name="zip_file" id="zip_file" accept=".zip" required>
+            </div>
+            <div class="submit-row" style="margin: 0; padding: 0; border: none; background: none;">
+                <input type="submit" value="Upload and Process" class="default" name="_save">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
