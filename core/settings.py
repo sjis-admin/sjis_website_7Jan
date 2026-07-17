@@ -163,6 +163,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DEFAULT PRIMARY KEY FIELD TYPE
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# UPLOAD CONFIGURATION (Pro-level handling for large PDFs)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 536870912  # 512MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880    # 5MB (Keep small to stream to disk)
+
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@example.com')

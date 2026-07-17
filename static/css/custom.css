@@ -1,4 +1,8 @@
 /* static/css/custom.css */
+/* Import Design System and Component Libraries */
+@import url('./design-system.css');
+@import url('./components.css');
+
 .custom-logo {
   height: 6.5rem; /* Adjust this value as needed */
 }
