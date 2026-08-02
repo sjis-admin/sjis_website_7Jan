@@ -1,17 +1,65 @@
 {% load static %}
+<!-- Splide.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
 <style>
-    /* Horizontal flex layout fix for Glide.js */
-    .club-glide .glide__slides {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: stretch !important;
-        flex-wrap: nowrap !important;
+    .club-splide .splide__arrow {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        color: #1F3A93;
+        width: 52px;
+        height: 52px;
+        border-radius: 9999px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0.95;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
     }
 
-    .club-glide .glide__slide {
-        height: auto;
-        display: flex;
-        flex-shrink: 0;
+    .club-splide .splide__arrow:hover {
+        background: #1F3A93;
+        color: #ffffff;
+        border-color: #1F3A93;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 15px 30px -5px rgba(31, 58, 147, 0.35);
+        opacity: 1;
+    }
+
+    .club-splide .splide__arrow svg {
+        fill: currentColor;
+        width: 1.25em;
+        height: 1.25em;
+    }
+
+    .club-splide .splide__arrow--prev { left: -26px; }
+    .club-splide .splide__arrow--next { right: -26px; }
+
+    @media (max-width: 1280px) {
+        .club-splide .splide__arrow--prev { left: 4px; }
+        .club-splide .splide__arrow--next { right: 4px; }
+    }
+
+    .club-splide .splide__pagination {
+        bottom: -2.5rem;
+    }
+
+    .club-splide .splide__pagination__page {
+        width: 10px;
+        height: 10px;
+        background: #cbd5e1;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0.8;
+    }
+
+    .club-splide .splide__pagination__page.is-active {
+        background: #1F3A93;
+        width: 32px;
+        border-radius: 9999px;
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(31, 58, 147, 0.3);
     }
 
     .club-card-premium {
@@ -30,53 +78,11 @@
     }
 
     .club-icon-wrapper {
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .club-card-premium:hover .club-icon-wrapper {
         transform: scale(1.1) rotate(-3deg);
-    }
-
-    /* Pro Bullets Styling */
-    .club-glide .glide__bullet {
-        width: 10px;
-        height: 10px;
-        background-color: #cbd5e1;
-        border-radius: 9999px;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        cursor: pointer;
-        border: none;
-    }
-
-    .club-glide .glide__bullet--active {
-        background-color: #1F3A93 !important;
-        width: 32px !important;
-        box-shadow: 0 4px 12px rgba(31, 58, 147, 0.3);
-    }
-
-    /* Pro Arrows Styling */
-    .club-nav-arrow {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(226, 232, 240, 0.9);
-        color: #1F3A93;
-        width: 48px;
-        height: 48px;
-        border-radius: 9999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        cursor: pointer;
-    }
-
-    .club-nav-arrow:hover {
-        background: #1F3A93;
-        color: #ffffff;
-        border-color: #1F3A93;
-        transform: scale(1.1);
-        box-shadow: 0 15px 30px -5px rgba(31, 58, 147, 0.35);
     }
 </style>
 
@@ -107,23 +113,12 @@
             </div>
         </div>
         
-        <!-- Glide.js Slider for Clubs -->
-        <div class="glide club-glide group relative">
-            
-            <!-- Pro Navigation Arrows -->
-            <div class="glide__arrows hidden md:block" data-glide-el="controls">
-                <button class="club-nav-arrow absolute top-1/2 -left-6 -translate-y-1/2 z-20" data-glide-dir="<" aria-label="Previous Slide">
-                    <i class="ri-arrow-left-s-line text-2xl"></i>
-                </button>
-                <button class="club-nav-arrow absolute top-1/2 -right-6 -translate-y-1/2 z-20" data-glide-dir=">" aria-label="Next Slide">
-                    <i class="ri-arrow-right-s-line text-2xl"></i>
-                </button>
-            </div>
-
-            <div class="glide__track overflow-hidden" data-glide-el="track">
-                <ul class="glide__slides">
+        <!-- Splide Slider for Clubs -->
+        <div id="club-slider" class="splide club-splide group relative">
+            <div class="splide__track py-4">
+                <ul class="splide__list">
                     {% for club in clubs %}
-                    <li class="glide__slide h-auto p-2">
+                    <li class="splide__slide p-2 h-auto">
                         <div class="club-card-premium rounded-3xl p-8 flex flex-col items-center text-center h-full group/card relative overflow-hidden">
                             <!-- Subtle top accent hover bar -->
                             <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-brand-600 via-blue-500 to-amber-500 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
@@ -152,7 +147,7 @@
                     </li>
                     {% empty %}
                     <!-- Fallback items if no clubs in DB -->
-                    <li class="glide__slide h-auto p-2">
+                    <li class="splide__slide p-2 h-auto">
                         <div class="club-card-premium rounded-3xl p-8 flex flex-col items-center text-center h-full group/card relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
                             <div class="club-icon-wrapper w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/25 flex items-center justify-center mb-6">
@@ -167,7 +162,7 @@
                         </div>
                     </li>
 
-                    <li class="glide__slide h-auto p-2">
+                    <li class="splide__slide p-2 h-auto">
                         <div class="club-card-premium rounded-3xl p-8 flex flex-col items-center text-center h-full group/card relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
                             <div class="club-icon-wrapper w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white shadow-lg shadow-emerald-500/25 flex items-center justify-center mb-6">
@@ -182,7 +177,7 @@
                         </div>
                     </li>
 
-                    <li class="glide__slide h-auto p-2">
+                    <li class="splide__slide p-2 h-auto">
                         <div class="club-card-premium rounded-3xl p-8 flex flex-col items-center text-center h-full group/card relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
                             <div class="club-icon-wrapper w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 text-white shadow-lg shadow-indigo-500/25 flex items-center justify-center mb-6">
@@ -197,7 +192,7 @@
                         </div>
                     </li>
 
-                    <li class="glide__slide h-auto p-2">
+                    <li class="splide__slide p-2 h-auto">
                         <div class="club-card-premium rounded-3xl p-8 flex flex-col items-center text-center h-full group/card relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-500 to-orange-600 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
                             <div class="club-icon-wrapper w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 flex items-center justify-center mb-6">
@@ -214,55 +209,43 @@
                     {% endfor %}
                 </ul>
             </div>
-            
-            <!-- Pro Navigation Bullet Dots -->
-            <div class="glide__bullets flex justify-center items-center gap-2 mt-8" data-glide-el="controls[nav]">
-                {% if clubs %}
-                    {% for club in clubs %}
-                    <button class="glide__bullet" data-glide-dir="={{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
-                    {% endfor %}
-                {% else %}
-                    <button class="glide__bullet" data-glide-dir="=0" aria-label="Go to slide 1"></button>
-                    <button class="glide__bullet" data-glide-dir="=1" aria-label="Go to slide 2"></button>
-                    <button class="glide__bullet" data-glide-dir="=2" aria-label="Go to slide 3"></button>
-                    <button class="glide__bullet" data-glide-dir="=3" aria-label="Go to slide 4"></button>
-                {% endif %}
-            </div>
-
-            <div class="flex justify-center mt-10">
-                <a href="{% url 'club_new:club_list' %}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm uppercase tracking-wider shadow-xl shadow-brand-600/25 hover:shadow-2xl hover:shadow-brand-600/35 transition-all transform hover:-translate-y-0.5">
-                    <span>View All Our Clubs</span>
-                    <i class="ri-arrow-right-line text-lg"></i>
-                </a>
-            </div>
         </div>
+
+        <div class="flex justify-center mt-16">
+            <a href="{% url 'club_new:club_list' %}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm uppercase tracking-wider shadow-xl shadow-brand-600/25 hover:shadow-2xl hover:shadow-brand-600/35 transition-all transform hover:-translate-y-0.5">
+                <span>View All Our Clubs</span>
+                <i class="ri-arrow-right-line text-lg"></i>
+            </a>
+        </div>
+
     </div>
 </section>
 
+<!-- Splide.js JS -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const initGlide = () => {
-            if (typeof Glide !== 'undefined' && document.querySelector('.club-glide')) {
-                new Glide('.club-glide', {
-                    type: 'carousel',
-                    startAt: 0,
-                    perView: 4,
-                    gap: 24,
-                    autoplay: 2600,
-                    hoverpause: true,
-                    animationDuration: 1000,
-                    animationTimingFunc: 'cubic-bezier(0.16, 1, 0.3, 1)',
-                    breakpoints: {
-                        1280: { perView: 3 },
-                        1024: { perView: 2 },
-                        640: { perView: 1 }
-                    }
-                }).mount();
-            } else {
-                setTimeout(initGlide, 400);
-            }
-        };
-        initGlide();
+        const clubSlider = document.querySelector('#club-slider');
+        if (clubSlider && typeof Splide !== 'undefined') {
+            new Splide('#club-slider', {
+                type: 'loop',
+                perPage: 4,
+                perMove: 1,
+                autoplay: true,
+                interval: 2800,
+                pauseOnHover: true,
+                speed: 800,
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                gap: '1.5rem',
+                breakpoints: {
+                    1280: { perPage: 3 },
+                    1024: { perPage: 2 },
+                    640: { perPage: 1 }
+                },
+                pagination: true,
+                arrows: true
+            }).mount();
+        }
     });
 </script>
 
