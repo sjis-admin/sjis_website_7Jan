@@ -116,10 +116,18 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {% for member in page.object_list %}
                     <div class="faculty-card rounded-[2.5rem] p-4 flex flex-col group shadow-sm">
-                        <!-- Profile Image -->
-                        <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-slate-100 shadow-inner mb-6">
+                        <!-- Profile Image Container with Skeleton Loader -->
+                        <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-slate-200/70 shadow-inner mb-6">
                             {% if member.image %}
-                            <img src="{{ member.image.url }}" alt="{{ member.name }}" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out">
+                            <!-- Shimmer Skeleton -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse z-0"></div>
+                            <!-- Lazy Loaded Image with Async Decoding -->
+                            <img src="{{ member.image.url }}" 
+                                 alt="{{ member.name }}" 
+                                 loading="lazy" 
+                                 decoding="async" 
+                                 onload="if(this.previousElementSibling) this.previousElementSibling.remove(); this.classList.remove('opacity-0');" 
+                                 class="w-full h-full object-cover object-center group-hover:scale-110 transition-all duration-700 ease-out opacity-0 relative z-10">
                             {% else %}
                             <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
                                 <span class="material-icons text-6xl mb-2 opacity-50">person</span>

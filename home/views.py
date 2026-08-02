@@ -57,43 +57,39 @@ def news_ticker_details(request, pk):
 
 
 def faculty_list(request):
-    # Determine the active tab, default to 'Administration'
     active_tab = request.GET.get('tab', 'Administration')
-    search_query = request.GET.get('q', '')
+    search_query = request.GET.get('q', '').strip()
 
-    # Base queryset
-    queryset = FacultyMember.objects.all()
+    # Optimized base queryset fetching only required columns
+    queryset = FacultyMember.objects.all().only('id', 'name', 'designation', 'category', 'image')
 
-    # Apply search filter if query exists
     if search_query:
         queryset = queryset.filter(
             Q(name__icontains=search_query) | 
             Q(designation__icontains=search_query)
         )
 
-    # Define the categories and their corresponding filters
-    # We filter the already searched queryset by category
     categories = {
         "Administration": queryset.filter(category="Administration"),
         "Teachers": queryset.filter(category="Teacher"),
         "Office Staff": queryset.filter(category="Office Staff"),
     }
 
-    items_per_page = 12  # Reduced for better grid layout
+    items_per_page = 12
     paginated_categories = {}
 
     for category, members in categories.items():
-        paginator = Paginator(members, items_per_page)
-        
-        # Paginate only the active tab
         if category == active_tab:
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
+            paginator = Paginator(members, items_per_page)
+            page_number = request.GET.get('page', 1)
+            paginated_categories[category] = paginator.get_page(page_number)
         else:
-            # For all other tabs, just show the first page
-            page_obj = paginator.get_page(1)
-            
-        paginated_categories[category] = page_obj
+            # Lazy lightweight stub containing count for inactive tabs without evaluating queryset
+            class LazyPageStub:
+                def __init__(self, count):
+                    self.paginator = type('PaginatorStub', (), {'count': count})()
+                    self.object_list = []
+            paginated_categories[category] = LazyPageStub(members.count())
 
     context = {
         "categories": paginated_categories,
