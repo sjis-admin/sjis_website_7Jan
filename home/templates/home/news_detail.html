@@ -2,153 +2,289 @@
 {% load static %}
 
 {% block title %}{{ news_article.title }} | News | St. Joseph International School{% endblock %}
+{% block meta_description %}{{ news_article.full_description|striptags|truncatewords:28 }}{% endblock %}
+{% block meta_keywords %}{{ news_article.title }}, SJIS News, St. Joseph International School, Dhaka Education, Cambridge School Dhaka{% endblock %}
+{% block og_title %}{{ news_article.title }} | St. Joseph International School{% endblock %}
+{% block og_description %}{{ news_article.full_description|striptags|truncatewords:28 }}{% endblock %}
+{% block twitter_title %}{{ news_article.title }} | St. Joseph International School{% endblock %}
+{% block twitter_description %}{{ news_article.full_description|striptags|truncatewords:28 }}{% endblock %}
 
 {% block extra_css %}
+<!-- Schema.org NewsArticle Structured Data for Google Search -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "headline": "{{ news_article.title|escapejs }}",
+  "description": "{{ news_article.full_description|striptags|truncatewords:30|escapejs }}",
+  {% if news_article.image %}
+  "image": [
+    "{{ request.scheme }}://{{ request.get_host }}{{ news_article.image.url }}"
+  ],
+  {% endif %}
+  "datePublished": "{{ news_article.published_date|date:'c' }}",
+  "dateModified": "{{ news_article.published_date|date:'c' }}",
+  "author": {
+    "@type": "Organization",
+    "name": "St. Joseph International School",
+    "url": "https://www.sjis.edu.bd/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "St. Joseph International School",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/sjp-logo-2.png' %}"
+    }
+  }
+}
+</script>
+
 <style>
-    .news-detail-container {
-        background: radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.03) 0%, transparent 50%),
-                    radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.03) 0%, transparent 50%);
+    .news-detail-bg {
+        background: radial-gradient(ellipse at 80% 0%, rgba(31, 58, 147, 0.05) 0%, transparent 60%),
+                    radial-gradient(ellipse at 10% 90%, rgba(212, 175, 55, 0.06) 0%, transparent 60%),
+                    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     }
 
-    .mica-effect {
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(30px) saturate(160%);
-        -webkit-backdrop-filter: blur(30px) saturate(160%);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+    .glass-card-premium {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 30px 90px -20px rgba(15, 23, 42, 0.08),
+                    0 10px 30px -10px rgba(15, 23, 42, 0.04);
     }
 
-    .article-card {
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.05);
+    .glass-sidebar {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 20px 50px -15px rgba(31, 58, 147, 0.07);
     }
 
-    .sidebar-card {
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .sidebar-item-card {
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .sidebar-card:hover {
-        background: rgba(255, 255, 255, 0.8);
-        transform: translateX(8px);
-        border-color: rgba(14, 165, 233, 0.3);
+    .sidebar-item-card:hover {
+        background: rgba(255, 255, 255, 0.95);
+        transform: translateY(-2px) translateX(4px);
+        box-shadow: 0 12px 30px -8px rgba(31, 58, 147, 0.12);
     }
 
-    .sticky-sidebar {
+    .sticky-sidebar-top {
         position: sticky;
-        top: 120px;
+        top: 110px;
     }
 
-    .article-content {
-        font-size: 1.15rem;
-        line-height: 1.8;
+    .article-body-text {
+        font-size: 1.18rem;
+        line-height: 1.85;
         color: #334155;
     }
 
-    .article-content p {
-        margin-bottom: 1.5rem;
+    .article-body-text p {
+        margin-bottom: 1.75rem;
+    }
+
+    .article-body-text p:first-of-type {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        font-weight: 500;
+        color: #1e293b;
+        padding-left: 1.25rem;
+        border-left: 4px solid #1F3A93;
+        background: rgba(31, 58, 147, 0.03);
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+    }
+
+    .hero-img-frame {
+        box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.15);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="news-detail-container min-h-screen pt-32 pb-24 px-4 md:px-8">
+<div class="news-detail-bg min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Breadcrumb & Back Navigation -->
+        <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <a href="{% url 'home:news_list' %}" class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/80 hover:bg-white text-brand-600 font-bold text-xs uppercase tracking-wider shadow-sm hover:shadow border border-slate-200/60 transition-all group">
+                <i class="ri-arrow-left-line text-base transition-transform group-hover:-translate-x-1"></i>
+                <span>Back to News & Events</span>
+            </a>
+
+            <!-- Social Share Bar (Quick Header) -->
+            <div class="hidden sm:flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/80 shadow-sm">
+                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mr-1">Share:</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition-all text-sm" title="Share on Facebook">
+                    <i class="ri-facebook-fill"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text={{ news_article.title|urlencode }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-sky-500 hover:text-white transition-all text-sm" title="Share on X (Twitter)">
+                    <i class="ri-twitter-x-fill"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?text={{ news_article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-500 hover:text-white transition-all text-sm" title="Share on WhatsApp">
+                    <i class="ri-whatsapp-fill"></i>
+                </a>
+                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-brand-500 hover:text-white transition-all text-sm" title="Copy Link">
+                    <i class="ri-links-line"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
-            <!-- Main Content -->
-            <main class="lg:col-span-8 animate-fadeIn">
-                <!-- Header Info -->
-                <div class="mb-12">
-                    <a href="{% url 'home:news_list' %}" class="inline-flex items-center gap-2 text-brand-600 font-bold mb-8 group">
-                        <i class="ri-arrow-left-line transition-transform group-hover:-translate-x-2"></i>
-                        Back to All News
-                    </a>
+            <!-- Main News Article Area -->
+            <main class="lg:col-span-8">
+                
+                <!-- Article Header Card -->
+                <article class="glass-card-premium p-6 sm:p-10 lg:p-14 rounded-[2.5rem] mb-10">
                     
-                    <div class="flex items-center gap-4 mb-6">
-                        <span class="px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            School News
+                    <!-- Category & Meta Metadata Badges -->
+                    <div class="flex flex-wrap items-center gap-3 mb-6">
+                        <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-[11px] font-black uppercase tracking-widest border border-brand-100/60">
+                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                            School News & Announcements
                         </span>
-                        <div class="flex items-center gap-2 text-slate-400">
-                            <i class="ri-calendar-event-line"></i>
-                            <span class="text-xs font-bold uppercase tracking-widest">{{ news_article.published_date|date:"F d, Y" }}</span>
+                        <div class="flex items-center gap-2 text-slate-500 text-xs font-semibold px-3 py-1 bg-slate-100/80 rounded-full">
+                            <i class="ri-calendar-check-line text-brand-500 text-sm"></i>
+                            <span>{{ news_article.published_date|date:"F d, Y" }}</span>
                         </div>
                     </div>
 
-                    <h1 class="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] font-heading tracking-tight mb-10">
+                    <!-- Article Title -->
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 leading-[1.15] font-heading tracking-tight mb-8">
                         {{ news_article.title }}
                     </h1>
 
+                    <!-- Author / School Press Info Bar -->
+                    <div class="flex items-center gap-4 py-4 mb-8 border-y border-slate-200/60">
+                        <div class="w-11 h-11 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-base shadow-md">
+                            <i class="ri-shield-user-line"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-900">St. Joseph International School</div>
+                            <div class="text-xs text-slate-500 font-medium">Official Media & Communication Desk</div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Hero Image -->
                     {% if news_article.image %}
-                    <div class="rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/50 mb-12">
-                        <img src="{{ news_article.image.url }}" alt="{{ news_article.title }}" class="w-full object-cover max-h-[600px]">
+                    <div class="hero-img-frame relative rounded-3xl overflow-hidden border-4 border-white mb-10 group">
+                        <img src="{{ news_article.image.url }}" alt="{{ news_article.title }}" class="w-full object-cover max-h-[550px] transform transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
                     {% endif %}
-                </div>
 
-                <!-- Article Body -->
-                <div class="article-card p-8 md:p-16 rounded-[3rem]">
-                    <div class="article-content font-medium">
+                    <!-- Article Main Body -->
+                    <div class="article-body-text font-normal">
                         {{ news_article.full_description|safe|linebreaks }}
                     </div>
-                    
-                    <!-- Share & Actions -->
-                    <div class="mt-16 pt-10 border-t border-slate-100 flex flex-wrap items-center justify-between gap-8">
-                        <div class="flex items-center gap-4">
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Share this story:</span>
+
+                    <!-- Article Footer & Share Actions -->
+                    <div class="mt-14 pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Share Article:</span>
                             <div class="flex gap-2">
-                                <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-brand-500 hover:text-white transition-all"><i class="ri-facebook-fill"></i></a>
-                                <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-brand-500 hover:text-white transition-all"><i class="ri-twitter-fill"></i></a>
-                                <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-brand-500 hover:text-white transition-all"><i class="ri-linkedin-fill"></i></a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition-all">
+                                    <i class="ri-facebook-fill text-lg"></i>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text={{ news_article.title|urlencode }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-sky-500 hover:text-white transition-all">
+                                    <i class="ri-twitter-x-fill text-lg"></i>
+                                </a>
+                                <a href="https://api.whatsapp.com/send?text={{ news_article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-500 hover:text-white transition-all">
+                                    <i class="ri-whatsapp-fill text-lg"></i>
+                                </a>
+                                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-brand-500 hover:text-white transition-all" title="Copy Link">
+                                    <i class="ri-file-copy-line text-lg"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 text-slate-400 italic text-sm">
-                            <i class="ri-information-line"></i>
-                            Official Statement from SJIS Administration
-                        </div>
-                    </div>
-                </div>
-            </main>
 
-            <!-- Sidebar -->
-            <aside class="lg:col-span-4 animate-fadeIn" style="animation-delay: 0.1s">
-                <div class="sticky-sidebar space-y-8">
-                    
-                    <!-- Latest News Sidebar -->
-                    <div class="mica-effect p-8 rounded-[2.5rem] border border-white/60 shadow-xl">
-                        <h3 class="text-xl font-black text-slate-900 mb-8 font-heading flex items-center gap-3">
-                            <i class="ri-flashlight-line text-brand-500"></i>
-                            Recent Updates
-                        </h3>
-                        
-                        <div class="space-y-4">
-                            {% for article in latest_news %}
-                            <a href="{% url 'home:news_detail' article.pk %}" class="sidebar-card flex items-center gap-4 p-3 rounded-2xl group">
-                                <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                                    <img src="{{ article.image.url }}" alt="" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-slate-800 line-clamp-2 leading-tight group-hover:text-brand-600 transition-colors mb-1">
-                                        {{ article.title }}
-                                    </h4>
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                        {{ article.published_date|date:"M d" }}
-                                    </span>
-                                </div>
-                            </a>
-                            {% endfor %}
-                        </div>
-                        
-                        <a href="{% url 'home:news_list' %}" class="mt-8 block text-center py-4 bg-white/50 rounded-2xl text-brand-600 font-bold text-sm border border-brand-100 hover:bg-brand-50 transition-all">
-                            View All Archive
+                        <a href="{% url 'home:news_list' %}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 transition-colors">
+                            <span>Browse All School News</span>
+                            <i class="ri-arrow-right-line"></i>
                         </a>
                     </div>
 
+                </article>
 
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-4">
+                <div class="sticky-sidebar-top space-y-8">
+                    
+                    <!-- Recent Updates Card -->
+                    <div class="glass-sidebar p-6 sm:p-8 rounded-[2.5rem]">
+                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-200/60">
+                            <h3 class="text-lg font-black text-slate-900 font-heading flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-base">
+                                    <i class="ri-flashlight-fill"></i>
+                                </span>
+                                <span>Recent Updates</span>
+                            </h3>
+                        </div>
+                        
+                        <div class="space-y-3.5">
+                            {% for article in latest_news %}
+                            <a href="{% url 'home:news_detail' article.pk %}" class="sidebar-item-card flex items-center gap-4 p-3 rounded-2xl border border-slate-100 bg-white/60 group">
+                                {% if article.image %}
+                                <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100 border border-slate-200/50">
+                                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                {% else %}
+                                <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+                                    <i class="ri-newspaper-line text-xl"></i>
+                                </div>
+                                {% endif %}
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="text-xs font-bold text-slate-800 line-clamp-2 leading-snug group-hover:text-brand-600 transition-colors mb-1">
+                                        {{ article.title }}
+                                    </h4>
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                        <i class="ri-time-line text-xs"></i>
+                                        {{ article.published_date|date:"M d, Y" }}
+                                    </span>
+                                </div>
+                            </a>
+                            {% empty %}
+                            <div class="text-center py-6 text-slate-400 text-xs font-semibold">
+                                No other recent news available.
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <a href="{% url 'home:news_list' %}" class="mt-6 block text-center py-3.5 px-4 bg-brand-600 text-white rounded-2xl font-bold text-xs uppercase tracking-wider hover:bg-brand-700 shadow-lg shadow-brand-500/20 transition-all">
+                            View All News Archive
+                        </a>
+                    </div>
+
+                    <!-- Admission & Inquiry Banner Widget -->
+                    <div class="p-6 rounded-[2rem] bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-xl relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                        <h4 class="text-base font-bold mb-2 flex items-center gap-2">
+                            <i class="ri-graduation-cap-line text-amber-400 text-xl"></i>
+                            Admissions Open
+                        </h4>
+                        <p class="text-xs text-blue-100 leading-relaxed mb-4">
+                            Interested in joining St. Joseph International School? Explore our curriculum and admission process.
+                        </p>
+                        <a href="/admission/" class="inline-flex items-center gap-2 text-xs font-bold bg-amber-400 text-brand-900 px-4 py-2.5 rounded-xl hover:bg-amber-300 transition-colors">
+                            <span>Apply / Learn More</span>
+                            <i class="ri-arrow-right-s-line"></i>
+                        </a>
+                    </div>
 
                 </div>
             </aside>
@@ -157,18 +293,4 @@
 
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fadeIn');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.animate-fadeIn').forEach(el => observer.observe(el));
-    });
-</script>
 {% endblock %}
