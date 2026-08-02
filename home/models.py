@@ -122,7 +122,7 @@ class NewsTicker(models.Model):
         return reverse('home:news_ticker_details', args=[str(self.id)])
 
 
-from PIL import Image
+from PIL import Image, ImageOps
 import io
 from django.core.files.base import ContentFile
 
@@ -142,6 +142,8 @@ class FacultyMember(models.Model):
         if self.image and hasattr(self.image, 'file'):
             try:
                 img = Image.open(self.image)
+                # Auto-correct smartphone EXIF orientation tag
+                img = ImageOps.exif_transpose(img)
                 if img.mode in ('RGBA', 'P'):
                     img = img.convert('RGB')
                 

@@ -75,9 +75,11 @@ class NewsScrollAdmin(admin.ModelAdmin):
 
 
 
+from PIL import ImageOps
+
 class FacultyMemberAdmin(admin.ModelAdmin):
     # Display these fields in the list view
-    list_display = ('name', 'designation', 'category')
+    list_display = ('image_preview', 'name', 'designation', 'category')
     
     # Add search functionality
     search_fields = ('name', 'designation')
@@ -87,6 +89,49 @@ class FacultyMemberAdmin(admin.ModelAdmin):
     
     # Customize fields to be displayed in the detail view
     fields = ('name', 'designation', 'image', 'category')
+    
+    actions = ['rotate_90_cw', 'rotate_90_ccw', 'rotate_180']
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 50px; max-width: 50px; border-radius: 8px; object-fit: cover;" />', obj.image.url)
+        return "No image"
+    image_preview.short_description = 'Photo'
+
+    def _rotate_images(self, request, queryset, angle):
+        count = 0
+        for member in queryset:
+            if member.image:
+                try:
+                    img = Image.open(member.image)
+                    img = ImageOps.exif_transpose(img)
+                    rotated_img = img.rotate(angle, expand=True)
+                    
+                    buffer = io.BytesIO()
+                    if rotated_img.mode in ('RGBA', 'P'):
+                        rotated_img = rotated_img.convert('RGB')
+                    rotated_img.save(buffer, format='JPEG', quality=85, optimize=True)
+                    buffer.seek(0)
+                    
+                    filename = member.image.name.split('/')[-1]
+                    member.image.save(filename, ContentFile(buffer.read()), save=True)
+                    count += 1
+                except Exception as e:
+                    self.message_user(request, f"Failed to rotate image for {member.name}: {e}", level=messages.ERROR)
+        if count > 0:
+            self.message_user(request, f"Successfully rotated {count} faculty image(s).", level=messages.SUCCESS)
+
+    @admin.action(description="🔄 Rotate selected photos 90° Clockwise (Right)")
+    def rotate_90_cw(self, request, queryset):
+        self._rotate_images(request, queryset, -90)
+
+    @admin.action(description="🔄 Rotate selected photos 90° Counter-Clockwise (Left)")
+    def rotate_90_ccw(self, request, queryset):
+        self._rotate_images(request, queryset, 90)
+
+    @admin.action(description="🔄 Rotate selected photos 180° (Flip Upside-Down)")
+    def rotate_180(self, request, queryset):
+        self._rotate_images(request, queryset, 180)
     
     def get_urls(self):
         urls = super().get_urls()
