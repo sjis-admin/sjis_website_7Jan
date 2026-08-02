@@ -34,27 +34,31 @@ class CarouselImage(models.Model):
         return self.caption or self.alt_text or f"Slide {self.id}"
 
     def save(self, *args, **kwargs):
-        # Professional Image Optimization
-        if self.image:
-            img = Image.open(self.image)
-            
-            # Convert to RGB if necessary (handles PNG with alpha or CMYK)
-            if img.mode in ("RGBA", "P"):
-                img = img.convert("RGB")
-            
-            # Maximum width for high-premium displays (4K/HD)
-            max_width = 2560
-            if img.width > max_width:
-                output_size = (max_width, int((max_width / img.width) * img.height))
-                img = img.resize(output_size, Image.Resampling.LANCZOS)
-            
-            # Compress and save
-            output = io.BytesIO()
-            img.save(output, format='JPEG', quality=80, optimize=True)
-            output.seek(0)
-            
-            # Replace the image with the compressed version
-            self.image.save(self.image.name, ContentFile(output.read()), save=False)
+        # Professional WebP Image Optimization for Hero Banner Slider
+        if self.image and hasattr(self.image, 'file'):
+            try:
+                img = Image.open(self.image)
+                img = ImageOps.exif_transpose(img)
+                
+                if img.mode in ("RGBA", "P"):
+                    img = img.convert("RGB")
+                
+                max_width = 1920
+                if img.width > max_width:
+                    output_size = (max_width, int((max_width / img.width) * img.height))
+                    img = img.resize(output_size, Image.Resampling.LANCZOS)
+                
+                output = io.BytesIO()
+                img.save(output, format='WEBP', quality=82, method=6)
+                output.seek(0)
+                
+                filename = self.image.name.split('/')[-1]
+                if not filename.lower().endswith('.webp'):
+                    filename = filename.rsplit('.', 1)[0] + '.webp'
+                    
+                self.image.save(filename, ContentFile(output.read()), save=False)
+            except Exception:
+                pass
             
         super().save(*args, **kwargs)
 
