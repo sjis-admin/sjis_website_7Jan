@@ -98,6 +98,30 @@ class AboutUsSection(models.Model):
 
 
 
+def process_webp_image(image_field, max_size=(1200, 1200), quality=80):
+    if image_field and hasattr(image_field, 'file'):
+        try:
+            img = Image.open(image_field)
+            img = ImageOps.exif_transpose(img)
+            
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+            
+            if img.width > max_size[0] or img.height > max_size[1]:
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+            output = io.BytesIO()
+            img.save(output, format='WEBP', quality=quality, method=6)
+            output.seek(0)
+            
+            filename = image_field.name.split('/')[-1]
+            if not filename.lower().endswith('.webp'):
+                filename = filename.rsplit('.', 1)[0] + '.webp'
+                
+            image_field.save(filename, ContentFile(output.read()), save=False)
+        except Exception:
+            pass
+
 class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
     short_description = models.TextField()
@@ -111,6 +135,11 @@ class NewsArticle(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('home:news_detail', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            process_webp_image(self.image, max_size=(1200, 1200), quality=80)
+        super().save(*args, **kwargs)
 
 
 class NewsTicker(models.Model):
@@ -126,10 +155,6 @@ class NewsTicker(models.Model):
         return reverse('home:news_ticker_details', args=[str(self.id)])
 
 
-from PIL import Image, ImageOps
-import io
-from django.core.files.base import ContentFile
-
 class FacultyMember(models.Model):
     CATEGORY_CHOICES = [
         ('Administration', 'Administration'),
@@ -143,29 +168,8 @@ class FacultyMember(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     def save(self, *args, **kwargs):
-        if self.image and hasattr(self.image, 'file'):
-            try:
-                img = Image.open(self.image)
-                # Auto-correct smartphone EXIF orientation tag
-                img = ImageOps.exif_transpose(img)
-                if img.mode in ('RGBA', 'P'):
-                    img = img.convert('RGB')
-                
-                max_size = (600, 750)
-                if img.height > max_size[1] or img.width > max_size[0]:
-                    img.thumbnail(max_size, Image.Resampling.LANCZOS)
-                    
-                buffer = io.BytesIO()
-                img.save(buffer, format='WEBP', quality=80, method=6)
-                buffer.seek(0)
-                
-                filename = self.image.name.split('/')[-1]
-                if not filename.lower().endswith('.webp'):
-                    filename = filename.rsplit('.', 1)[0] + '.webp'
-                    
-                self.image.save(filename, ContentFile(buffer.read()), save=False)
-            except Exception:
-                pass
+        if self.image:
+            process_webp_image(self.image, max_size=(600, 750), quality=80)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -194,6 +198,11 @@ class PrincipalMessage(models.Model):
 
     def __str__(self):
         return f"{self.get_type_display()}: {self.title}"
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            process_webp_image(self.image, max_size=(800, 1000), quality=80)
+        super().save(*args, **kwargs)
 
 class SiteConfiguration(models.Model):
     site_name = models.CharField(max_length=255, default="St. Joseph International School")
@@ -241,29 +250,11 @@ class PopupAnnouncement(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Optimize Mobile Image
         if self.image:
-            self._optimize_image(self.image, 1000)
-        
-        # Optimize Desktop Image
+            process_webp_image(self.image, max_size=(1000, 1250), quality=80)
         if self.desktop_image:
-            self._optimize_image(self.desktop_image, 1920)
-            
+            process_webp_image(self.desktop_image, max_size=(1920, 1080), quality=80)
         super().save(*args, **kwargs)
-
-    def _optimize_image(self, field, max_width):
-        img = Image.open(field)
-        if img.mode in ("RGBA", "P"):
-            img = img.convert("RGB")
-        
-        if img.width > max_width:
-            output_size = (max_width, int((max_width / img.width) * img.height))
-            img = img.resize(output_size, Image.Resampling.LANCZOS)
-        
-        output = io.BytesIO()
-        img.save(output, format='JPEG', quality=85, optimize=True)
-        output.seek(0)
-        field.save(field.name, ContentFile(output.read()), save=False)
 
 
 
