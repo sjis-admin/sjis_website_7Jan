@@ -6,7 +6,7 @@ from .models import AboutUs
 from django.core.paginator import Paginator
 from django.utils import timezone
 from datetime import timedelta
-from django.db.models import Q
+from django.db.models import Q, Case, When, Value, IntegerField
 
 def home(request):
     images = CarouselImage.objects.filter(is_active=True)
