@@ -110,16 +110,19 @@ class FacultyMemberAdmin(admin.ModelAdmin):
                     buffer = io.BytesIO()
                     if rotated_img.mode in ('RGBA', 'P'):
                         rotated_img = rotated_img.convert('RGB')
-                    rotated_img.save(buffer, format='JPEG', quality=85, optimize=True)
+                    rotated_img.save(buffer, format='WEBP', quality=80, method=6)
                     buffer.seek(0)
                     
                     filename = member.image.name.split('/')[-1]
+                    if not filename.lower().endswith('.webp'):
+                        filename = filename.rsplit('.', 1)[0] + '.webp'
+                        
                     member.image.save(filename, ContentFile(buffer.read()), save=True)
                     count += 1
                 except Exception as e:
                     self.message_user(request, f"Failed to rotate image for {member.name}: {e}", level=messages.ERROR)
         if count > 0:
-            self.message_user(request, f"Successfully rotated {count} faculty image(s).", level=messages.SUCCESS)
+            self.message_user(request, f"Successfully rotated {count} faculty image(s) to WebP format.", level=messages.SUCCESS)
 
     @admin.action(description="🔄 Rotate selected photos 90° Clockwise (Right)")
     def rotate_90_cw(self, request, queryset):

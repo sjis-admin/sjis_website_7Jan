@@ -151,15 +151,15 @@ class FacultyMember(models.Model):
                 if img.height > max_size[1] or img.width > max_size[0]:
                     img.thumbnail(max_size, Image.Resampling.LANCZOS)
                     
-                    buffer = io.BytesIO()
-                    img.save(buffer, format='JPEG', quality=85, optimize=True)
-                    buffer.seek(0)
+                buffer = io.BytesIO()
+                img.save(buffer, format='WEBP', quality=80, method=6)
+                buffer.seek(0)
+                
+                filename = self.image.name.split('/')[-1]
+                if not filename.lower().endswith('.webp'):
+                    filename = filename.rsplit('.', 1)[0] + '.webp'
                     
-                    filename = self.image.name.split('/')[-1]
-                    if not filename.lower().endswith('.jpg'):
-                        filename = filename.rsplit('.', 1)[0] + '.jpg'
-                        
-                    self.image.save(filename, ContentFile(buffer.read()), save=False)
+                self.image.save(filename, ContentFile(buffer.read()), save=False)
             except Exception:
                 pass
         super().save(*args, **kwargs)
