@@ -70,22 +70,39 @@ def faculty_list(request):
         output_field=IntegerField()
     )
 
-    # Base queryset with hierarchy ordering
-    queryset = FacultyMember.objects.all().only(
-        'id', 'name', 'designation', 'category', 'image', 'order'
-    ).annotate(rank=hierarchy_rank)
+    # Base queryset with hierarchy ordering & defensive fallback if migration is pending on live server
+    try:
+        queryset = FacultyMember.objects.all().only(
+            'id', 'name', 'designation', 'category', 'image', 'order'
+        ).annotate(rank=hierarchy_rank)
 
-    if search_query:
-        queryset = queryset.filter(
-            Q(name__icontains=search_query) | 
-            Q(designation__icontains=search_query)
-        )
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | 
+                Q(designation__icontains=search_query)
+            )
 
-    categories = {
-        "Administration": queryset.filter(category="Administration").order_by('order', 'rank', 'id'),
-        "Teachers": queryset.filter(category="Teacher").order_by('order', 'rank', 'id'),
-        "Office Staff": queryset.filter(category="Office Staff").order_by('order', 'rank', 'id'),
-    }
+        categories = {
+            "Administration": queryset.filter(category="Administration").order_by('order', 'rank', 'id'),
+            "Teachers": queryset.filter(category="Teacher").order_by('order', 'rank', 'id'),
+            "Office Staff": queryset.filter(category="Office Staff").order_by('order', 'rank', 'id'),
+        }
+    except Exception:
+        queryset = FacultyMember.objects.all().only(
+            'id', 'name', 'designation', 'category', 'image'
+        ).annotate(rank=hierarchy_rank)
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | 
+                Q(designation__icontains=search_query)
+            )
+
+        categories = {
+            "Administration": queryset.filter(category="Administration").order_by('rank', 'id'),
+            "Teachers": queryset.filter(category="Teacher").order_by('rank', 'id'),
+            "Office Staff": queryset.filter(category="Office Staff").order_by('rank', 'id'),
+        }
 
     items_per_page = 12
     paginated_categories = {}
