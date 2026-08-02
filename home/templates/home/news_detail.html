@@ -133,9 +133,6 @@
                 <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text={{ news_article.title|urlencode }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-sky-500 hover:text-white transition-all text-sm" title="Share on X (Twitter)">
                     <i class="ri-twitter-x-fill"></i>
                 </a>
-                <a href="https://api.whatsapp.com/send?text={{ news_article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-500 hover:text-white transition-all text-sm" title="Share on WhatsApp">
-                    <i class="ri-whatsapp-fill"></i>
-                </a>
                 <button onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-brand-500 hover:text-white transition-all text-sm" title="Copy Link">
                     <i class="ri-links-line"></i>
                 </button>
@@ -202,9 +199,6 @@
                                 <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text={{ news_article.title|urlencode }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-sky-500 hover:text-white transition-all">
                                     <i class="ri-twitter-x-fill text-lg"></i>
                                 </a>
-                                <a href="https://api.whatsapp.com/send?text={{ news_article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-500 hover:text-white transition-all">
-                                    <i class="ri-whatsapp-fill text-lg"></i>
-                                </a>
                                 <button onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-brand-500 hover:text-white transition-all" title="Copy Link">
                                     <i class="ri-file-copy-line text-lg"></i>
                                 </button>
@@ -267,22 +261,6 @@
                         
                         <a href="{% url 'home:news_list' %}" class="mt-6 block text-center py-3.5 px-4 bg-brand-600 text-white rounded-2xl font-bold text-xs uppercase tracking-wider hover:bg-brand-700 shadow-lg shadow-brand-500/20 transition-all">
                             View All News Archive
-                        </a>
-                    </div>
-
-                    <!-- Admission & Inquiry Banner Widget -->
-                    <div class="p-6 rounded-[2rem] bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-xl relative overflow-hidden">
-                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-                        <h4 class="text-base font-bold mb-2 flex items-center gap-2">
-                            <i class="ri-graduation-cap-line text-amber-400 text-xl"></i>
-                            Admissions Open
-                        </h4>
-                        <p class="text-xs text-blue-100 leading-relaxed mb-4">
-                            Interested in joining St. Joseph International School? Explore our curriculum and admission process.
-                        </p>
-                        <a href="/admission/" class="inline-flex items-center gap-2 text-xs font-bold bg-amber-400 text-brand-900 px-4 py-2.5 rounded-xl hover:bg-amber-300 transition-colors">
-                            <span>Apply / Learn More</span>
-                            <i class="ri-arrow-right-s-line"></i>
                         </a>
                     </div>
 
