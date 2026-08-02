@@ -122,6 +122,10 @@ class NewsTicker(models.Model):
         return reverse('home:news_ticker_details', args=[str(self.id)])
 
 
+from PIL import Image
+import io
+from django.core.files.base import ContentFile
+
 class FacultyMember(models.Model):
     CATEGORY_CHOICES = [
         ('Administration', 'Administration'),
@@ -133,6 +137,30 @@ class FacultyMember(models.Model):
     designation = models.CharField(max_length=100)
     image = models.ImageField(upload_to='faculty_images/')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+
+    def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, 'file'):
+            try:
+                img = Image.open(self.image)
+                if img.mode in ('RGBA', 'P'):
+                    img = img.convert('RGB')
+                
+                max_size = (600, 750)
+                if img.height > max_size[1] or img.width > max_size[0]:
+                    img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                    
+                    buffer = io.BytesIO()
+                    img.save(buffer, format='JPEG', quality=85, optimize=True)
+                    buffer.seek(0)
+                    
+                    filename = self.image.name.split('/')[-1]
+                    if not filename.lower().endswith('.jpg'):
+                        filename = filename.rsplit('.', 1)[0] + '.jpg'
+                        
+                    self.image.save(filename, ContentFile(buffer.read()), save=False)
+            except Exception:
+                pass
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

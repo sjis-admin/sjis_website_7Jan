@@ -121,13 +121,17 @@
                             {% if member.image %}
                             <!-- Shimmer Skeleton -->
                             <div class="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse z-0"></div>
-                            <!-- Lazy Loaded Image with Async Decoding -->
+                            <!-- Lazy Loaded Image with Async Decoding & Error Fallback -->
                             <img src="{{ member.image.url }}" 
                                  alt="{{ member.name }}" 
                                  loading="lazy" 
                                  decoding="async" 
-                                 onload="if(this.previousElementSibling) this.previousElementSibling.remove(); this.classList.remove('opacity-0');" 
+                                 onload="if(this.previousElementSibling) this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0');" 
+                                 onerror="if(this.previousElementSibling) this.previousElementSibling.style.display='none'; this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" 
                                  class="w-full h-full object-cover object-center group-hover:scale-110 transition-all duration-700 ease-out opacity-0 relative z-10">
+                            <div class="hidden absolute inset-0 flex flex-col items-center justify-center text-slate-300 bg-slate-100 z-10">
+                                <span class="material-icons text-6xl mb-2 opacity-50">person</span>
+                            </div>
                             {% else %}
                             <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
                                 <span class="material-icons text-6xl mb-2 opacity-50">person</span>
@@ -218,10 +222,8 @@
         // Dynamic Font Scaling for Long Names
         const adjustFontSize = () => {
             document.querySelectorAll('.faculty-name').forEach(el => {
-                let fontSize = 24; // Initial size in px (matches text-2xl)
+                let fontSize = 24;
                 el.style.fontSize = fontSize + 'px';
-                
-                // Reduce font size until it fits or reaches a minimum
                 while (el.scrollWidth > el.clientWidth && fontSize > 14) {
                     fontSize -= 1;
                     el.style.fontSize = fontSize + 'px';
@@ -229,9 +231,51 @@
             });
         };
 
-        // Run on load and window resize
         adjustFontSize();
         window.addEventListener('resize', adjustFontSize);
+
+        // Enterprise Instant AJAX Tab & Pagination Navigation
+        const initAjaxNav = () => {
+            document.querySelectorAll('.tab-item, .pagination-btn').forEach(link => {
+                if (link.dataset.ajaxBound) return;
+                link.dataset.ajaxBound = "true";
+
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (!href || href === '#' || link.classList.contains('active')) return;
+                    e.preventDefault();
+
+                    const container = document.querySelector('.faculty-container');
+                    if (container) container.style.opacity = '0.7';
+
+                    fetch(href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                        .then(res => res.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newContent = doc.querySelector('.faculty-container');
+                            if (newContent && container) {
+                                container.innerHTML = newContent.innerHTML;
+                                container.style.opacity = '1';
+                                history.pushState(null, '', href);
+                                initAjaxNav();
+                                adjustFontSize();
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            } else {
+                                window.location.href = href;
+                            }
+                        })
+                        .catch(() => {
+                            window.location.href = href;
+                        });
+                });
+            });
+        };
+        initAjaxNav();
+
+        window.addEventListener('popstate', () => {
+            window.location.reload();
+        });
     });
 </script>
 {% endblock %}
