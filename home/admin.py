@@ -79,7 +79,9 @@ from PIL import ImageOps
 
 class FacultyMemberAdmin(admin.ModelAdmin):
     # Display these fields in the list view
-    list_display = ('image_preview', 'name', 'designation', 'category')
+    list_display = ('image_preview', 'name', 'designation', 'category', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
     
     # Add search functionality
     search_fields = ('name', 'designation')
@@ -88,7 +90,7 @@ class FacultyMemberAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     
     # Customize fields to be displayed in the detail view
-    fields = ('name', 'designation', 'image', 'category')
+    fields = ('name', 'designation', 'image', 'category', 'order')
     
     actions = ['rotate_90_cw', 'rotate_90_ccw', 'rotate_180']
 

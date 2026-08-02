@@ -60,8 +60,20 @@ def faculty_list(request):
     active_tab = request.GET.get('tab', 'Administration')
     search_query = request.GET.get('q', '').strip()
 
-    # Optimized base queryset fetching only required columns
-    queryset = FacultyMember.objects.all().only('id', 'name', 'designation', 'category', 'image')
+    # Smart hierarchy ranking: Principal #1, Vice-Principal #2, Heads #3, others #99
+    hierarchy_rank = Case(
+        When(designation__iexact='Principal', then=Value(1)),
+        When(designation__icontains='Principal', then=Value(2)),
+        When(designation__icontains='Vice', then=Value(3)),
+        When(designation__icontains='Head', then=Value(4)),
+        default=Value(99),
+        output_field=IntegerField()
+    )
+
+    # Base queryset with hierarchy ordering
+    queryset = FacultyMember.objects.all().only(
+        'id', 'name', 'designation', 'category', 'image', 'order'
+    ).annotate(rank=hierarchy_rank)
 
     if search_query:
         queryset = queryset.filter(
@@ -70,9 +82,9 @@ def faculty_list(request):
         )
 
     categories = {
-        "Administration": queryset.filter(category="Administration"),
-        "Teachers": queryset.filter(category="Teacher"),
-        "Office Staff": queryset.filter(category="Office Staff"),
+        "Administration": queryset.filter(category="Administration").order_by('order', 'rank', 'id'),
+        "Teachers": queryset.filter(category="Teacher").order_by('order', 'rank', 'id'),
+        "Office Staff": queryset.filter(category="Office Staff").order_by('order', 'rank', 'id'),
     }
 
     items_per_page = 12

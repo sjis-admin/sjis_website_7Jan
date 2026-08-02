@@ -166,6 +166,10 @@ class FacultyMember(models.Model):
     designation = models.CharField(max_length=100)
     image = models.ImageField(upload_to='faculty_images/')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers like 1, 2, 3 appear first). Set 1 for Principal.")
+
+    class Meta:
+        ordering = ['order', 'id']
 
     def save(self, *args, **kwargs):
         if self.image:
@@ -173,7 +177,7 @@ class FacultyMember(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.designation})"
 
 class PrincipalMessage(models.Model):
     MESSAGE_TYPE_CHOICES = [
