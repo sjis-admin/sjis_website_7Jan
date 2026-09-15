@@ -282,15 +282,19 @@ admin.site.register(FacultyMember, FacultyMemberAdmin)
 
 
 class PrincipalMessageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type', 'is_active')  # Display title, type, and active status
+    list_display = ('title', 'type', 'email', 'phone', 'is_active')  # Display title, type, contact, and active status
     list_filter = ('type', 'is_active')  # Filter by type and active status
-    search_fields = ('title', 'message')  # Add search functionality for title and message
+    search_fields = ('title', 'message', 'email', 'phone')  # Add search functionality
     formfield_overrides = {
         models.TextField: {'widget': TinyMCE(attrs={'cols': 80, 'rows': 30})},
     }
     fieldsets = (
-        (None, {
+        ('Message Details', {
             'fields': ('type', 'title', 'message', 'image', 'is_active')
+        }),
+        ('Direct Contact Information', {
+            'fields': ('email', 'phone'),
+            'description': 'Optional direct contact email and phone to display on the message page.'
         }),
     )
 

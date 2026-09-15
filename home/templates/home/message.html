@@ -112,6 +112,43 @@
                         </div>
                         {% endif %}
 
+                        {% if message.email or message.phone %}
+                        <div class="bg-white/80 rounded-3xl p-6 border border-brand-100 shadow-sm space-y-4">
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest flex items-center gap-2">
+                                <i class="ri-mail-send-line text-sm"></i>
+                                Office Contact
+                            </h4>
+                            <div class="space-y-3 text-sm">
+                                {% if message.email %}
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <i class="ri-mail-line"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Email Address</p>
+                                        <a href="mailto:{{ message.email }}" class="font-bold text-slate-800 hover:text-brand-600 transition-colors break-all">
+                                            {{ message.email }}
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if message.phone %}
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <i class="ri-phone-line"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Direct Phone</p>
+                                        <a href="tel:{{ message.phone }}" class="font-bold text-slate-800 hover:text-brand-600 transition-colors">
+                                            {{ message.phone }}
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
                         <div class="bg-white/50 rounded-3xl p-6 border border-white/60">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Core Values</h4>
                             <div class="space-y-3">
@@ -150,12 +187,27 @@
                         </div>
 
                         <!-- Formal Closing -->
-                        <div class="pt-8 border-t border-slate-100">
-                            <p class="text-slate-500 mb-6">Sincerely,</p>
-                            <div class="space-y-1">
-                                <p class="signature-font">St. Joseph International School</p>
-                                <p class="text-sm font-bold text-brand-600 uppercase tracking-[0.2em]">{{ role }} Office</p>
+                        <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                            <div>
+                                <p class="text-slate-500 mb-6">Sincerely,</p>
+                                <div class="space-y-1">
+                                    <p class="signature-font">St. Joseph International School</p>
+                                    <p class="text-sm font-bold text-brand-600 uppercase tracking-[0.2em]">{{ role }} Office</p>
+                                </div>
                             </div>
+                            {% if message.email %}
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center shrink-0">
+                                    <i class="ri-mail-line text-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Contact {{ role }}</p>
+                                    <a href="mailto:{{ message.email }}" class="text-sm font-bold text-brand-600 hover:text-brand-800 transition-colors">
+                                        {{ message.email }}
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
 
                         <!-- Action Buttons -->

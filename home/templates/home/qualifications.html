@@ -1,0 +1,623 @@
+{% extends 'mainbase.html' %}
+{% load static %}
+
+{% block title %}Qualifications & Programmes | St. Joseph International School{% endblock %}
+
+{% block meta_description %}Explore the internationally recognised qualifications offered at St. Joseph International School, Dhaka — including Cambridge IGCSE and Cambridge International A-Levels (AS & A2) awarded by Cambridge Assessment International Education (CAIE).{% endblock %}
+
+{% block meta_keywords %}SJIS qualifications, Cambridge IGCSE Bangladesh, Cambridge A-Level Dhaka, CAIE school, international school qualifications, St. Joseph International School programmes{% endblock %}
+
+{% block og_title %}Qualifications & Programmes | St. Joseph International School{% endblock %}
+{% block og_description %}Explore the internationally recognised qualifications offered at St. Joseph International School — Cambridge IGCSE and Cambridge International A-Levels.{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* === Page Background === */
+    .qual-bg {
+        background:
+            radial-gradient(ellipse at 80% 0%, rgba(31, 58, 147, 0.07) 0%, transparent 55%),
+            radial-gradient(ellipse at 0% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 55%),
+            #f8faff;
+    }
+
+    /* === Hero Banner === */
+    .qual-hero {
+        background: linear-gradient(135deg, #0d1b4b 0%, #1F3A93 45%, #142978 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .qual-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(circle at 20% 50%, rgba(212,175,55,0.15) 0%, transparent 40%),
+            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 45%);
+    }
+    .qual-hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(212, 175, 55, 0.18);
+        border: 1px solid rgba(212, 175, 55, 0.35);
+        color: #D4AF37;
+        border-radius: 999px;
+        padding: 6px 16px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    .breadcrumb-link {
+        color: rgba(255,255,255,0.55);
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumb-link:hover { color: #D4AF37; }
+    .breadcrumb-sep { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
+
+    /* === Stage Badge (IGCSE / A-Level label) === */
+    .stage-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: 4px 10px;
+    }
+    .stage-igcse  { background: #EFF6FF; color: #1D4ED8; }
+    .stage-alevel { background: #FFF7ED; color: #C2410C; }
+
+    /* === Qualification Cards === */
+    .qual-card {
+        background: rgba(255,255,255,0.82);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.7);
+        border-radius: 1.5rem;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 24px rgba(31, 58, 147, 0.06);
+        overflow: hidden;
+    }
+    .qual-card:hover {
+        box-shadow: 0 16px 40px rgba(31, 58, 147, 0.13);
+        transform: translateY(-4px);
+    }
+    .qual-card-accent {
+        height: 4px;
+        border-radius: 4px 4px 0 0;
+    }
+    .accent-igcse  { background: linear-gradient(90deg, #1D4ED8, #60A5FA); }
+    .accent-alevel { background: linear-gradient(90deg, #C2410C, #FB923C); }
+    .accent-cambridge { background: linear-gradient(90deg, #1F3A93, #D4AF37); }
+
+    /* === Subject Pill === */
+    .subject-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #F1F5FF;
+        color: #1e40af;
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: 1px solid #DBEAFE;
+        transition: background 0.2s, transform 0.2s;
+    }
+    .subject-pill:hover {
+        background: #DBEAFE;
+        transform: translateY(-1px);
+    }
+    .subject-pill.orange {
+        background: #FFF4ED;
+        color: #9a3412;
+        border-color: #FED7AA;
+    }
+    .subject-pill.orange:hover { background: #FED7AA; }
+
+    /* === Awarding Body Card === */
+    .awarding-card {
+        background: linear-gradient(135deg, #1F3A93 0%, #142659 100%);
+        border-radius: 1.5rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    .awarding-card::after {
+        content: '';
+        position: absolute;
+        bottom: -30px; right: -30px;
+        width: 200px; height: 200px;
+        background: rgba(212,175,55,0.12);
+        border-radius: 50%;
+    }
+
+    /* === Stat Boxes === */
+    .stat-box {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 1rem;
+        padding: 1.2rem 1rem;
+        text-align: center;
+        flex: 1;
+    }
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: 'Outfit', sans-serif;
+        color: #D4AF37;
+        line-height: 1;
+    }
+    .stat-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: rgba(255,255,255,0.65);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 4px;
+    }
+
+    /* === Info Strip === */
+    .info-strip {
+        background: #EFF6FF;
+        border: 1px solid #BFDBFE;
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    /* === Section Divider Label === */
+    .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #1F3A93;
+        margin-bottom: 0.5rem;
+    }
+    .section-label::before {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 2px;
+        background: #1F3A93;
+        border-radius: 2px;
+    }
+
+    /* === Scroll reveal === */
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="qual-bg min-h-screen">
+
+    <!-- ===== HERO ===== -->
+    <section class="qual-hero pt-28 pb-16 px-4">
+        <div class="qual-hero-grid"></div>
+        <!-- Floating decorative circles -->
+        <div class="absolute top-16 right-12 w-72 h-72 rounded-full bg-white/5 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-8 w-56 h-56 rounded-full bg-yellow-400/10 blur-2xl pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 mb-8" aria-label="Breadcrumb">
+                <a href="{% url 'home:home' %}" class="breadcrumb-link">Home</a>
+                <span class="breadcrumb-sep">›</span>
+                <span class="text-white/80 text-sm font-medium">Qualifications</span>
+            </nav>
+
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                <div class="max-w-2xl">
+                    <div class="hero-badge mb-5">
+                        <i class="ri-award-line"></i>
+                        Internationally Recognised
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight font-heading mb-5">
+                        Academic<br>
+                        <span class="text-[#D4AF37]">Qualifications</span>
+                    </h1>
+                    <p class="text-white/70 text-lg leading-relaxed font-medium max-w-xl">
+                        St. Joseph International School offers world-class, internationally recognised programmes that open doors to universities across the globe.
+                    </p>
+                </div>
+
+                <!-- Stat Cards -->
+                <div class="flex gap-3 shrink-0">
+                    <div class="stat-box">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Programmes</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">160+</div>
+                        <div class="stat-label">Countries Accept</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">CAIE</div>
+                        <div class="stat-label">Awarding Body</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="max-w-6xl mx-auto px-4 py-16 space-y-20">
+
+        <!-- ===== AWARDING BODY ===== -->
+        <section class="reveal">
+            <div class="awarding-card p-8 md:p-10">
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center shadow-lg">
+                            <i class="ri-global-line text-4xl text-[#D4AF37]"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[#D4AF37] text-xs font-bold uppercase tracking-widest mb-2">Awarding Body</p>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white font-heading mb-3">
+                            Cambridge Assessment International Education
+                        </h2>
+                        <p class="text-white/70 text-base leading-relaxed max-w-2xl">
+                            SJIS is affiliated with <strong class="text-white">Cambridge Assessment International Education (CAIE)</strong>, part of the University of Cambridge. Cambridge qualifications are accepted by universities and employers in over 160 countries worldwide, making them one of the most trusted and widely recognised credentials in international education.
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <a href="https://www.cambridgeinternational.org" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 bg-[#D4AF37] text-slate-900 font-bold text-sm px-5 py-3 rounded-xl hover:bg-yellow-300 transition-colors shadow-lg">
+                            <i class="ri-external-link-line"></i>
+                            Cambridge International
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROGRAMME CARDS ===== -->
+        <section class="reveal">
+            <div class="section-label">Our Programmes</div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 font-heading mb-10">
+                Qualifications We Offer
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- ── IGCSE Card ── -->
+                <article class="qual-card" id="igcse">
+                    <div class="qual-card-accent accent-igcse"></div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-5">
+                            <div>
+                                <span class="stage-badge stage-igcse mb-3 inline-flex">
+                                    <i class="ri-school-line text-xs"></i>
+                                    Secondary Stage
+                                </span>
+                                <h3 class="text-2xl font-extrabold text-slate-900 font-heading leading-tight">
+                                    Cambridge IGCSE
+                                </h3>
+                                <p class="text-slate-500 text-sm font-medium mt-1">
+                                    International General Certificate of Secondary Education
+                                </p>
+                            </div>
+                            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="ri-book-open-line text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-600 leading-relaxed mb-6 text-sm">
+                            The Cambridge IGCSE is the world's most popular international qualification for 14–16 year olds, developed over 30 years. It develops students' skills in creative thinking, enquiry and problem solving and prepares them for the next stage of education.
+                        </p>
+
+                        <div class="mb-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Core Subject Areas</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="subject-pill"><i class="ri-calculator-line text-xs"></i> Mathematics</span>
+                                <span class="subject-pill"><i class="ri-flask-line text-xs"></i> Physics</span>
+                                <span class="subject-pill"><i class="ri-flask-2-line text-xs"></i> Chemistry</span>
+                                <span class="subject-pill"><i class="ri-microscope-line text-xs"></i> Biology</span>
+                                <span class="subject-pill"><i class="ri-translate-2 text-xs"></i> English Language</span>
+                                <span class="subject-pill"><i class="ri-translate-2 text-xs"></i> English Literature</span>
+                                <span class="subject-pill"><i class="ri-computer-line text-xs"></i> Computer Science</span>
+                                <span class="subject-pill"><i class="ri-map-2-line text-xs"></i> Geography</span>
+                                <span class="subject-pill"><i class="ri-history-line text-xs"></i> History</span>
+                                <span class="subject-pill"><i class="ri-bar-chart-line text-xs"></i> Business Studies</span>
+                                <span class="subject-pill"><i class="ri-bank-line text-xs"></i> Economics</span>
+                                <span class="subject-pill"><i class="ri-palette-line text-xs"></i> Art & Design</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Age Group</p>
+                                <p class="text-sm font-bold text-slate-800">14 – 16 Years</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Duration</p>
+                                <p class="text-sm font-bold text-slate-800">2 Years (Grades 9 – 10)</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Grading</p>
+                                <p class="text-sm font-bold text-slate-800">A* – G Scale</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Awarding Body</p>
+                                <p class="text-sm font-bold text-slate-800">CAIE, Cambridge</p>
+                            </div>
+                        </div>
+
+                        <div class="info-strip">
+                            <i class="ri-information-line text-blue-500 text-lg flex-shrink-0 mt-0.5"></i>
+                            <p class="text-xs text-blue-800 leading-relaxed">
+                                The IGCSE is globally recognised as equivalent to the UK GCSE and accepted as a prerequisite for A-Level study, the IB Diploma, and university entry in 160+ countries.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- ── A-Level Card ── -->
+                <article class="qual-card" id="alevel">
+                    <div class="qual-card-accent accent-alevel"></div>
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-5">
+                            <div>
+                                <span class="stage-badge stage-alevel mb-3 inline-flex">
+                                    <i class="ri-graduation-cap-line text-xs"></i>
+                                    Advanced Stage
+                                </span>
+                                <h3 class="text-2xl font-extrabold text-slate-900 font-heading leading-tight">
+                                    Cambridge International A-Level
+                                </h3>
+                                <p class="text-slate-500 text-sm font-medium mt-1">
+                                    AS & A2 Level (Advanced Subsidiary & Advanced Level)
+                                </p>
+                            </div>
+                            <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="ri-graduation-cap-line text-2xl text-orange-600"></i>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-600 leading-relaxed mb-6 text-sm">
+                            Cambridge International A-Levels are recognised by the world's best universities as proof of academic excellence. The programme develops deep subject knowledge and critical thinking skills, providing a robust foundation for higher education worldwide.
+                        </p>
+
+                        <div class="mb-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Core Subject Areas</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="subject-pill orange"><i class="ri-calculator-line text-xs"></i> Mathematics</span>
+                                <span class="subject-pill orange"><i class="ri-calculator-2-line text-xs"></i> Further Mathematics</span>
+                                <span class="subject-pill orange"><i class="ri-flask-line text-xs"></i> Physics</span>
+                                <span class="subject-pill orange"><i class="ri-flask-2-line text-xs"></i> Chemistry</span>
+                                <span class="subject-pill orange"><i class="ri-microscope-line text-xs"></i> Biology</span>
+                                <span class="subject-pill orange"><i class="ri-computer-line text-xs"></i> Computer Science</span>
+                                <span class="subject-pill orange"><i class="ri-translate-2 text-xs"></i> English Language</span>
+                                <span class="subject-pill orange"><i class="ri-bank-line text-xs"></i> Economics</span>
+                                <span class="subject-pill orange"><i class="ri-bar-chart-line text-xs"></i> Business</span>
+                                <span class="subject-pill orange"><i class="ri-map-2-line text-xs"></i> Geography</span>
+                                <span class="subject-pill orange"><i class="ri-account-box-line text-xs"></i> Psychology</span>
+                                <span class="subject-pill orange"><i class="ri-artboard-line text-xs"></i> Accounting</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Age Group</p>
+                                <p class="text-sm font-bold text-slate-800">16 – 19 Years</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Duration</p>
+                                <p class="text-sm font-bold text-slate-800">2 Years (Grades 11 – 12)</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Grading</p>
+                                <p class="text-sm font-bold text-slate-800">A* – E Scale</p>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Awarding Body</p>
+                                <p class="text-sm font-bold text-slate-800">CAIE, Cambridge</p>
+                            </div>
+                        </div>
+
+                        <div class="info-strip" style="background:#FFF4ED;border-color:#FED7AA;">
+                            <i class="ri-information-line text-orange-500 text-lg flex-shrink-0 mt-0.5"></i>
+                            <p class="text-xs text-orange-900 leading-relaxed">
+                                Cambridge A-Levels are equivalent to UK A-Levels and are accepted for university admissions in the UK, USA, Canada, Australia, and across the world. Completion of IGCSE (or equivalent) is required for entry.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ===== LEARNING PATHWAY ===== -->
+        <section class="reveal">
+            <div class="section-label">Student Journey</div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 font-heading mb-10">
+                Academic Pathway at SJIS
+            </h2>
+
+            <div class="relative">
+                <!-- Connecting Line (desktop) -->
+                <div class="hidden md:block absolute top-14 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-indigo-300 to-orange-200" style="z-index:0; margin: 0 60px;"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="qual-card p-6 text-center">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4 font-extrabold text-lg font-heading">1</div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Grades 1 – 8</p>
+                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">Primary &amp; Lower Secondary</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Foundation years building core literacy, numeracy and critical thinking skills.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="qual-card p-6 text-center border-2 border-blue-200">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 font-extrabold text-lg font-heading shadow-lg shadow-blue-300">2</div>
+                        <p class="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">Grades 9 – 10</p>
+                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">Cambridge IGCSE</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Two-year internationally recognised secondary qualification. Exams set and marked by Cambridge.</p>
+                        <a href="#igcse" class="mt-3 inline-block text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">Learn more →</a>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="qual-card p-6 text-center border-2 border-orange-200">
+                        <div class="w-12 h-12 bg-orange-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 font-extrabold text-lg font-heading shadow-lg shadow-orange-300">3</div>
+                        <p class="text-xs font-bold text-orange-500 uppercase tracking-wider mb-1">Grades 11 – 12</p>
+                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">Cambridge A-Level</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">AS &amp; A2 advanced qualifications accepted by top universities globally.</p>
+                        <a href="#alevel" class="mt-3 inline-block text-xs font-bold text-orange-600 hover:text-orange-800 transition-colors">Learn more →</a>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="qual-card p-6 text-center">
+                        <div class="w-12 h-12 bg-[#1F3A93] text-white rounded-2xl flex items-center justify-center mx-auto mb-4 font-extrabold text-lg font-heading shadow-lg">4</div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">After SJIS</p>
+                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">University &amp; Beyond</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Our graduates go on to leading universities in Bangladesh, the UK, USA, Canada, Australia and beyond.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== WHY CAMBRIDGE ===== -->
+        <section class="reveal">
+            <div class="bg-white/80 backdrop-blur-sm border border-white/70 rounded-3xl p-8 md:p-12 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="section-label mb-4">Why Cambridge</div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 font-heading mb-5">
+                            A Qualification Recognised Worldwide
+                        </h2>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            Cambridge International qualifications are trusted by universities and employers across the globe. Choosing Cambridge means choosing a pathway that is rigorous, internationally respected, and genuinely opens doors.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="ri-check-line text-green-600 font-bold"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">Accepted in 160+ Countries</p>
+                                    <p class="text-slate-500 text-xs">Recognised by universities in the UK, USA, Canada, Australia, and worldwide.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="ri-check-line text-blue-600 font-bold"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">Rigorous Academic Standards</p>
+                                    <p class="text-slate-500 text-xs">Developed by the University of Cambridge with over 150 years of educational expertise.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="ri-check-line text-indigo-600 font-bold"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">Develops Critical Thinkers</p>
+                                    <p class="text-slate-500 text-xs">Curriculum designed to foster enquiry, analysis, and independent thinking skills.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="ri-check-line text-purple-600 font-bold"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">UCAS Recognised</p>
+                                    <p class="text-slate-500 text-xs">Cambridge A-Levels carry full UCAS tariff points, enabling direct application to UK universities.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right: Quick Facts Grid -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
+                            <i class="ri-earth-line text-3xl text-blue-600 mb-3 block"></i>
+                            <p class="text-3xl font-extrabold text-slate-900 font-heading">160+</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Countries accepting Cambridge qualifications</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-5 border border-amber-100">
+                            <i class="ri-trophy-line text-3xl text-amber-600 mb-3 block"></i>
+                            <p class="text-3xl font-extrabold text-slate-900 font-heading">150+</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Years of Cambridge educational excellence</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-100">
+                            <i class="ri-user-star-line text-3xl text-green-600 mb-3 block"></i>
+                            <p class="text-3xl font-extrabold text-slate-900 font-heading">1M+</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Students sit Cambridge exams each year</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-5 border border-rose-100">
+                            <i class="ri-building-line text-3xl text-rose-600 mb-3 block"></i>
+                            <p class="text-3xl font-extrabold text-slate-900 font-heading">10,000+</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Schools worldwide in the Cambridge network</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA ===== -->
+        <section class="reveal">
+            <div class="bg-gradient-to-br from-[#1F3A93] via-[#142659] to-[#0d1b4b] rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 pointer-events-none"
+                     style="background-image: radial-gradient(circle at 20% 80%, #D4AF37 0%, transparent 40%), radial-gradient(circle at 80% 20%, #ffffff 0%, transparent 40%);">
+                </div>
+                <div class="relative z-10">
+                    <div class="w-16 h-16 bg-[#D4AF37]/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                        <i class="ri-question-answer-line text-[#D4AF37] text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-white font-heading mb-4">Have Questions About Our Programmes?</h2>
+                    <p class="text-white/65 mb-8 max-w-xl mx-auto leading-relaxed">
+                        Our admissions team is happy to help you understand which programme is right for your child and guide you through the process.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="{% url 'contact:contact' %}"
+                           class="inline-flex items-center justify-center gap-2 bg-[#D4AF37] text-slate-900 font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition-colors shadow-lg">
+                            <i class="ri-mail-send-line"></i>
+                            Contact Admissions
+                        </a>
+                        <a href="{% url 'admission:admission_home' %}"
+                           class="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-colors">
+                            <i class="ri-user-add-line"></i>
+                            Apply Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /max-w-6xl -->
+</div><!-- /qual-bg -->
+
+<script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+        (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+        { threshold: 0.1 }
+    );
+    reveals.forEach(el => observer.observe(el));
+</script>
+{% endblock %}

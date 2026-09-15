@@ -163,3 +163,6 @@ def terms_of_service(request):
 def sitemap(request):
     return render(request, 'home/sitemap.html')
 
+def qualifications_view(request):
+    return render(request, 'home/qualifications.html')
+

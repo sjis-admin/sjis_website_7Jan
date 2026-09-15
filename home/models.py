@@ -188,6 +188,8 @@ class PrincipalMessage(models.Model):
     title = models.CharField(max_length=200, help_text="Title of the message")
     message = models.TextField(help_text="The main message")
     image = models.ImageField(upload_to='principal_images/', blank=True, null=True, help_text="Optional: Upload an image")
+    email = models.EmailField(blank=True, null=True, help_text="Direct or official contact email (e.g., principal@sjis.edu.bd)")
+    phone = models.CharField(max_length=50, blank=True, null=True, help_text="Optional direct office phone number")
     is_active = models.BooleanField(default=True, help_text="Mark as active to display")
     type = models.CharField(
         max_length=20, 

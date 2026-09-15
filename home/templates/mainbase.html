@@ -59,7 +59,7 @@
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "{% if site_config.phone %}{{ site_config.phone }}{% else %}+880-2-9123456{% endif %}",
+        "telephone": "{% if site_config.phone %}{{ site_config.phone }}{% else %}+8801793970729{% endif %}",
         "contactType": "customer service"
       }
     }
@@ -985,6 +985,7 @@
                         </div>
                     </div>
 
+                    <a href="{% url 'home:qualifications' %}" class="header-nav-item {% if '/qualifications' in request.path %}active{% endif %}">Qualifications</a>
                     <a href="{% url 'home:faculty_list' %}" class="header-nav-item {% if '/faculty' in request.path %}active{% endif %}">Faculty</a>
 
                     <div class="relative group">
@@ -1137,11 +1138,11 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{% url 'home:qualifications' %}"
                                 class="flex items-center space-x-2.5 text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 group/item">
                                 <span
                                     class="material-icons text-sm group-hover/item:translate-x-1 transition-transform">arrow_forward</span>
-                                <span class="font-medium">Our Curriculum</span>
+                                <span class="font-medium">Qualifications &amp; Programmes</span>
                             </a>
                         </li>
                     </ul>
@@ -1332,6 +1333,13 @@
                     </div>
                 </div>
 
+                <!-- Qualifications -->
+                <a href="{% url 'home:qualifications' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group {% if '/qualifications' in request.path %}bg-white/10 text-brand-400 border-l-4 border-brand-500{% else %}text-white hover:bg-white/10{% endif %}">
+                    <span class="material-icons {% if '/qualifications' in request.path %}text-white{% else %}text-indigo-300{% endif %} group-hover:text-white transition-colors">workspace_premium</span>
+                    <span class="font-medium">Qualifications</span>
+                </a>
+
                 <!-- Faculty -->
                 <a href="{% url 'home:faculty_list' %}"
                     class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group {% if '/faculty' in request.path %}bg-white/10 text-brand-400 border-l-4 border-brand-500{% else %}text-white hover:bg-white/10{% endif %}">
@@ -1479,6 +1487,9 @@
                         <span class="absolute -bottom-2 left-0 w-8 h-1 bg-brand-500 rounded-full"></span>
                     </h4>
                     <ul class="space-y-4 text-sm">
+                        <li><a href="{% url 'home:qualifications' %}"
+                                class="text-slate-400 hover:text-brand-400 transition-all flex items-center group">
+                                <i class="ri-arrow-right-s-line mr-2 text-brand-500 group-hover:translate-x-1 transition-transform"></i>Qualifications</a></li>
                         <li><a href="{% url 'admission:admission_home' %}"
                                 class="text-slate-400 hover:text-brand-400 transition-all flex items-center group">
                                 <i class="ri-arrow-right-s-line mr-2 text-brand-500 group-hover:translate-x-1 transition-transform"></i>Admission</a></li>

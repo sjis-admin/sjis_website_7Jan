@@ -18,7 +18,7 @@ urlpatterns = [
     path('privacy-policy/', privacy_policy, name='privacy_policy'),
     path('terms-of-service/', terms_of_service, name='terms_of_service'),
     path('sitemap/', sitemap, name='sitemap'),
-
+    path('qualifications/', views.qualifications_view, name='qualifications'),
 ]
 
 
