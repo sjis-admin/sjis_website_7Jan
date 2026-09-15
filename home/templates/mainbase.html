@@ -964,7 +964,7 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group">
-                        <button class="header-nav-item flex items-center {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path %}active{% endif %}">
+                        <button class="header-nav-item flex items-center {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path or '/qualifications' in request.path %}active{% endif %}">
                             About Us <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform"></i>
                         </button>
                         <div class="fluent-dropdown absolute top-full left-0 mt-2 w-64">
@@ -981,11 +981,16 @@
                                     </div>
                                     <span class="text-sm font-bold text-slate-700">Principal's Message</span>
                                 </a>
+                                <a href="{% url 'home:qualifications' %}" class="flex items-center p-3 rounded-xl hover:bg-brand-50 group/item {% if request.path == '/qualifications/' %}bg-brand-50{% endif %}">
+                                    <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3 group-hover/item:bg-amber-500 transition-colors">
+                                        <i class="ri-award-line text-amber-600 group-hover/item:text-white"></i>
+                                    </div>
+                                    <span class="text-sm font-bold text-slate-700">Qualifications</span>
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <a href="{% url 'home:qualifications' %}" class="header-nav-item {% if '/qualifications' in request.path %}active{% endif %}">Qualifications</a>
                     <a href="{% url 'home:faculty_list' %}" class="header-nav-item {% if '/faculty' in request.path %}active{% endif %}">Faculty</a>
 
                     <div class="relative group">
