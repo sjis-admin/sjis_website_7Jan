@@ -6,9 +6,10 @@
 {% block content %}
 <style>
     :root {
-        --school-blue: #0284c7;
-        --school-blue-dark: #0369a1;
-        --text-main: #1e293b;
+        --school-blue: #1F3A93;
+        --school-blue-dark: #142659;
+        --school-gold: #D4AF37;
+        --text-main: #0f172a;
         --text-muted: #64748b;
         --bg-light: #f8fafc;
     }
@@ -19,34 +20,17 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .section-header {
-        position: relative;
-        padding-bottom: 2rem;
-    }
-
-    .section-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 4px;
-        background: var(--school-blue);
-        border-radius: 2px;
-    }
-
-    /* Clean Search Bar */
+    /* Clean Search Hub */
     .search-hub {
         background: white;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.06);
         transition: all 0.3s ease;
     }
 
     .search-hub:focus-within {
         border-color: var(--school-blue);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 12px 25px -4px rgba(31, 58, 147, 0.12);
     }
 
     /* Professional Featured Card */
@@ -54,134 +38,89 @@
         background: white;
         border-radius: 1.5rem;
         border: 1px solid #e2e8f0;
-        overflow: hidden;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+        transition: all 0.3s ease;
     }
 
-    .featured-image-container {
-        background: #f1f5f9;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 350px;
+    .featured-box:hover {
+        box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1);
     }
 
-    /* Notice Cards */
+    /* Notice Cards in Archive */
     .notice-item {
         background: white;
         border-radius: 1.25rem;
         border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.04);
         transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
 
     .notice-item:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
-        border-color: var(--school-blue);
-    }
-
-    /* Filter Pills */
-    .filter-pill {
-        padding: 0.5rem 1.25rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        transition: all 0.2s;
-        border: 1px solid #e2e8f0;
-        background: white;
-        color: var(--text-muted);
-    }
-
-    .filter-pill:hover {
-        border-color: var(--school-blue);
-        color: var(--school-blue);
-    }
-
-    .filter-pill.active {
-        background: var(--school-blue);
-        color: white;
-        border-color: var(--school-blue);
-    }
-
-    /* PDF Indicator */
-    .pdf-box {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-    }
-
-    .btn-school-primary {
-        background: var(--school-blue);
-        color: white;
-        font-weight: 700;
-        padding: 0.875rem 2rem;
-        border-radius: 0.75rem;
-        transition: all 0.2s;
-    }
-
-    .btn-school-primary:hover {
-        background: var(--school-blue-dark);
-        transform: translateY(-1px);
-    }
-
-    .btn-school-outline {
-        background: white;
-        color: var(--school-blue);
-        border: 2px solid var(--school-blue);
-        font-weight: 700;
-        padding: 0.75rem 2rem;
-        border-radius: 0.75rem;
-        transition: all 0.2s;
-    }
-
-    .btn-school-outline:hover {
-        background: #f0f9ff;
+        box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.1);
+        border-color: rgba(31, 58, 147, 0.4);
     }
 
     @keyframes slideUp {
-        from { opacity: 0; transform: translateY(10px); }
+        from { opacity: 0; transform: translateY(12px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .fade-in-up {
-        animation: slideUp 0.5s ease-out forwards;
+        animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
 </style>
 
-<div class="academic-body min-h-screen pt-32 pb-24 px-4 md:px-10">
-    <div class="max-w-[1440px] mx-auto">
+<div class="academic-body min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-10 relative overflow-hidden">
+    <!-- Atmospheric Ambient Lighting & Grid Texture -->
+    <div class="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] opacity-35 pointer-events-none"></div>
+    <div class="absolute top-10 right-0 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-96 left-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-[1440px] mx-auto relative z-10">
         <!-- Header -->
-        <div class="text-center mb-12 fade-in-up">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight section-header">
-                Official Notice Board
+        <div class="text-center max-w-3xl mx-auto mb-10 fade-in-up">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50/90 border border-brand-200/70 text-brand-700 text-xs font-bold tracking-wider uppercase shadow-2xs mb-3 backdrop-blur-xs">
+                <span class="w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+                Official Bulletins • Cambridge Centre BD084
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-heading mb-3">
+                Official <span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-brand-800 bg-clip-text text-transparent">Notice Board</span>
             </h1>
+            <p class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto font-normal">
+                Stay updated with official school circulars, exam schedules, routines, and administrative announcements.
+            </p>
         </div>
 
         <!-- Search Bar -->
-        <div class="max-w-2xl mx-auto mb-16 fade-in-up" style="animation-delay: 0.1s">
-            <form action="." method="get" class="search-hub rounded-2xl flex p-1.5">
+        <div class="max-w-2xl mx-auto mb-14 fade-in-up" style="animation-delay: 0.1s">
+            <form action="." method="get" class="search-hub rounded-2xl flex items-center p-1.5">
                 <div class="flex-grow flex items-center relative">
-                    <span class="material-icons absolute left-4 text-slate-400">search</span>
+                    <i class="ri-search-line absolute left-4 text-slate-400 text-lg"></i>
                     <input 
                         type="search" 
                         name="search" 
-                        placeholder="Search for notices..." 
-                        class="w-full pl-12 pr-4 py-4 rounded-xl border-none focus:ring-0 text-slate-700 font-medium"
+                        placeholder="Search circulars, exams, schedules, holiday notices..." 
+                        class="w-full pl-12 pr-4 py-3.5 rounded-xl border-none focus:ring-0 text-slate-800 placeholder-slate-400 font-medium text-sm"
                         value="{{ request.GET.search|default:'' }}"
                     >
                 </div>
-                <button type="submit" class="btn-school-primary px-8">
+                <button type="submit" class="px-6 sm:px-8 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl shadow-xs hover:shadow transition-all shrink-0">
                     Search
                 </button>
             </form>
+            
+            <!-- Quick Suggestion Pills -->
+            <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
+                <span class="text-[11px] font-semibold text-slate-400">Quick Filters:</span>
+                <a href="?search=Exam" class="text-[11px] font-bold text-slate-600 bg-white hover:bg-brand-50 hover:text-brand-700 px-2.5 py-1 rounded-full border border-slate-200 transition-colors">Exams & Routines</a>
+                <a href="?search=Admit" class="text-[11px] font-bold text-slate-600 bg-white hover:bg-brand-50 hover:text-brand-700 px-2.5 py-1 rounded-full border border-slate-200 transition-colors">Admit Cards</a>
+                <a href="?search=Holiday" class="text-[11px] font-bold text-slate-600 bg-white hover:bg-brand-50 hover:text-brand-700 px-2.5 py-1 rounded-full border border-slate-200 transition-colors">Holidays</a>
+                <a href="?search=Academic" class="text-[11px] font-bold text-slate-600 bg-white hover:bg-brand-50 hover:text-brand-700 px-2.5 py-1 rounded-full border border-slate-200 transition-colors">Academic</a>
+            </div>
         </div>
 
         <!-- Featured & Recent Section -->
@@ -191,52 +130,97 @@
             <!-- Left: Main Featured Notice (Spans 8 columns) -->
             <div class="lg:col-span-8">
                 {% with f=notices.0 %}
-                <div class="featured-box flex flex-col h-full">
-                    <div class="p-8 md:p-10 flex flex-col justify-center flex-grow">
-                        <div class="flex items-center gap-2 mb-6">
-                            <span class="px-3 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-md uppercase tracking-wider">Top Featured</span>
-                            <span class="text-slate-300">|</span>
-                            <span class="text-slate-400 text-xs font-semibold">{{ f.created_at|date:"F d, Y" }}</span>
-                        </div>
-                        
-                        <h2 class="text-3xl font-bold text-slate-900 mb-6 leading-tight">
-                            {{ f.title }}
-                        </h2>
-
-                        <p class="text-slate-600 mb-8 line-clamp-2 leading-relaxed">
-                            {{ f.content|striptags|truncatewords:35 }}
-                        </p>
-
-                        <div class="flex flex-wrap gap-3 mt-auto">
-                            <a href="{% url 'notice_board2:detail' f.pk %}" class="btn-school-primary text-sm">
-                                View Full Notice
-                            </a>
-                            {% if f.attachment %}
-                            <a href="{{ f.attachment.url }}" download class="btn-school-outline text-sm flex items-center gap-2 py-2.5">
-                                <span class="material-icons text-lg">download</span>
-                                Download
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
+                <div class="featured-box flex flex-col h-full overflow-hidden border border-slate-200/90 relative">
+                    <!-- Top Gradient Accent -->
+                    <div class="h-1.5 bg-gradient-to-r from-brand-600 via-indigo-600 to-amber-500 w-full"></div>
                     
-                    <div class="featured-image-container !min-h-[280px]">
-                        {% if f.attachment %}
-                            {% with n=f.attachment.name|lower %}
-                            {% if ".pdf" in n %}
-                                <div class="pdf-box">
-                                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm border border-slate-100">
-                                        <span class="material-icons text-rose-500 text-2xl">picture_as_pdf</span>
+                    <div class="p-6 sm:p-8 md:p-10 flex flex-col justify-between flex-grow">
+                        <div>
+                            <!-- Badges & Meta -->
+                            <div class="flex flex-wrap items-center gap-2.5 mb-5">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 text-xs font-black tracking-wider uppercase">
+                                    <i class="ri-pushpin-2-fill text-amber-500"></i> Top Featured Circular
+                                </span>
+                                <span class="text-slate-300">|</span>
+                                <span class="text-slate-500 text-xs font-bold flex items-center gap-1">
+                                    <i class="ri-calendar-line text-slate-400"></i> {{ f.created_at|date:"F d, Y" }}
+                                </span>
+                                {% if f.formatted_target_grades %}
+                                <span class="inline-flex items-center gap-1 text-xs font-bold px-3 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200/70">
+                                    <i class="ri-graduation-cap-line text-brand-500"></i>
+                                    {% if f.formatted_target_grades == "No Specific Grade" %}
+                                        All Grades
+                                    {% else %}
+                                        {{ f.formatted_target_grades }}
+                                    {% endif %}
+                                </span>
+                                {% endif %}
+                            </div>
+                            
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
+                                <a href="{% url 'notice_board2:detail' f.pk %}" class="hover:text-brand-600 transition-colors">
+                                    {{ f.title }}
+                                </a>
+                            </h2>
+
+                            <p class="text-slate-600 mb-6 leading-relaxed text-sm sm:text-base line-clamp-3">
+                                {{ f.content|striptags|truncatewords:32 }}
+                            </p>
+
+                            <div class="flex flex-wrap items-center gap-3 mb-8">
+                                <a href="{% url 'notice_board2:detail' f.pk %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-sm hover:shadow-md transition-all group">
+                                    <span>View Full Notice</span>
+                                    <i class="ri-arrow-right-line transform group-hover:translate-x-1 transition-transform"></i>
+                                </a>
+                                {% if f.attachment %}
+                                <a href="{{ f.attachment.url }}" download class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-brand-600 border border-slate-200 hover:border-brand-300 font-bold text-sm transition-all shadow-2xs">
+                                    <i class="ri-download-2-line text-brand-600"></i>
+                                    <span>Download Attachment</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Document Showcase Viewer (Crisp, uncropped presentation) -->
+                        <div class="bg-gradient-to-b from-slate-100 to-slate-200/70 p-4 sm:p-6 rounded-2xl border border-slate-200/90 shadow-inner flex items-center justify-center relative overflow-hidden group/doc">
+                            {% if f.attachment %}
+                                {% with n=f.attachment.name|lower %}
+                                {% if ".pdf" in n %}
+                                    <div class="w-full py-10 px-6 bg-white rounded-xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.08)] border border-slate-200/90 flex flex-col items-center justify-center text-center">
+                                        <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-3 shadow-2xs border border-rose-100 text-rose-600">
+                                            <i class="ri-file-pdf-2-line text-3xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-bold text-slate-800 mb-1">Official Document PDF</h4>
+                                        <p class="text-xs text-slate-500 mb-4 max-w-xs">Download or inspect the official publication in original high-resolution format.</p>
+                                        <a href="{{ f.attachment.url }}" target="_blank" download class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-brand-600 text-white font-bold text-xs transition-colors shadow-sm">
+                                            <i class="ri-download-2-line"></i> Download Official Notice
+                                        </a>
                                     </div>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">PDF Attachment</span>
-                                </div>
+                                {% else %}
+                                    <div class="w-full bg-white rounded-xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] border border-slate-200/90 overflow-hidden flex flex-col items-center relative">
+                                        <div class="w-full bg-slate-100/90 px-4 py-2 border-b border-slate-200/80 flex items-center justify-between text-xs text-slate-500 font-medium">
+                                            <span class="flex items-center gap-1.5"><i class="ri-file-paper-2-line text-brand-600"></i> Official Notice Letterhead</span>
+                                            <span class="text-[11px] font-semibold text-slate-400">Authenticated Document</span>
+                                        </div>
+                                        <div class="p-3 w-full flex items-center justify-center bg-slate-50/50">
+                                            <img src="{{ f.attachment.url }}" class="max-h-[360px] w-auto max-w-full object-contain rounded shadow-2xs" alt="Official Notice Document">
+                                        </div>
+                                        <a href="{% url 'notice_board2:detail' f.pk %}" class="w-full py-2.5 bg-slate-50 hover:bg-brand-50 border-t border-slate-200/80 text-center text-xs font-bold text-brand-600 hover:text-brand-800 transition-colors flex items-center justify-center gap-1.5">
+                                            <i class="ri-zoom-in-line"></i> View Full Resolution Document
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% endwith %}
                             {% else %}
-                                <img src="{{ f.attachment.url }}" class="w-full h-full object-cover" alt="Notice">
+                                <div class="w-full py-10 px-6 bg-white rounded-xl shadow-xs border border-slate-200/80 flex flex-col items-center justify-center text-center">
+                                    <div class="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center mb-3 text-brand-600 border border-brand-100">
+                                        <i class="ri-article-line text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-slate-800 mb-1">Official Circular Notice</h4>
+                                    <p class="text-xs text-slate-500">Read details or browse related announcements below.</p>
+                                </div>
                             {% endif %}
-                            {% endwith %}
-                        {% else %}
-                            <img src="{% static 'images/sjis-placeholder.jpg' %}" class="w-full h-full object-cover" alt="Placeholder">
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endwith %}
@@ -244,46 +228,60 @@
 
             <!-- Right: Recent Updates Sidebar (Spans 4 columns) -->
             <div class="lg:col-span-4 flex flex-col">
-                <div class="bg-white border border-slate-200 rounded-[1.5rem] p-6 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
-                            <span class="material-icons text-school-blue">auto_awesome</span>
-                            Recent Updates
+                <div class="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col h-full">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+                        <h3 class="font-extrabold text-slate-900 flex items-center gap-2 text-base">
+                            <span class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center border border-brand-100">
+                                <i class="ri-radar-line text-base"></i>
+                            </span>
+                            Recent Circulars
                         </h3>
-                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Feed</span>
+                        <span class="text-[10px] font-black text-brand-700 bg-brand-50 border border-brand-200/70 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            Live Feed
+                        </span>
                     </div>
 
-                    <div class="space-y-4 overflow-y-auto pr-1" style="max-height: 500px;">
+                    <div class="space-y-3 overflow-y-auto pr-1 flex-grow" style="max-height: 520px;">
                         {% for n in notices|slice:"1:8" %}
-                        <a href="{% url 'notice_board2:detail' n.pk %}" class="group block p-3 rounded-xl border border-transparent hover:border-sky-100 hover:bg-sky-50/50 transition-all">
-                            <div class="flex gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-slate-50 flex-shrink-0 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-school-blue transition-colors">
-                                    <span class="material-icons text-lg">
-                                        {% if "exam" in n.title|lower %}assessment{% elif "holiday" in n.title|lower %}event{% else %}article{% endif %}
+                        <a href="{% url 'notice_board2:detail' n.pk %}" class="group block p-3.5 rounded-xl border border-slate-100 hover:border-brand-200 hover:bg-brand-50/40 hover:shadow-2xs transition-all">
+                            <div class="flex items-start gap-3.5">
+                                <!-- Calendar Mini Tile -->
+                                <div class="w-11 h-12 rounded-lg bg-slate-900 group-hover:bg-brand-600 text-white flex-shrink-0 flex flex-col items-center justify-center p-0.5 transition-colors shadow-2xs">
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-amber-400 group-hover:text-amber-300 leading-none">
+                                        {{ n.created_at|date:"M" }}
+                                    </span>
+                                    <span class="text-base font-black leading-tight text-white mt-0.5">
+                                        {{ n.created_at|date:"d" }}
                                     </span>
                                 </div>
-                                <div class="flex-grow">
-                                    <h4 class="text-sm font-bold text-slate-800 line-clamp-1 mb-1 group-hover:text-school-blue transition-colors">
-                                        {{ n.title }}
-                                    </h4>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-[10px] font-semibold text-slate-400">{{ n.created_at|date:"M d, Y" }}</span>
+                                
+                                <div class="flex-grow min-w-0">
+                                    <div class="flex items-center justify-between gap-2 mb-1">
+                                        <span class="text-[10px] font-bold text-slate-400">{{ n.created_at|date:"Y" }}</span>
                                         {% if n.is_new %}
-                                        <span class="text-[8px] font-black text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded uppercase">New</span>
+                                        <span class="text-[9px] font-black text-amber-700 bg-amber-50 border border-amber-200/80 px-1.5 py-0.2 rounded-full uppercase">New</span>
                                         {% endif %}
                                     </div>
+                                    <h4 class="text-xs sm:text-sm font-bold text-slate-800 line-clamp-2 leading-snug group-hover:text-brand-700 transition-colors">
+                                        {{ n.title }}
+                                    </h4>
+                                    {% if n.formatted_target_grades %}
+                                    <span class="inline-block mt-1 text-[10px] font-semibold text-slate-500">
+                                        {% if n.formatted_target_grades == "No Specific Grade" %}General Notice{% else %}{{ n.formatted_target_grades }}{% endif %}
+                                    </span>
+                                    {% endif %}
                                 </div>
                             </div>
                         </a>
                         {% empty %}
-                        <p class="text-xs text-slate-400 text-center py-10">No recent updates.</p>
+                        <p class="text-xs text-slate-400 text-center py-10">No recent updates found.</p>
                         {% endfor %}
                     </div>
 
-                    <div class="mt-auto pt-6">
-                        <a href="{% url 'notice_board2:list' %}#archive-section" class="w-full py-3 text-xs font-bold text-slate-400 border border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 hover:text-school-blue hover:border-school-blue hover:bg-sky-50 transition-all">
-                            Browse All Notices
-                            <span class="material-icons text-sm">history_edu</span>
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <a href="#archive-section" class="w-full py-3 text-xs font-bold text-slate-600 bg-slate-50 hover:bg-brand-600 hover:text-white border border-slate-200/80 hover:border-brand-600 rounded-xl flex items-center justify-center gap-2 transition-all shadow-2xs group">
+                            <span>Browse Complete Archive</span>
+                            <i class="ri-arrow-down-line transform group-hover:translate-y-0.5 transition-transform"></i>
                         </a>
                     </div>
                 </div>
@@ -295,32 +293,34 @@
         <div id="archive-section" class="pt-12 border-t border-slate-200">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 fade-in-up">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Notice Archive</h2>
-                    <p class="text-sm text-slate-500 font-medium">
-                        Showing <span class="text-school-blue font-bold">{{ notices.count }}</span> 
-                        {% if request.GET.search or request.GET.grade %}matching{% endif %} notices
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-heading mb-1.5">
+                        Notice Archive
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">
+                        Showing <span class="text-brand-700 font-bold">{{ notices.count }}</span> 
+                        {% if request.GET.search or request.GET.grade %}matching{% endif %} official circulars
                     </p>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-4">
+                <div class="flex flex-wrap items-center gap-3">
                     <!-- Category Filters -->
-                    <div class="flex bg-white p-1 rounded-xl border border-slate-200">
-                        <a href="?" class="px-4 py-2 text-xs font-bold rounded-lg transition-all {% if not request.GET.search and not request.GET.grade %}bg-school-blue text-white{% else %}text-slate-500 hover:text-school-blue{% endif %}">
+                    <div class="flex bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
+                        <a href="?" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all {% if not request.GET.search and not request.GET.grade %}bg-brand-600 text-white shadow-2xs{% else %}text-slate-600 hover:text-brand-700{% endif %}">
                             All
                         </a>
-                        <a href="?search=Academic" class="px-4 py-2 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Academic' %}bg-school-blue text-white{% else %}text-slate-500 hover:text-school-blue{% endif %}">
+                        <a href="?search=Academic" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Academic' %}bg-brand-600 text-white shadow-2xs{% else %}text-slate-600 hover:text-brand-700{% endif %}">
                             Academic
                         </a>
-                        <a href="?search=Holiday" class="px-4 py-2 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Holiday' %}bg-school-blue text-white{% else %}text-slate-500 hover:text-school-blue{% endif %}">
+                        <a href="?search=Holiday" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Holiday' %}bg-brand-600 text-white shadow-2xs{% else %}text-slate-600 hover:text-brand-700{% endif %}">
                             Holidays
                         </a>
-                        <a href="?search=Exam" class="px-4 py-2 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Exam' %}bg-school-blue text-white{% else %}text-slate-500 hover:text-school-blue{% endif %}">
+                        <a href="?search=Exam" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all {% if request.GET.search == 'Exam' %}bg-brand-600 text-white shadow-2xs{% else %}text-slate-600 hover:text-brand-700{% endif %}">
                             Exams
                         </a>
                     </div>
 
                     <!-- Grade Filter -->
-                    <select onchange="location = this.value;" class="bg-white border-slate-200 rounded-xl text-xs font-bold text-slate-700 py-2.5 pl-4 pr-10 focus:ring-school-blue focus:border-school-blue cursor-pointer">
+                    <select onchange="location = this.value;" class="bg-white border-slate-200 rounded-xl text-xs font-bold text-slate-700 py-2.5 pl-3.5 pr-8 focus:ring-brand-500 focus:border-brand-500 cursor-pointer shadow-2xs">
                         <option value="?">Filter by Grade</option>
                         {% for g_v, g_n in grades %}
                         <option value="?grade={{ g_v }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" {% if request.GET.grade == g_v %}selected{% endif %}>{{ g_n }}</option>
@@ -328,92 +328,139 @@
                     </select>
 
                     <!-- Sort Filter -->
-                    <select onchange="location = this.value;" class="bg-slate-900 text-white border-none rounded-xl text-xs font-bold py-2.5 pl-4 pr-10 focus:ring-school-blue cursor-pointer">
+                    <select onchange="location = this.value;" class="bg-slate-900 text-white border-none rounded-xl text-xs font-bold py-2.5 pl-3.5 pr-8 focus:ring-brand-500 cursor-pointer shadow-2xs">
                         <option value="?sort=newest" {% if not request.GET.sort or request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
                         <option value="?sort=oldest" {% if request.GET.sort == 'oldest' %}selected{% endif %}>Oldest First</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up" style="animation-delay: 0.2s">
+            <!-- Grid of Archive Notices -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 fade-in-up" style="animation-delay: 0.2s">
                 {% for n in notices %}
-                <div class="notice-item p-6">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 bg-sky-50 text-school-blue rounded-xl flex items-center justify-center">
-                        <span class="material-icons">
-                            {% if "exam" in n.title|lower %}description{% elif "holiday" in n.title|lower %}calendar_month{% else %}info{% endif %}
-                        </span>
+                <article class="notice-item group relative bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 hover:border-brand-500/50 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.05)] hover:shadow-[0_20px_40px_-12px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden">
+                    <!-- Top Accent Line on Hover -->
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 via-indigo-500 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <div class="relative z-10">
+                        <!-- Header with Split Calendar Badge and Audience Tag -->
+                        <div class="flex items-start justify-between gap-3 mb-5">
+                            <div class="flex items-center gap-3">
+                                <!-- Calendar Date Tile -->
+                                <div class="flex-shrink-0 w-12 h-14 rounded-xl bg-gradient-to-b from-slate-900 via-slate-800 to-brand-950 text-white flex flex-col items-center justify-between p-1 shadow-sm border border-slate-700/50 group-hover:border-brand-500/40 transition-colors">
+                                    <span class="w-full text-center text-[10px] font-extrabold uppercase tracking-wider text-amber-400 bg-white/10 rounded py-0.5 leading-none">
+                                        {{ n.created_at|date:"M" }}
+                                    </span>
+                                    <span class="text-xl font-black leading-tight pb-0.5 text-white">
+                                        {{ n.created_at|date:"d" }}
+                                    </span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-xs font-bold text-slate-500 tracking-wide">{{ n.created_at|date:"Y" }}</span>
+                                        {% if n.is_new %}
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/80 shadow-2xs">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> New
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+                                        <i class="ri-time-line text-[11px]"></i> Circular
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Target Audience Tag -->
+                            {% if n.formatted_target_grades %}
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border shrink-0 {% if n.formatted_target_grades == 'No Specific Grade' %}bg-slate-50 text-slate-600 border-slate-200/80{% else %}bg-brand-50 text-brand-700 border-brand-200/70{% endif %}">
+                                <span class="w-1.5 h-1.5 rounded-full {% if n.formatted_target_grades == 'No Specific Grade' %}bg-slate-400{% else %}bg-brand-500{% endif %}"></span>
+                                {% if n.formatted_target_grades == "No Specific Grade" %}
+                                    All Grades
+                                {% else %}
+                                    {{ n.formatted_target_grades }}
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Notice Title -->
+                        <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors line-clamp-2 mb-2.5 leading-snug tracking-tight">
+                            <a href="{% url 'notice_board2:detail' n.pk %}" class="hover:underline decoration-brand-400/40">
+                                {{ n.title }}
+                            </a>
+                        </h3>
+
+                        <!-- Excerpt -->
+                        <p class="text-slate-500 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-5 font-normal min-h-[2.5rem]">
+                            {{ n.content|striptags|truncatewords:18 }}
+                        </p>
                     </div>
-                    {% if n.is_new %}
-                    <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[10px] font-bold rounded uppercase">New</span>
-                    {% endif %}
-                </div>
 
-                <h3 class="text-lg font-bold text-slate-800 mb-4 line-clamp-2">
-                    {{ n.title }}
-                </h3>
-
-                <div class="mt-auto pt-6 border-t border-slate-100">
-                    <div class="flex items-center gap-2 text-slate-400 text-xs mb-4">
-                        <span class="material-icons text-sm">schedule</span>
-                        {{ n.created_at|date:"M d, Y" }}
-                        <span class="mx-1">•</span>
-                        <span>Target: {{ n.formatted_target_grades }}</span>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <a href="{% url 'notice_board2:detail' n.pk %}" class="flex-grow py-3 bg-slate-50 text-slate-700 font-bold text-sm text-center rounded-lg hover:bg-slate-100 transition-colors">
-                            Read More
+                    <!-- Footer Actions -->
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto relative z-10">
+                        <a href="{% url 'notice_board2:detail' n.pk %}" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-600 hover:text-brand-800 transition-colors group/link">
+                            <span>Read Details</span>
+                            <i class="ri-arrow-right-line text-sm transform group-hover/link:translate-x-1 transition-transform"></i>
                         </a>
+                        
                         {% if n.attachment %}
-                        <a href="{{ n.attachment.url }}" download class="w-11 h-11 bg-slate-50 text-slate-400 flex items-center justify-center rounded-lg hover:text-school-blue hover:bg-sky-50 transition-colors">
-                            <span class="material-icons text-xl">download</span>
+                        <a href="{{ n.attachment.url }}" target="_blank" download class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-white bg-slate-100 hover:bg-brand-600 px-3 py-1.5 rounded-lg border border-slate-200/80 hover:border-brand-600 transition-all duration-200 shadow-2xs group/att">
+                            <i class="ri-file-pdf-2-line text-brand-600 group-hover/att:text-white transition-colors"></i>
+                            <span>Attachment</span>
                         </a>
+                        {% else %}
+                        <span class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400">
+                            <i class="ri-checkbox-circle-line text-emerald-500 text-xs"></i>
+                            <span>Official</span>
+                        </span>
                         {% endif %}
                     </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-slate-300">
-                <span class="material-icons text-slate-200 text-6xl mb-4">search_off</span>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">No notices found</h3>
-                <p class="text-slate-500 mb-8">Try adjusting your filters or search keywords.</p>
-                <a href="?" class="btn-school-primary">Clear all filters</a>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Pagination -->
-        {% if is_paginated %}
-        <div class="mt-16 flex justify-center fade-in-up" style="animation-delay: 0.5s">
-            <nav class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-school-blue hover:bg-sky-50 rounded-lg">
-                        <span class="material-icons">chevron_left</span>
+                </article>
+                {% empty %}
+                <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-slate-300">
+                    <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 mx-auto mb-3 border border-slate-200">
+                        <i class="ri-file-search-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">No matching notices found</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 mb-6">Try adjusting your filters or search keywords.</p>
+                    <a href="?" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs hover:bg-brand-700 transition-colors">
+                        Clear all filters
                     </a>
-                {% endif %}
+                </div>
+                {% endfor %}
+            </div>
 
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <span class="w-10 h-10 bg-school-blue text-white flex items-center justify-center font-bold rounded-lg shadow-sm">
-                            {{ num }}
-                        </span>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <a href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-500 font-bold hover:bg-sky-50 hover:text-school-blue rounded-lg transition-colors">
-                            {{ num }}
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="mt-16 flex justify-center fade-in-up" style="animation-delay: 0.3s">
+                <nav class="flex items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200/90 shadow-sm">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-brand-600 hover:bg-brand-50 rounded-xl transition-colors" aria-label="Previous Page">
+                            <i class="ri-arrow-left-s-line text-lg"></i>
                         </a>
                     {% endif %}
-                {% endfor %}
 
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-school-blue hover:bg-sky-50 rounded-lg">
-                        <span class="material-icons">chevron_right</span>
-                    </a>
-                {% endif %}
-            </nav>
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="w-10 h-10 bg-brand-600 text-white flex items-center justify-center font-bold rounded-xl shadow-xs text-sm">
+                                {{ num }}
+                            </span>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-600 font-bold hover:bg-brand-50 hover:text-brand-600 rounded-xl transition-colors text-sm">
+                                {{ num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.grade %}&grade={{ request.GET.grade }}{% endif %}" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-brand-600 hover:bg-brand-50 rounded-xl transition-colors" aria-label="Next Page">
+                            <i class="ri-arrow-right-s-line text-lg"></i>
+                        </a>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
