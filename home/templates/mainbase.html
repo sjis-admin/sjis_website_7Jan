@@ -844,13 +844,22 @@
 
         .header-nav-item {
             position: relative;
-            padding: 0.55rem 1.15rem;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            padding: 0.5rem 0.85rem;
             border-radius: 12px;
             color: #334155;
             font-weight: 600;
             font-size: 0.875rem;
             letter-spacing: -0.01em;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (min-width: 1280px) {
+            .header-nav-item {
+                padding: 0.55rem 1.15rem;
+            }
         }
 
         .header-nav-item:hover {
@@ -935,21 +944,15 @@
             <div class="flex items-center justify-between h-full">
                 <!-- Logo -->
                 <a href="{% url 'home:home' %}" class="flex items-center group flex-shrink-0">
-                    <!-- Fluent "Glassmorphic" Logo Tile -->
-                    <div class="relative bg-white/90 backdrop-blur-xl p-2.5 rounded-[1.25rem] shadow-[0_8px_40px_rgba(0,0,0,0.08)] border border-white group-hover:shadow-[0_12px_50px_rgba(0,0,0,0.12)] transition-all duration-500 overflow-hidden">
-                        <!-- Subtle Gloss Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        
-                        {% if site_config.logo %}
-                        <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}"
-                            class="h-14 md:h-16 w-auto object-contain relative z-10">
-                        {% else %}
-                        <img src="{% static 'images/sjp-logo-2.png' %}" alt="SJIS Logo"
-                            class="h-14 md:h-16 w-auto object-contain relative z-10">
-                        {% endif %}
-                    </div>
+                    {% if site_config.logo %}
+                    <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}"
+                        class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                    {% else %}
+                    <img src="{% static 'images/sjp-logo-2.png' %}" alt="SJIS Logo"
+                        class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                    {% endif %}
                     
-                    <div class="ml-3 sm:ml-6">
+                    <div class="ml-3 sm:ml-4">
                         <div class="flex flex-col">
                             <span class="text-base sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-900 leading-none font-heading group-hover:text-brand-600 transition-colors duration-500">
                                 {% if site_config.site_name %}{{ site_config.site_name }}{% else %}St. Joseph{% endif %}
@@ -971,8 +974,8 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group">
-                        <button class="header-nav-item flex items-center {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path or '/qualifications' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
-                            About Us <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform" aria-hidden="true"></i>
+                        <button class="header-nav-item inline-flex items-center whitespace-nowrap {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path or '/qualifications' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
+                            About Us <i class="ri-arrow-down-s-line ml-1.5 text-slate-400 group-hover:rotate-180 transition-transform shrink-0" aria-hidden="true"></i>
                         </button>
                         <div class="fluent-dropdown absolute top-full left-0 mt-2 w-64">
                             <div class="p-2 space-y-1">
@@ -1003,8 +1006,8 @@
                     <a href="{% url 'home:faculty_list' %}" class="header-nav-item {% if '/faculty' in request.path %}active{% endif %}">Faculty</a>
 
                     <div class="relative group">
-                        <button class="header-nav-item flex items-center {% if '/syllabus' in request.path or '/rules' in request.path or '/gallery' in request.path or '/yearbook' in request.path or '/academic_calendar' in request.path or '/club' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
-                            Resources <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform" aria-hidden="true"></i>
+                        <button class="header-nav-item inline-flex items-center whitespace-nowrap {% if '/syllabus' in request.path or '/rules' in request.path or '/gallery' in request.path or '/yearbook' in request.path or '/academic_calendar' in request.path or '/club' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
+                            Resources <i class="ri-arrow-down-s-line ml-1.5 text-slate-400 group-hover:rotate-180 transition-transform shrink-0" aria-hidden="true"></i>
                         </button>
                         <div class="fluent-dropdown absolute top-full left-0 mt-2 w-72">
                             <div class="p-3 grid grid-cols-1 gap-1">
