@@ -116,7 +116,7 @@
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Our Location</h4>
-                                <p class="text-slate-700 font-bold">{% if site_config.address %}{{ site_config.address }}{% else %}97, Asad Avenue, Mohammadpur, Dhaka-1207{% endif %}</p>
+                                <p class="text-slate-700 font-bold">{% if site_config.address %}{{ site_config.address }}{% else %}97, Asad Avenue, Mohammadpur, Dhaka-1207, Bangladesh{% endif %}</p>
                             </div>
                         </div>
 
@@ -154,7 +154,8 @@
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Working Hours</h4>
-                                <p class="text-slate-700 font-bold">9:00 AM - 5:20 PM (Sun - Thu)</p>
+                                <p class="text-slate-700 font-bold">9:00 AM – 5:20 PM BST (GMT+6)</p>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">Sunday – Thursday (Weekend: Fri &amp; Sat)</p>
                             </div>
                         </div>
                     </div>
@@ -163,13 +164,13 @@
                     <div class="mt-10 pt-8 border-t border-slate-100 flex items-center gap-4">
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Follow us:</span>
                         {% if site_config.facebook_url %}
-                        <a href="{{ site_config.facebook_url }}" target="_blank" class="social-link"><i class="ri-facebook-fill text-lg"></i></a>
+                        <a href="{{ site_config.facebook_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on Facebook" class="social-link"><i class="ri-facebook-fill text-lg" aria-hidden="true"></i></a>
                         {% endif %}
                         {% if site_config.instagram_url %}
-                        <a href="{{ site_config.instagram_url }}" target="_blank" class="social-link"><i class="ri-instagram-line text-lg"></i></a>
+                        <a href="{{ site_config.instagram_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on Instagram" class="social-link"><i class="ri-instagram-line text-lg" aria-hidden="true"></i></a>
                         {% endif %}
                         {% if site_config.youtube_url %}
-                        <a href="{{ site_config.youtube_url }}" target="_blank" class="social-link"><i class="ri-youtube-fill text-lg"></i></a>
+                        <a href="{{ site_config.youtube_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on YouTube" class="social-link"><i class="ri-youtube-fill text-lg" aria-hidden="true"></i></a>
                         {% endif %}
                     </div>
                 </div>
@@ -203,23 +204,23 @@
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2">
-                                    <label class="text-sm font-bold text-slate-700 ml-1">Full Name</label>
-                                    <input type="text" name="name" required placeholder="John Doe">
+                                    <label for="contact-name" class="text-sm font-bold text-slate-700 ml-1">Full Name</label>
+                                    <input id="contact-name" type="text" name="name" required placeholder="John Doe">
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-sm font-bold text-slate-700 ml-1">Email Address</label>
-                                    <input type="email" name="email" required placeholder="john@example.com">
+                                    <label for="contact-email" class="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+                                    <input id="contact-email" type="email" name="email" required placeholder="john@example.com">
                                 </div>
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 ml-1">Subject</label>
-                                <input type="text" name="subject" required placeholder="How can we help?">
+                                <label for="contact-subject" class="text-sm font-bold text-slate-700 ml-1">Subject</label>
+                                <input id="contact-subject" type="text" name="subject" required placeholder="How can we help?">
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 ml-1">Your Message</label>
-                                <textarea name="message" required rows="5" placeholder="Tell us more about your inquiry..."></textarea>
+                                <label for="contact-message" class="text-sm font-bold text-slate-700 ml-1">Your Message</label>
+                                <textarea id="contact-message" name="message" required rows="5" placeholder="Tell us more about your inquiry..."></textarea>
                             </div>
 
                             <div class="pt-4">
@@ -247,16 +248,21 @@
                 <div class="mt-8 mica-effect p-6 rounded-[2rem] border border-white/50 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-lg">
-                            <i class="ri-customer-service-2-fill text-2xl"></i>
+                            <i class="ri-customer-service-2-fill text-2xl" aria-hidden="true"></i>
                         </div>
                         <div>
-                            <h4 class="text-slate-900 font-extrabold tracking-tight">Direct Support</h4>
-                            <p class="text-xs text-slate-500 font-medium">Chat with our admission office directly</p>
+                            <h4 class="text-slate-900 font-extrabold tracking-tight">Direct Support &amp; Admissions</h4>
+                            <p class="text-xs text-slate-500 font-medium">Chat or call our admission office directly</p>
                         </div>
                     </div>
-                    <a href="tel:{% if site_config.phone %}{{ site_config.phone }}{% else %}+8801793970729{% endif %}" class="fluent-button-secondary px-8 py-3 rounded-xl text-sm font-bold border border-slate-200">
-                        Call Now
-                    </a>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <a href="https://wa.me/8801793970729" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-md transition-colors" aria-label="Chat with SJIS Admissions on WhatsApp">
+                            <i class="ri-whatsapp-line text-lg" aria-hidden="true"></i> WhatsApp
+                        </a>
+                        <a href="tel:{% if site_config.phone %}{{ site_config.phone }}{% else %}+8801793970729{% endif %}" class="fluent-button-secondary px-6 py-3 rounded-xl text-sm font-bold border border-slate-200">
+                            Call Now
+                        </a>
+                    </div>
                 </div>
             </div>
 

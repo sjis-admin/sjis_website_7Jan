@@ -49,12 +49,15 @@
       "@context": "https://schema.org",
       "@type": "School",
       "name": "St. Joseph International School",
+      "identifier": "BD084",
+      "description": "Cambridge Assessment International Education (CAIE) affiliated school, Centre Number BD084, in Dhaka, Bangladesh.",
       "url": "https://www.sjis.edu.bd/",
       "logo": "{% static 'images/sjp-logo-2.png' %}",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "{% if site_config.address %}{{ site_config.address }}{% else %}Mohammadpur{% endif %}",
+        "streetAddress": "{% if site_config.address %}{{ site_config.address }}{% else %}97, Asad Avenue, Mohammadpur{% endif %}",
         "addressLocality": "Dhaka",
+        "postalCode": "1207",
         "addressCountry": "BD"
       },
       "contactPoint": {
@@ -80,7 +83,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -890,7 +892,8 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .group:hover .fluent-dropdown {
+        .group:hover .fluent-dropdown,
+        .group:focus-within .fluent-dropdown {
             transform: translateY(0) scale(1);
             opacity: 1;
             visibility: visible;
@@ -918,6 +921,10 @@
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden max-w-full">
+    <!-- Skip to main content for keyboard and screen reader accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-brand-600 focus:text-white focus:px-5 focus:py-2.5 focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-sky-300 text-sm font-bold tracking-wide">
+        Skip to main content
+    </a>
 
     <header
         class="mica-effect h-20 md:h-24 flex items-center fixed top-0 left-0 w-full z-50 transition-all duration-300"
@@ -944,9 +951,9 @@
                     
                     <div class="ml-3 sm:ml-6">
                         <div class="flex flex-col">
-                            <h1 class="text-base sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-900 leading-none font-heading group-hover:text-brand-600 transition-colors duration-500">
+                            <span class="text-base sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-900 leading-none font-heading group-hover:text-brand-600 transition-colors duration-500">
                                 {% if site_config.site_name %}{{ site_config.site_name }}{% else %}St. Joseph{% endif %}
-                            </h1>
+                            </span>
                             <div class="flex items-center gap-2 mt-1 sm:mt-2.5">
                                 <p class="text-[7px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-[0.1em] sm:tracking-[0.25em] group-hover:text-brand-600 transition-colors duration-500">International School</p>
                                 <!-- Fluent Accent Indicator -->
@@ -964,8 +971,8 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group">
-                        <button class="header-nav-item flex items-center {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path or '/qualifications' in request.path %}active{% endif %}">
-                            About Us <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform"></i>
+                        <button class="header-nav-item flex items-center {% if '/about' in request.path or '/principal' in request.path or '/vice-principal' in request.path or '/qualifications' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
+                            About Us <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform" aria-hidden="true"></i>
                         </button>
                         <div class="fluent-dropdown absolute top-full left-0 mt-2 w-64">
                             <div class="p-2 space-y-1">
@@ -991,17 +998,27 @@
                         </div>
                     </div>
 
+                    <a href="{% url 'admission:admission_home' %}" class="header-nav-item {% if '/admission' in request.path %}active{% endif %}">Admissions</a>
+
                     <a href="{% url 'home:faculty_list' %}" class="header-nav-item {% if '/faculty' in request.path %}active{% endif %}">Faculty</a>
 
                     <div class="relative group">
-                        <button class="header-nav-item flex items-center {% if '/syllabus' in request.path or '/rules' in request.path or '/gallery' in request.path or '/yearbook' in request.path %}active{% endif %}">
-                            Resources <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform"></i>
+                        <button class="header-nav-item flex items-center {% if '/syllabus' in request.path or '/rules' in request.path or '/gallery' in request.path or '/yearbook' in request.path or '/academic_calendar' in request.path or '/club' in request.path %}active{% endif %}" aria-haspopup="true" aria-expanded="false">
+                            Resources <i class="ri-arrow-down-s-line ml-1 text-slate-400 group-hover:rotate-180 transition-transform" aria-hidden="true"></i>
                         </button>
                         <div class="fluent-dropdown absolute top-full left-0 mt-2 w-72">
                             <div class="p-3 grid grid-cols-1 gap-1">
+                                <a href="{% url 'academic_calendar:academic_calendar' %}" class="flex items-center p-3 rounded-xl hover:bg-brand-50 group/item {% if '/academic_calendar' in request.path %}bg-brand-50{% endif %}">
+                                    <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center mr-3"><i class="ri-calendar-line text-emerald-500"></i></div>
+                                    <span class="text-sm font-semibold text-slate-700">Academic Calendar</span>
+                                </a>
                                 <a href="{% url 'syllabus:syllabus_list' %}" class="flex items-center p-3 rounded-xl hover:bg-brand-50 group/item {% if '/syllabus' in request.path %}bg-brand-50{% endif %}">
                                     <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mr-3"><i class="ri-book-open-line text-blue-500"></i></div>
                                     <span class="text-sm font-semibold text-slate-700">Syllabus</span>
+                                </a>
+                                <a href="{% url 'club_new:club_list' %}" class="flex items-center p-3 rounded-xl hover:bg-brand-50 group/item {% if '/club' in request.path %}bg-brand-50{% endif %}">
+                                    <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center mr-3"><i class="ri-trophy-line text-purple-500"></i></div>
+                                    <span class="text-sm font-semibold text-slate-700">Clubs & Activities</span>
                                 </a>
                                 <a href="{% url 'rules:public_rules_list' %}" class="flex items-center p-3 rounded-xl hover:bg-brand-50 group/item {% if '/rules' in request.path %}bg-brand-50{% endif %}">
                                     <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mr-3"><i class="ri-shield-line text-amber-500"></i></div>
@@ -1019,23 +1036,23 @@
                         </div>
                     </div>
 
-                    <a href="{% url 'notice_board2:list' %}" class="header-nav-item {% if '/notices' in request.path %}active{% endif %}">Notices</a>
+                    <a href="{% url 'notice_board2:list' %}" class="header-nav-item {% if '/notices' in request.path or '/notice-board' in request.path %}active{% endif %}">Notices</a>
                     <a href="{% url 'contact:contact' %}" class="header-nav-item {% if '/contact' in request.path %}active{% endif %}">Contact</a>
 
                     <div class="flex items-center ml-6 pl-6 border-l border-slate-200 gap-4">
                         <a href="https://portal.sjis.edu.bd/auth/login" class="portal-button inline-flex items-center">
                             <i class="ri-user-6-line mr-2"></i> Portal
                         </a>
-                        <button id="mega-menu-trigger" class="p-2 bg-slate-50 text-slate-600 rounded-xl hover:bg-brand-500 hover:text-white transition-all shadow-sm">
-                            <i class="ri-grid-fill text-xl"></i>
+                        <button id="mega-menu-trigger" aria-label="Open quick navigation menu" class="p-2 bg-slate-50 text-slate-600 rounded-xl hover:bg-brand-500 hover:text-white transition-all shadow-sm">
+                            <i class="ri-grid-fill text-xl" aria-hidden="true"></i>
                         </button>
                     </div>
                 </nav>
 
                 <!-- Mobile Toggle -->
                 <div class="lg:hidden flex items-center gap-2">
-                    <button id="mobile-menu-button" class="p-2.5 bg-slate-50 rounded-xl text-slate-900 shadow-sm border border-slate-100">
-                        <i class="ri-menu-5-line text-lg"></i>
+                    <button id="mobile-menu-button" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false" class="p-2.5 bg-slate-50 rounded-xl text-slate-900 shadow-sm border border-slate-100">
+                        <i class="ri-menu-5-line text-lg" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -1290,7 +1307,7 @@
                     {% endif %}
                     <span class="text-lg font-bold text-white tracking-wide">Menu</span>
                 </div>
-                <button id="mobile-menu-close"
+                <button id="mobile-menu-close" aria-label="Close navigation menu"
                     class="p-2 rounded-full hover:bg-white/10 focus:outline-none text-white transition-colors group">
                     <svg class="h-6 w-6 transform group-hover:rotate-90 transition-transform duration-300" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -1343,6 +1360,13 @@
                     class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group {% if '/qualifications' in request.path %}bg-white/10 text-brand-400 border-l-4 border-brand-500{% else %}text-white hover:bg-white/10{% endif %}">
                     <span class="material-icons {% if '/qualifications' in request.path %}text-white{% else %}text-indigo-300{% endif %} group-hover:text-white transition-colors">workspace_premium</span>
                     <span class="font-medium">Qualifications</span>
+                </a>
+
+                <!-- Admissions -->
+                <a href="{% url 'admission:admission_home' %}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group {% if '/admission' in request.path %}bg-white/10 text-brand-400 border-l-4 border-brand-500{% else %}text-white hover:bg-white/10{% endif %}">
+                    <span class="material-icons {% if '/admission' in request.path %}text-white{% else %}text-amber-300{% endif %} group-hover:text-white transition-colors">school</span>
+                    <span class="font-medium">Admissions</span>
                 </a>
 
                 <!-- Faculty -->
@@ -1463,6 +1487,10 @@
                     <p class="text-slate-400 text-sm leading-relaxed font-light">
                         Empowering minds, shaping futures. A legacy of excellence in education since 1954, dedicated to nurturing global leaders.
                     </p>
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+                        <i class="ri-award-line text-amber-400 text-sm"></i>
+                        <span>Cambridge International School &bull; <strong class="text-white">BD084</strong></span>
+                    </div>
                     <div class="space-y-4">
                         {% if site_config.address %}
                         <div class="flex items-start space-x-3 text-slate-400 text-sm">
@@ -1544,18 +1572,18 @@
                         </p>
                         <div class="flex flex-wrap gap-3">
                             {% if site_config.facebook_url %}
-                            <a href="{{ site_config.facebook_url }}" target="_blank" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-brand-500 hover:text-white hover:border-brand-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
-                                <i class="ri-facebook-fill text-xl"></i>
+                            <a href="{{ site_config.facebook_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on Facebook" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-brand-500 hover:text-white hover:border-brand-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <i class="ri-facebook-fill text-xl" aria-hidden="true"></i>
                             </a>
                             {% endif %}
                             {% if site_config.instagram_url %}
-                            <a href="{{ site_config.instagram_url }}" target="_blank" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 hover:text-white hover:border-pink-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
-                                <i class="ri-instagram-line text-xl"></i>
+                            <a href="{{ site_config.instagram_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on Instagram" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 hover:text-white hover:border-pink-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <i class="ri-instagram-line text-xl" aria-hidden="true"></i>
                             </a>
                             {% endif %}
                             {% if site_config.youtube_url %}
-                            <a href="{{ site_config.youtube_url }}" target="_blank" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
-                                <i class="ri-youtube-fill text-xl"></i>
+                            <a href="{{ site_config.youtube_url }}" target="_blank" rel="noopener" aria-label="Visit St. Joseph International School on YouTube" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-400 hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <i class="ri-youtube-fill text-xl" aria-hidden="true"></i>
                             </a>
                             {% endif %}
                         </div>
@@ -1572,9 +1600,9 @@
                     </div>
                 </div>
                 <!-- Floating Back to Top Button -->
-                <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
+                <button id="back-to-top" aria-label="Scroll back to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
                     class="fixed bottom-24 right-6 w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center shadow-2xl hover:bg-brand-600 transition-all duration-500 translate-y-20 opacity-0 invisible z-[2000] group border border-white/10">
-                    <i class="ri-arrow-up-line text-2xl group-hover:-translate-y-1 transition-transform"></i>
+                    <i class="ri-arrow-up-line text-2xl group-hover:-translate-y-1 transition-transform" aria-hidden="true"></i>
                     <span class="absolute -top-12 right-0 bg-slate-800 text-white text-[10px] py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-white/10 font-bold uppercase tracking-widest">Back to Top</span>
                 </button>
             </div>
