@@ -3,12 +3,12 @@
 
 {% block title %}Qualifications & Programmes | St. Joseph International School{% endblock %}
 
-{% block meta_description %}Explore the internationally recognised qualifications offered at St. Joseph International School, Dhaka — including Cambridge IGCSE and Cambridge International A-Levels (AS & A2) awarded by Cambridge Assessment International Education (CAIE).{% endblock %}
+{% block meta_description %}Explore the internationally recognised qualifications offered at St. Joseph International School, Dhaka — including Cambridge Ordinary Level (O-Level) and Cambridge International A-Levels (AS & A2) awarded by Cambridge Assessment International Education (CAIE).{% endblock %}
 
-{% block meta_keywords %}SJIS qualifications, Cambridge IGCSE Bangladesh, Cambridge A-Level Dhaka, CAIE school, international school qualifications, St. Joseph International School programmes{% endblock %}
+{% block meta_keywords %}SJIS qualifications, Cambridge O-Level Bangladesh, Cambridge A-Level Dhaka, CAIE school, international school qualifications, St. Joseph International School programmes{% endblock %}
 
 {% block og_title %}Qualifications & Programmes | St. Joseph International School{% endblock %}
-{% block og_description %}Explore the internationally recognised qualifications offered at St. Joseph International School — Cambridge IGCSE and Cambridge International A-Levels.{% endblock %}
+{% block og_description %}Explore the internationally recognised qualifications offered at St. Joseph International School — Cambridge Ordinary Level (O-Level) and Cambridge International A-Levels.{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -78,7 +78,7 @@
         border-radius: 6px;
         padding: 4px 10px;
     }
-    .stage-igcse  { background: #EFF6FF; color: #1D4ED8; }
+    .stage-olevel, .stage-igcse  { background: #EFF6FF; color: #1D4ED8; }
     .stage-alevel { background: #FFF7ED; color: #C2410C; }
 
     /* === Qualification Cards === */
@@ -100,7 +100,7 @@
         height: 4px;
         border-radius: 4px 4px 0 0;
     }
-    .accent-igcse  { background: linear-gradient(90deg, #1D4ED8, #60A5FA); }
+    .accent-olevel, .accent-igcse  { background: linear-gradient(90deg, #1D4ED8, #60A5FA); }
     .accent-alevel { background: linear-gradient(90deg, #C2410C, #FB923C); }
     .accent-cambridge { background: linear-gradient(90deg, #1F3A93, #D4AF37); }
 
@@ -306,21 +306,22 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                <!-- ── IGCSE Card ── -->
-                <article class="qual-card" id="igcse">
-                    <div class="qual-card-accent accent-igcse"></div>
+                <!-- ── O-Level Card ── -->
+                <article class="qual-card" id="olevel">
+                    <span id="igcse" class="sr-only"></span>
+                    <div class="qual-card-accent accent-olevel"></div>
                     <div class="p-8">
                         <div class="flex items-start justify-between mb-5">
                             <div>
-                                <span class="stage-badge stage-igcse mb-3 inline-flex">
+                                <span class="stage-badge stage-olevel mb-3 inline-flex">
                                     <i class="ri-school-line text-xs"></i>
                                     Secondary Stage
                                 </span>
                                 <h3 class="text-2xl font-extrabold text-slate-900 font-heading leading-tight">
-                                    Cambridge IGCSE
+                                    Cambridge Ordinary Level
                                 </h3>
                                 <p class="text-slate-500 text-sm font-medium mt-1">
-                                    International General Certificate of Secondary Education
+                                    General Certificate of Education (O-Level)
                                 </p>
                             </div>
                             <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -329,7 +330,7 @@
                         </div>
 
                         <p class="text-slate-600 leading-relaxed mb-6 text-sm">
-                            The Cambridge IGCSE is the world's most popular international qualification for 14–16 year olds, developed over 30 years. It develops students' skills in creative thinking, enquiry and problem solving and prepares them for the next stage of education.
+                            The Cambridge Ordinary Level (O-Level) is an internationally recognised qualification designed for 14–16 year olds. It develops students' skills in creative thinking, enquiry and problem solving and prepares them thoroughly for the next stage of education.
                         </p>
 
                         <div class="mb-6">
@@ -342,11 +343,8 @@
                                 <span class="subject-pill"><i class="ri-translate-2 text-xs"></i> English Language</span>
                                 <span class="subject-pill"><i class="ri-translate-2 text-xs"></i> English Literature</span>
                                 <span class="subject-pill"><i class="ri-computer-line text-xs"></i> Computer Science</span>
-                                <span class="subject-pill"><i class="ri-map-2-line text-xs"></i> Geography</span>
-                                <span class="subject-pill"><i class="ri-history-line text-xs"></i> History</span>
                                 <span class="subject-pill"><i class="ri-bar-chart-line text-xs"></i> Business Studies</span>
                                 <span class="subject-pill"><i class="ri-bank-line text-xs"></i> Economics</span>
-                                <span class="subject-pill"><i class="ri-palette-line text-xs"></i> Art & Design</span>
                             </div>
                         </div>
 
@@ -361,7 +359,7 @@
                             </div>
                             <div class="bg-slate-50 rounded-xl p-3">
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Grading</p>
-                                <p class="text-sm font-bold text-slate-800">A* – G Scale</p>
+                                <p class="text-sm font-bold text-slate-800">A* – E Scale</p>
                             </div>
                             <div class="bg-slate-50 rounded-xl p-3">
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Awarding Body</p>
@@ -372,7 +370,7 @@
                         <div class="info-strip">
                             <i class="ri-information-line text-blue-500 text-lg flex-shrink-0 mt-0.5"></i>
                             <p class="text-xs text-blue-800 leading-relaxed">
-                                The IGCSE is globally recognised as equivalent to the UK GCSE and accepted as a prerequisite for A-Level study, the IB Diploma, and university entry in 160+ countries.
+                                Cambridge O-Level is globally recognised as equivalent to the UK GCSE and accepted as a prerequisite for A-Level study, the IB Diploma, and university entry in 160+ countries.
                             </p>
                         </div>
                     </div>
@@ -437,7 +435,7 @@
                         <div class="info-strip" style="background:#FFF4ED;border-color:#FED7AA;">
                             <i class="ri-information-line text-orange-500 text-lg flex-shrink-0 mt-0.5"></i>
                             <p class="text-xs text-orange-900 leading-relaxed">
-                                Cambridge A-Levels are equivalent to UK A-Levels and are accepted for university admissions in the UK, USA, Canada, Australia, and across the world. Completion of IGCSE (or equivalent) is required for entry.
+                                Cambridge A-Levels are equivalent to UK A-Levels and are accepted for university admissions in the UK, USA, Canada, Australia, and across the world. Completion of O-Level (or equivalent) is required for entry.
                             </p>
                         </div>
                     </div>
@@ -469,9 +467,9 @@
                     <div class="qual-card p-6 text-center border-2 border-blue-200">
                         <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 font-extrabold text-lg font-heading shadow-lg shadow-blue-300">2</div>
                         <p class="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">Grades 9 – 10</p>
-                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">Cambridge IGCSE</h4>
+                        <h4 class="font-extrabold text-slate-900 font-heading mb-2">Cambridge O-Level</h4>
                         <p class="text-xs text-slate-500 leading-relaxed">Two-year internationally recognised secondary qualification. Exams set and marked by Cambridge.</p>
-                        <a href="#igcse" class="mt-3 inline-block text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">Learn more →</a>
+                        <a href="#olevel" class="mt-3 inline-block text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">Learn more →</a>
                     </div>
                     <!-- Step 3 -->
                     <div class="qual-card p-6 text-center border-2 border-orange-200">
